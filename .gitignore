@@ -1,0 +1,30 @@
+# Java files
+bin/
+gen/
+*.class
+*.jar
+*.war
+*.ear
+
+# Gradle
+.gradle/
+build/
+gradle-app.setting
+.gradletasknamecache
+# Ensure gradle-wrapper.jar not ignored by *.jar ignore
+!gradle-wrapper.jar
+
+# Maven
+log/
+target/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Eclipse
+.classpath
+.project
+.settings/
