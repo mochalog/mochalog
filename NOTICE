@@ -14,3 +14,15 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
+
+======= Third-Party Software used by Mochalog =======
+
+This product uses
+    - SWI-Prolog (http://www.swi-prolog.org/)
+        - Source available at https://github.com/SWI-Prolog/swipl-devel
+    - JPL (subpackage of SWI-Prolog, http://jpl7.org/)
+        - Source available at https://github.com/SWI-Prolog/packages-jpl
+SWI-Prolog and its subpackages (including JPL) are licensed under the 
+Simplified BSD License. A copy of the full text of this license can be 
+found at 'docs/thirdparty/LICENSE-SWI-PROLOG' (available on Github at
+https://github.com/mochalog/mochalog/tree/master/docs/thirdparty/LICENSE-SWI-PROLOG).
