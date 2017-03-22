@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
-rootProject.name = 'mochalog'
+#include <iostream>
 
-include 'mochalog:java-bridge', 'mochalog:prolog-bridge'
+int main(int argc, char* argv[]) {
+    std::cout << "Gradle build successful!" << std::endl;
+    return 0;
+}
