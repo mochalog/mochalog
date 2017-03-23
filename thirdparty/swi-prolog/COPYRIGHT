@@ -1,0 +1,6 @@
+This file lists all sources from SWI-Prolog and its subpackages (including JPL)
+which are redistributed as part of Mochalog, whether in source or binary form.
+Each is listed alongside their respective copyright header as provided within
+the original source itself.
+
+# No SWI-Prolog/JPL source files are currently redistributed by Mochalog

@@ -2,8 +2,8 @@ Mochalog
 Copyright 2017 The Mochalog Authors.
 See AUTHORS.md for a list of authors for which this copyright applies.
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this software (Mochalog) and its associated documentation 
+Licensed under the Apache License, Version 2.0 (the "License"); you 
+may not use this software (Mochalog) and its associated documentation 
 except in compliance with the License.
 You may obtain a copy of the License at
 
@@ -15,14 +15,26 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-======= Third-Party Software used by Mochalog =======
+    =====================================================
+    ======= Third-Party Software used by Mochalog =======
+    =====================================================
+
+======= SWI-Prolog and JPL =======
 
 This product uses
     - SWI-Prolog (http://www.swi-prolog.org/)
         - Source available at https://github.com/SWI-Prolog/swipl-devel
     - JPL (subpackage of SWI-Prolog, http://jpl7.org/)
         - Source available at https://github.com/SWI-Prolog/packages-jpl
+
+Copyright is applied on a source-by-source basis and is distributed over
+a range of institutions and private individuals. Hence any redistributions
+of individual SWI-Prolog/JPL sources in source or binary form within Mochalog 
+will be documented alongside their respective copyright headers in 
+'thirdparty/swi-prolog/COPYRIGHT' (available on Github at 
+https://github.com/mochalog/mochalog/tree/master/thirdparty/swi-prolog/COPYRIGHT).
+
 SWI-Prolog and its subpackages (including JPL) are licensed under the 
 Simplified BSD License. A copy of the full text of this license can be 
-found at 'docs/thirdparty/LICENSE-SWI-PROLOG' (available on Github at
-https://github.com/mochalog/mochalog/tree/master/docs/thirdparty/LICENSE-SWI-PROLOG).
+found at 'thirdparty/swi-prolog/LICENSE' (available on Github at
+https://github.com/mochalog/mochalog/tree/master/thirdparty/swi-prolog/LICENSE).
