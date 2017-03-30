@@ -1,5 +1,8 @@
 # Mochalog :coffee:
 
+[![Travis-CI](https://img.shields.io/travis/mochalog/mochalog.svg)](https://travis-ci.org/mochalog/mochalog/builds)
+
+
 ### A two-way bridge between Java and SWI-Prolog
 Mochalog is a rich bidirectional interface between the Java Runtime and the SWI-Prolog interpreter inspired by [JPL](http://jpl7.org/). Looking to stand on its own two feet, however, Mochalog is focused on achieving two core design objectives:
 
