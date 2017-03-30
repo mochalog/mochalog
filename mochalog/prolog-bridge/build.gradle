@@ -49,7 +49,7 @@ model {
     }
 }
 
-model {
+/*model {
     components {
         // Test a executable of main.cpp
         // If it worked, main.exe should print
@@ -58,4 +58,4 @@ model {
             targetPlatform 'windows_x86_64'
         }
     }
-}
+}*/
