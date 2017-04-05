@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2017 The Mochalog Authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,24 +14,4 @@
  * limitations under the License.
  */
 
-package io.mochalog;
-
-import org.jpl7.JPL;
-
-import org.junit.Test;
-import static org.junit.Assert.assertEquals;
-
-/**
- * Test suite for JPL.
- * <p>
- * Currently used to ensure correct dependency management
- * and as a benchmark to ensure correct Travis-CI integration.
- */
-public class JPLTest
-{
-    @Test
-    public void checkVersion()
-    {
-        assertEquals(JPL.version_string(), "7.0.1-alpha");
-    }
-}
+get_hello_world('Hello World').
