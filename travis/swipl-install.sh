@@ -29,7 +29,8 @@ fi
 swipl_release_name="swipl-$version"
 swipl_src_root="/usr/local/src/$swipl_release_name"
 # Remove existing sources
-rm -r ${swipl_src_root}
+# Should use existing in future, check if valid install?
+rm -r ${swipl_src_root} 2>/dev/null
 
 # Stable release archive available on
 # www.swi-prolog.org (avoid Ubuntu PPA as this does not
