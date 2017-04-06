@@ -5,11 +5,10 @@ jdk:
     - oraclejdk7
 
 env:
-  - SWIPL_VERSION="7.4.1"
-  - SWI_HOME_DIR="/usr/local/lib/swipl-$SWIPL_VERSION"
+  - SWIPL_VERSION="7.4.1" SWI_HOME_DIR="/usr/local/lib/swipl-$SWIPL_VERSION"
 
-before_install:
-    - sudo ./travis/swipl-install.sh $SWIPL_VERSION
+install:
+    - sudo travis/swipl-install.sh $SWIPL_VERSION
 
 before_cache:
     - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
