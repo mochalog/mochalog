@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import org.gradle.internal.os.OperatingSystem
+
 apply plugin: 'java'
 
 repositories {
@@ -21,8 +23,8 @@ repositories {
 }
 
 test {
-    // Add SWI_HOME_DIR/bin directory to java.library.path
-    systemProperty 'java.library.path', getSwiPrologBinaryDir()
+    // Add SWI-Prolog shared library directory to java.library.path
+    systemProperty 'java.library.path', swiPrologBinaryDir
 }
 
 dependencies {
@@ -31,7 +33,7 @@ dependencies {
 }
 
 /**
- * Get the filepath to the SWI_HOME_DIR/bin directory
+ * Get the filepath of the SWI-Prolog shared library directory
  * @return Absolute filepath
  * @throws GradleException SWI_HOME_DIR environment variable not set
  */
@@ -42,5 +44,8 @@ static getSwiPrologBinaryDir() throws GradleException {
                 'set. Should be set to root of SWI-Prolog platform installation.')
     }
 
-    return swiPrologHomeDir + '/bin'
+    def os = OperatingSystem.current()
+    // Currently only supports 64 bit Linux
+    def librarySubDir = os.isWindows() ? "bin" : "lib/x86_64-linux"
+    return swiPrologHomeDir + "/" + librarySubDir
 }
