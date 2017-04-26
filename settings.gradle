@@ -16,4 +16,4 @@
 
 rootProject.name = 'mochalog'
 
-include 'transpiler:prolog-to-java'
+include 'pipeline:java-endpoint'

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.mochalog.jpl;
+package io.mochalog.pipeline;
 
 import org.jpl7.JPL;
 import org.jpl7.Query;
