@@ -16,4 +16,4 @@
 
 rootProject.name = 'mochalog'
 
-include 'mochalog:java-bridge', 'mochalog:prolog-bridge'
+include 'transpiler:prolog-to-java'
