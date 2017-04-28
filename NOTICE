@@ -38,3 +38,45 @@ SWI-Prolog and its subpackages (including JPL) are licensed under the
 Simplified BSD License. A copy of the full text of this license can be 
 found at 'thirdparty/swi-prolog/LICENSE' (available on Github at
 https://github.com/mochalog/mochalog/tree/master/thirdparty/swi-prolog/LICENSE).
+
+======= JUnit =======
+
+This product uses JUnit (http://junit.org/).
+Source available at https://github.com/junit-team/junit4.
+
+No global copyright or source-by-source copyright headers appear to be included
+within the JUnit project.
+
+JUnit is licensed under the Eclipse Public License, Version 1.0.
+A copy of the full text of this license can be found at
+'thirdparty/junit/LICENSE-junit.txt' (available on Github at
+https://github.com/mochalog/mochalog/tree/master/thirdparty/junit/LICENSE-junit.txt).
+
+======= Eclipse Xtext =======
+
+This product uses Eclipse Xtext (http://www.eclipse.org/Xtext/).
+Source available at https://github.com/eclipse/xtext.
+
+Copyright is applied on a source-by-source basis (no global copyright
+header provided). Hence any redistributions of individual Eclipse Xtext sources
+in source or binary form within Mochalog will be documented alongside their
+respective copyright headers in 'thirdparty/xtext/COPYRIGHT' (available on Github at
+https://github.com/mochalog/mochalog/tree/master/thirdparty/xtext/COPYRIGHT).
+
+Eclipse Xtext  is licensed under the Eclipse Public License, Version 1.0.
+A copy of the full text of this license can be found at
+'thirdparty/xtext/LICENSE' (available on Github at
+https://github.com/mochalog/mochalog/tree/master/thirdparty/xtext/LICENSE).
+
+======= xtext-gradle-plugin =======
+
+This product uses the xtext-gradle-plugin. Source available
+at https://github.com/xtext/xtext-gradle-plugin.
+
+No global copyright or source-by-source copyright headers appear to be included
+within the xtext-gradle-plugin project.
+
+xtext-gradle-plugin is licensed under the Eclipse Public
+License, Version 1.0. A copy of the full text of this license can
+be found at 'thirdparty/xtext-gradle-plugin/LICENSE' (available on Github at
+https://github.com/mochalog/mochalog/tree/master/thirdparty/xtext-gradle-plugin/LICENSE).

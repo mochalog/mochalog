@@ -16,4 +16,9 @@
 
 rootProject.name = 'mochalog'
 
-include 'pipeline:java-endpoint'
+include 'subprojects:mochalog-pipeline:java-endpoint'
+
+include 'subprojects:mochalog-pl2j'
+include 'subprojects:mochalog-pl2j:pl2j-model'
+include 'subprojects:mochalog-pl2j:pl2j-ide'
+include 'subprojects:mochalog-pl2j:pl2j-idea'
