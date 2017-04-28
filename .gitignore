@@ -28,3 +28,20 @@ target/
 .classpath
 .project
 .settings/
+
+# Xtext generated files
+subprojects/mochalog-pl2j/pl2j/model/generated/
+subprojects/mochalog-pl2j/pl2j/src/main/xtend-gen/
+subprojects/mochalog-pl2j/pl2j/src/main/xtext-gen/
+subprojects/mochalog-pl2j/pl2j/src/test/xtend-gen/
+subprojects/mochalog-pl2j/pl2j/src/test/xtext-gen/
+
+subprojects/mochalog-pl2j/pl2j.ide/src/main/xtend-gen/
+subprojects/mochalog-pl2j/pl2j.ide/src/main/xtext-gen/
+subprojects/mochalog-pl2j/pl2j.ide/src/test/xtend-gen/
+subprojects/mochalog-pl2j/pl2j.ide/src/test/xtext-gen/
+
+subprojects/mochalog-pl2j/pl2j.idea/src/main/xtend-gen/
+subprojects/mochalog-pl2j/pl2j.idea/src/main/xtext-gen/
+subprojects/mochalog-pl2j/pl2j.idea/src/test/xtend-gen/
+subprojects/mochalog-pl2j/pl2j.idea/src/test/xtext-gen/

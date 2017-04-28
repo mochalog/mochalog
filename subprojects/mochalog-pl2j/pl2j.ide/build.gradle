@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-rootProject.name = 'mochalog'
+// Sourced from skeleton Gradle Xtext integration
 
-include 'subprojects:mochalog-pipeline:java-endpoint'
-
-include 'subprojects:mochalog-pl2j'
-include 'subprojects:mochalog-pl2j:pl2j'
-include 'subprojects:mochalog-pl2j:pl2j.ide'
-include 'subprojects:mochalog-pl2j:pl2j.idea'
+dependencies {
+    compile project(':subprojects:mochalog-pl2j:pl2j')
+    compile "org.eclipse.xtext:org.eclipse.xtext.ide:${xtextVersion}"
+    compile "org.eclipse.xtext:org.eclipse.xtext.xbase.ide:${xtextVersion}"
+}

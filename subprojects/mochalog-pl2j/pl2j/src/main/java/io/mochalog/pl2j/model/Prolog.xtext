@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-rootProject.name = 'mochalog'
+grammar io.mochalog.pl2j.model.Prolog with org.eclipse.xtext.common.Terminals
 
-include 'subprojects:mochalog-pipeline:java-endpoint'
+generate prolog "http://www.mochalog.io/pl2j/model/Prolog"
 
-include 'subprojects:mochalog-pl2j'
-include 'subprojects:mochalog-pl2j:pl2j'
-include 'subprojects:mochalog-pl2j:pl2j.ide'
-include 'subprojects:mochalog-pl2j:pl2j.idea'
+Model:
+    greetings+=Greeting*;
+
+Greeting:
+    'Hello' name=ID '!';
