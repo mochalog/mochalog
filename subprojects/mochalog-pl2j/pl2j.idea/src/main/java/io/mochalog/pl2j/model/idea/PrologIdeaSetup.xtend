@@ -20,9 +20,9 @@ import org.eclipse.xtext.idea.extensions.EcoreGlobalRegistries
 
 class PrologIdeaSetup implements ISetup {
 
-	override createInjectorAndDoEMFRegistration() {
-		EcoreGlobalRegistries.ensureInitialized
-		new PrologStandaloneSetupIdea().createInjector
-	}
+    override createInjectorAndDoEMFRegistration() {
+        EcoreGlobalRegistries.ensureInitialized
+        new PrologStandaloneSetupIdea().createInjector
+    }
 
 }

@@ -24,9 +24,9 @@ import org.eclipse.xtext.idea.facet.AbstractFacetConfiguration
 import org.eclipse.xtext.idea.facet.GeneratorConfigurationState
 
 @State(name = "io.mochalog.pl2j.model.PrologGenerator", storages = #[
-		@Storage(id = "default", file = StoragePathMacros.PROJECT_FILE),
-		@Storage(id = "dir", file = StoragePathMacros.PROJECT_CONFIG_DIR
-				+ "/PrologGeneratorConfig.xml", scheme = StorageScheme.DIRECTORY_BASED)])
+        @Storage(id = "default", file = StoragePathMacros.PROJECT_FILE),
+        @Storage(id = "dir", file = StoragePathMacros.PROJECT_CONFIG_DIR
+                + "/PrologGeneratorConfig.xml", scheme = StorageScheme.DIRECTORY_BASED)])
  class PrologFacetConfiguration extends AbstractFacetConfiguration implements PersistentStateComponent<GeneratorConfigurationState>{
 
 }

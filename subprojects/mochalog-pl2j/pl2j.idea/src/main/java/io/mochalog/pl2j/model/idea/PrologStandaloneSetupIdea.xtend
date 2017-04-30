@@ -21,10 +21,10 @@ import io.mochalog.pl2j.model.PrologStandaloneSetupGenerated
 import org.eclipse.xtext.util.Modules2
 
 class PrologStandaloneSetupIdea extends PrologStandaloneSetupGenerated {
-	override createInjector() {
-		val runtimeModule = new PrologRuntimeModule()
-		val ideaModule = new PrologIdeaModule()
-		val mergedModule = Modules2.mixin(runtimeModule, ideaModule)
-		return Guice.createInjector(mergedModule)
-	}
+    override createInjector() {
+        val runtimeModule = new PrologRuntimeModule()
+        val ideaModule = new PrologIdeaModule()
+        val mergedModule = Modules2.mixin(runtimeModule, ideaModule)
+        return Guice.createInjector(mergedModule)
+    }
 }

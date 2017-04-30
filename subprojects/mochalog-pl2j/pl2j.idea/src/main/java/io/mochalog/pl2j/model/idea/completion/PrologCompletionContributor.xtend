@@ -19,12 +19,12 @@ import io.mochalog.pl2j.model.idea.lang.PrologLanguage
 import org.eclipse.xtext.idea.lang.AbstractXtextLanguage
 
 class PrologCompletionContributor extends AbstractPrologCompletionContributor {
-	new() {
-		this(PrologLanguage.INSTANCE)
-	}
-	
-	new(AbstractXtextLanguage lang) {
-		super(lang)
-		//custom rules here
-	}
+    new() {
+        this(PrologLanguage.INSTANCE)
+    }
+
+    new(AbstractXtextLanguage lang) {
+        super(lang)
+        //custom rules here
+    }
 }

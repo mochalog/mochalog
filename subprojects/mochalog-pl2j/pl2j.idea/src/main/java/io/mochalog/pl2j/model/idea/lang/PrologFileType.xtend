@@ -17,9 +17,9 @@ package io.mochalog.pl2j.model.idea.lang
 
 
 class PrologFileType extends AbstractPrologFileType {
-	public static final PrologFileType INSTANCE = new PrologFileType()
-	
-	new() {
-		super(PrologLanguage.INSTANCE)
-	}
+    public static final PrologFileType INSTANCE = new PrologFileType()
+
+    new() {
+        super(PrologLanguage.INSTANCE)
+    }
 }

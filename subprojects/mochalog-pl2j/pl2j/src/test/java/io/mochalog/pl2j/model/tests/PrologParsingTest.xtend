@@ -20,12 +20,18 @@ import io.mochalog.pl2j.model.prolog.Model
 import org.eclipse.xtext.junit4.InjectWith
 import org.eclipse.xtext.junit4.XtextRunner
 import org.eclipse.xtext.junit4.util.ParseHelper
+import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(XtextRunner)
 @InjectWith(PrologInjectorProvider)
 class PrologParsingTest{
 
-	@Inject
-	ParseHelper<Model> parseHelper
+    @Inject
+    ParseHelper<Model> parseHelper
+
+    @Test
+    def void parsePrologModel()
+    {
+    }
 }

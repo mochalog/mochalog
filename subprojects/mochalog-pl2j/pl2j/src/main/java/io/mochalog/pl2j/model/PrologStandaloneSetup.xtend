@@ -21,7 +21,7 @@ package io.mochalog.pl2j.model
  */
 class PrologStandaloneSetup extends PrologStandaloneSetupGenerated {
 
-	def static void doSetup() {
-		new PrologStandaloneSetup().createInjectorAndDoEMFRegistration()
-	}
+    def static void doSetup() {
+        new PrologStandaloneSetup().createInjectorAndDoEMFRegistration()
+    }
 }
