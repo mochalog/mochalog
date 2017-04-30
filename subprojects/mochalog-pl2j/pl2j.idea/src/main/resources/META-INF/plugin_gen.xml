@@ -1,0 +1,93 @@
+<idea-plugin version="2">
+	<extensions defaultExtensionNs="org.eclipse.xtext.idea">
+		<package
+			uri="http://www.mochalog.io/pl2j/model/Prolog"
+			class="io.mochalog.pl2j.model.prolog.PrologPackage"
+		/>
+		<resourceFactory 
+			type="pl"
+			class="org.eclipse.xtext.resource.IResourceFactory"
+			factoryClass="io.mochalog.pl2j.model.idea.PrologExtensionFactory"
+		/>
+		<resourceServiceProvider
+			uriExtension="pl"
+			class="org.eclipse.xtext.idea.resource.IResourceIdeaServiceProvider"
+			factoryClass="io.mochalog.pl2j.model.idea.PrologExtensionFactory"
+		/>
+
+		<lang.setup
+			language="io.mochalog.pl2j.model.Prolog"
+			implementationClass="io.mochalog.pl2j.model.idea.PrologIdeaSetup"
+		/>
+	</extensions>
+
+	<extensions defaultExtensionNs="com.intellij">
+		<psi.treeChangePreprocessor implementation="io.mochalog.pl2j.model.idea.lang.psi.PrologCodeBlockModificationListener"/>
+
+		<fileTypeFactory implementation="io.mochalog.pl2j.model.idea.lang.PrologFileTypeFactory"/>
+		<stubElementTypeHolder class="io.mochalog.pl2j.model.idea.lang.PrologElementTypeProvider"/>
+		<lang.ast.factory 
+			language="io.mochalog.pl2j.model.Prolog"
+			factoryClass="io.mochalog.pl2j.model.idea.PrologExtensionFactory"
+			implementationClass="org.eclipse.xtext.idea.lang.BaseXtextASTFactory"
+		/>
+		<lang.parserDefinition 
+			language="io.mochalog.pl2j.model.Prolog"
+			factoryClass="io.mochalog.pl2j.model.idea.PrologExtensionFactory"
+			implementationClass="io.mochalog.pl2j.model.idea.lang.parser.PrologParserDefinition"
+		/>
+		<lang.findUsagesProvider 
+			language="io.mochalog.pl2j.model.Prolog"
+			factoryClass="io.mochalog.pl2j.model.idea.PrologExtensionFactory"
+			implementationClass="org.eclipse.xtext.idea.findusages.BaseXtextFindUsageProvider"
+		/>
+		<lang.refactoringSupport 
+			language="io.mochalog.pl2j.model.Prolog"
+			factoryClass="io.mochalog.pl2j.model.idea.PrologExtensionFactory"
+			implementationClass="org.eclipse.xtext.idea.refactoring.BaseXtextRefactoringSupportProvider"
+		/>
+		<lang.namesValidator 
+			language="io.mochalog.pl2j.model.Prolog"
+			factoryClass="io.mochalog.pl2j.model.idea.PrologExtensionFactory"
+			implementationClass="com.intellij.lang.refactoring.NamesValidator"
+		/>
+		<lang.syntaxHighlighterFactory key="io.mochalog.pl2j.model.Prolog" implementationClass="io.mochalog.pl2j.model.idea.highlighting.PrologSyntaxHighlighterFactory" />
+		<lang.braceMatcher 
+			language="io.mochalog.pl2j.model.Prolog"
+			factoryClass="io.mochalog.pl2j.model.idea.PrologExtensionFactory"
+			implementationClass="com.intellij.lang.PairedBraceMatcher"
+		/>
+		<annotator 
+			language="io.mochalog.pl2j.model.Prolog"
+			factoryClass="io.mochalog.pl2j.model.idea.PrologExtensionFactory"
+			implementationClass="org.eclipse.xtext.idea.annotation.IssueAnnotator"
+		/>
+		<completion.contributor language="io.mochalog.pl2j.model.Prolog" implementationClass="io.mochalog.pl2j.model.idea.completion.PrologCompletionContributor"/>
+		<pom.declarationSearcher implementation="io.mochalog.pl2j.model.idea.lang.pom.PrologPomDeclarationSearcher"/>
+
+		<lang.psiStructureViewFactory 
+			language="io.mochalog.pl2j.model.Prolog"
+			factoryClass="io.mochalog.pl2j.model.idea.PrologExtensionFactory"
+			implementationClass="com.intellij.lang.PsiStructureViewFactory"
+		/>
+		<facetType implementation="io.mochalog.pl2j.model.idea.facet.PrologFacetType"/>
+		<lang.documentationProvider 
+			language="io.mochalog.pl2j.model.Prolog"
+			factoryClass="io.mochalog.pl2j.model.idea.PrologExtensionFactory"
+			implementationClass="org.eclipse.xtext.idea.documentation.IdeaDocumentationProvider"
+		/>
+		<colorSettingsPage implementation="io.mochalog.pl2j.model.idea.highlighting.PrologColorSettingsPage"/>
+		<highlightVisitor implementation="io.mochalog.pl2j.model.idea.highlighting.PrologSemanticHighlightVisitor"/>
+
+		<lang.formatter 
+			language="io.mochalog.pl2j.model.Prolog"
+			factoryClass="io.mochalog.pl2j.model.idea.PrologExtensionFactory"
+			implementationClass="com.intellij.formatting.FormattingModelBuilder"
+		/>
+		<lang.commenter 
+			language="io.mochalog.pl2j.model.Prolog"
+			factoryClass="io.mochalog.pl2j.model.idea.PrologExtensionFactory"
+			implementationClass="com.intellij.lang.CodeDocumentationAwareCommenter"
+		/>
+	</extensions>
+</idea-plugin>
