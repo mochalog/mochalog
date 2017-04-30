@@ -16,10 +16,70 @@
 
 grammar io.mochalog.pl2j.model.Prolog with org.eclipse.xtext.common.Terminals
 
-generate prolog "http://www.mochalog.io/pl2j/model/Prolog"
+generate prolog 'http://www.mochalog.io/pl2j/model/Prolog'
 
-Model:
-    greetings+=Greeting*;
+import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 
-Greeting:
-    'Hello' name=ID '!';
+/*
+ * Model definition (start rule)
+ */
+Model hidden(WS, ML_COMMENT, SL_COMMENT):
+    //Prolog grammar consists of a series of defined clauses
+    (clauses+=Clause)*;
+
+/*
+ * Value type in SWI-Prolog
+ * Can be comprised of a variable, compound term (comprises atoms),
+ * integer, float, or string
+ * TODO: String currently unsupported
+ */
+Term:
+    Variable | CompoundTerm | INT | Float;
+
+/*
+ * SWI-Prolog 'sentence'
+ * Built from a head (compound term) and a body (set of comma-separated
+ * compound terms)
+ * Body defines the conditions which must be met to satisfy
+ * the head
+ * TODO: Empty head (given defined neck/body) currently unsupported
+ */
+Clause:
+    // Clause format is 'head :- body'
+    head=CompoundTerm (':-' body+=CompoundTerm (',' body+=CompoundTerm)*)? '.';
+
+/*
+ * Datatype rule for Prolog variable (provides value binding)
+ */
+Variable:
+    name=VARIABLE_NAME;
+
+/*
+ * Variables are defined such that the first character
+ * of the variable name is a capitalised alphabetical
+ * character
+ */
+terminal VARIABLE_NAME:
+    ('A'..'Z') ('a'..'z' | 'A'..'Z')*;
+
+/*
+ * Name of compound followed by a number of arguments (arity)
+ * Defined by a functor (name\arity)
+ * Compound without arguments (arity = 0) is an atom
+ */
+CompoundTerm:
+    name=Atom ('(' arguments+=Term (',' arguments+=Term)* ')')?;
+
+/*
+ * Textual content (used for representation of compound
+ * terms)
+ */
+Atom:
+    // Simple textual content can be represented by ID terminal
+    ID;
+
+/*
+ * Prolog floating point literal
+ */
+Float returns ecore::EDouble:
+    '-'? INT+ '.' INT+;
