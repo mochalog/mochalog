@@ -13,11 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.mochalog.pl2j.model
 
+package io.mochalog.pl2j.model.tests;
 
 /**
- * Use this class to register components to be used at runtime / without the Equinox extension registry.
+ *
  */
-class PrologRuntimeModule extends AbstractPrologRuntimeModule {
+public class PrologParsingTest
+{
+
 }

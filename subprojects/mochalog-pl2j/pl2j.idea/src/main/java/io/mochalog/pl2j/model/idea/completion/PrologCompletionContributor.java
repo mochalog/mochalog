@@ -13,16 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.mochalog.pl2j.model.idea
 
-import org.eclipse.xtext.ISetup
-import org.eclipse.xtext.idea.extensions.EcoreGlobalRegistries
+package io.mochalog.pl2j.model.idea.completion;
 
-class PrologIdeaSetup implements ISetup {
+import io.mochalog.pl2j.model.idea.lang.PrologLanguage;
+import org.eclipse.xtext.idea.lang.AbstractXtextLanguage;
 
-    override createInjectorAndDoEMFRegistration() {
-        EcoreGlobalRegistries.ensureInitialized
-        new PrologStandaloneSetupIdea().createInjector
+/**
+ *
+ */
+public class PrologCompletionContributor extends AbstractPrologCompletionContributor
+{
+    public PrologCompletionContributor()
+    {
+        this(PrologLanguage.INSTANCE);
     }
 
+    public PrologCompletionContributor(AbstractXtextLanguage lang)
+    {
+        super(lang);
+    }
 }

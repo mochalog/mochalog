@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.mochalog.pl2j.model.idea.lang
 
+package io.mochalog.pl2j.model.scoping;
 
-class PrologFileType extends AbstractPrologFileType {
-    public static final PrologFileType INSTANCE = new PrologFileType()
+/**
+ *
+ */
+public class PrologScopeProvider extends AbstractPrologScopeProvider
+{
 
-    new() {
-        super(PrologLanguage.INSTANCE)
-    }
 }

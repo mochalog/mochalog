@@ -67,6 +67,7 @@ Workflow {
             code = {
                 encoding = "utf8"
                 fileHeader = copyrightHeader
+                preferXtendStubs = false
             }
         }
 

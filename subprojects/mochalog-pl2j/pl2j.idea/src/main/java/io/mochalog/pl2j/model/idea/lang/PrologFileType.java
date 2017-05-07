@@ -13,15 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.mochalog.pl2j.model.scoping
 
+package io.mochalog.pl2j.model.idea.lang;
 
 /**
- * This class contains custom scoping description.
- * 
- * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#scoping
- * on how and when to use it.
+ *
  */
-class PrologScopeProvider extends AbstractPrologScopeProvider {
+public class PrologFileType extends AbstractPrologFileType
+{
+    public static final PrologFileType INSTANCE = new PrologFileType();
 
+    public PrologFileType()
+    {
+        super(PrologLanguage.INSTANCE);
+    }
 }

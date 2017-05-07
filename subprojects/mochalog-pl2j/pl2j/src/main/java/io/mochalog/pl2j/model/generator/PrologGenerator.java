@@ -13,11 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.mochalog.pl2j.model.idea
 
+package io.mochalog.pl2j.model.generator;
+
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.xtext.generator.AbstractGenerator;
+import org.eclipse.xtext.generator.IFileSystemAccess2;
+import org.eclipse.xtext.generator.IGeneratorContext;
 
 /**
- * Use this class to register components to be used within IntelliJ IDEA.
+ * Generator of Java source files from parsed Prolog abstract
+ * syntax tree
  */
-class PrologIdeaModule extends AbstractPrologIdeaModule {
+public class PrologGenerator extends AbstractGenerator
+{
+    @Override
+    public void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context)
+	{
+
+    }
 }

@@ -13,8 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.mochalog.pl2j.model.idea.highlighting
 
+package io.mochalog.pl2j.model;
 
-class PrologColorSettingsPage extends PrologBaseColorSettingsPage {
+/**
+ *
+ */
+public class PrologRuntimeModule extends AbstractPrologRuntimeModule
+{
+
 }

@@ -13,25 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.mochalog.pl2j.model.tests
 
-import com.google.inject.Inject
-import io.mochalog.pl2j.model.prolog.Model
-import org.eclipse.xtext.junit4.InjectWith
-import org.eclipse.xtext.junit4.XtextRunner
-import org.eclipse.xtext.junit4.util.ParseHelper
-import org.junit.Test
-import org.junit.runner.RunWith
+package io.mochalog.pl2j.model;
 
-@RunWith(XtextRunner)
-@InjectWith(PrologInjectorProvider)
-class PrologParsingTest{
-
-    @Inject
-    ParseHelper<Model> parseHelper
-
-    @Test
-    def void parsePrologModel()
+/**
+ *
+ */
+public class PrologStandaloneSetup extends PrologStandaloneSetupGenerated
+{
+    public static void doSetup()
     {
+        new PrologStandaloneSetup().createInjectorAndDoEMFRegistration();
     }
 }

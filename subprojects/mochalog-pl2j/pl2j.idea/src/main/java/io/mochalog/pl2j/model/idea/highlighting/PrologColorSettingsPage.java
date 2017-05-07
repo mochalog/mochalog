@@ -13,20 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.mochalog.pl2j.model.generator
+package io.mochalog.pl2j.model.idea.highlighting;
 
-import org.eclipse.emf.ecore.resource.Resource
-import org.eclipse.xtext.generator.AbstractGenerator
-import org.eclipse.xtext.generator.IFileSystemAccess2
-import org.eclipse.xtext.generator.IGeneratorContext
 
-/**
- * Generates code from your model files on save.
- * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#code-generation
- */
-class PrologGenerator extends AbstractGenerator {
-
-    override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
-
-    }
+public class PrologColorSettingsPage extends PrologBaseColorSettingsPage {
 }
