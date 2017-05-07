@@ -20,9 +20,22 @@
 apply plugin: 'org.xtext.idea-plugin'
 apply plugin: 'org.xtext.idea-repository'
 
+apply plugin: 'download-idea-logger'
+
 dependencies {
     compile project(':subprojects:mochalog-pl2j:pl2j')
     compile project(':subprojects:mochalog-pl2j:pl2j.ide')
+}
+
+// Ensure Travis-CI builds Xtext IDEA project
+// correctly (build timeout occurs after not
+// receiving log output for 10 minutes)
+downloadIdea {
+    logEvery {
+        initialDelay = 100
+        interval = 100
+        message = '.'
+    }
 }
 
 ideaDevelopment {

@@ -49,9 +49,11 @@ chmod 755 ${swipl_src_root} ${swipl_archive_path}
 
 echo "SWI-Prolog version $version downloaded successfully. Unpacking ..."
 # Unpack release archive
-# Sourced from http://askubuntu.com/a/25348
 swipl_srcs_dir="$swipl_src_root/unpacked-srcs"
 # Extract downloaded tarball
+# Sourced and modified from http://askubuntu.com/a/25348
+# by user djeikyb - Licensed under MIT License
+# (full text copy of license at 'thirdparty/snippets/MIT_LICENSE'
 tar -xzf ${swipl_archive_path} -C ${swipl_src_root}
 tar_rc=$?
 # Rename to unpacked-srcs
@@ -67,7 +69,8 @@ chmod 755 ${swipl_srcs_dir}
 swipl_lib_prefix="/usr/local/"
 echo "Building SWI-Prolog and subpackages to $swipl_lib_prefix"
 # Configure and build base SWI-Prolog library
-# Following sourced and modified from http://www.codecompiling.net/node/137
+# Following SWI-Prolog build instructions
+# sourced and modified from http://www.codecompiling.net/node/137
 cd ${swipl_srcs_dir}
 echo "Configuring SWI-Prolog $version core ..."
 ./configure --prefix=${swipl_lib_prefix} --enable-shared > /dev/null 2>&1
