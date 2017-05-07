@@ -65,7 +65,7 @@ Workflow {
             }
 
             code = {
-                encoding = "utf8"
+                encoding = "UTF-8"
                 fileHeader = copyrightHeader
                 preferXtendStubs = false
             }
@@ -80,8 +80,9 @@ Workflow {
                 generateStub = false
             }
 
-            validator = {
-                // composedCheck = "org.eclipse.xtext.validation.NamesAreUniqueValidator"
+            // Mitigate issue with unit test Xtend stubs being auto-generated
+            junitSupport = {
+                generateStub = false
             }
 
             // Generates ANTLR3 grammar used for debugging
