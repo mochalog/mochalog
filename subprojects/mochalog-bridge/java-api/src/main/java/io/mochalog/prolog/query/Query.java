@@ -18,17 +18,63 @@ package io.mochalog.prolog.query;
 
 import io.mochalog.prolog.namespace.ScopedNamespace;
 
+import org.jpl7.Term;
+
+import java.util.Map;
+
 /**
- *
+ * Represents query provided to the SWI-Prolog
+ * interpreter. Allows for management of query context,
+ * including local namespace and solution stepping.
  */
 public class Query
 {
-    private String query;
+    // String form of Prolog query
+    private String queryString;
+    // Internal JPL query (facilitates
+    // actual connection to Prolog interpreter)
+    private org.jpl7.Query jplQuery;
+
+    // Local variable namespace
     private ScopedNamespace namespace;
 
+    /**
+     * Constructor.
+     * @param query Query string
+     * @param namespace Variable bindings (local to query)
+     */
     public Query(String query, ScopedNamespace namespace)
     {
-        this.query = query;
+        queryString = query;
+        jplQuery = new org.jpl7.Query(queryString);
+
         this.namespace = namespace;
+    }
+
+    /**
+     * Fetch the next solution in the
+     * current query context
+     * @return True if query goals could be proved; false
+     * otherwise.
+     */
+    public boolean next()
+    {
+        // Check further solutions exist
+        if (jplQuery.hasMoreSolutions())
+        {
+            // Retrieve the next query solution and update
+            // namespace values
+            Map<String, Term> bindings = jplQuery.nextSolution();
+            namespace.set(bindings);
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public String toString()
+    {
+        return queryString;
     }
 }

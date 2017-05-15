@@ -18,6 +18,8 @@ package io.mochalog.prolog.namespace;
 
 import io.mochalog.prolog.lang.Variable;
 
+import org.jpl7.Term;
+
 import java.util.Map;
 import java.util.HashMap;
 
@@ -56,15 +58,61 @@ public class ScopedNamespace
     }
 
     /**
+     * Set the Prolog variable bound to the given
+     * name to a specified value. Define a new variable
+     * and set its value if name not defined.
+     * @param name Variable name
+     * @param value Value to set
+     */
+    public void set(String name, Term value)
+    {
+        Variable variable = get(name);
+        // Check variable exists
+        if (variable == null)
+        {
+            // Define if variable does not exist
+            variable = define(name);
+        }
+
+        variable.set(value);
+    }
+
+    /**
+     * Set the values of multiple variables.
+     * @param bindings Binding between names and values
+     */
+    public void set(Map<String, Term> bindings)
+    {
+        if (bindings == null)
+        {
+            return;
+        }
+
+        for (Map.Entry<String, Term> binding : bindings.entrySet())
+        {
+            // Set the value of the variable corresponding
+            // to each name in turn
+            String name = binding.getKey();
+            Term value = binding.getValue();
+
+            set(name, value);
+        }
+    }
+
+    /**
      * Define new Prolog variable with given name
      * @param name Variable name
-     * @return Check whether variable with given name
-     * is already defined
+     * @return Defined variable
      */
-    public boolean define(String name)
+    public Variable define(String name)
     {
         Variable variable = new Variable(name);
-        return define(variable);
+        if (define(variable))
+        {
+            return variable;
+        }
+
+        return null;
     }
 
     /**
