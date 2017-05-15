@@ -14,11 +14,21 @@
  * limitations under the License.
  */
 
-rootProject.name = 'mochalog'
+package io.mochalog.prolog.query;
 
-include 'subprojects:mochalog-bridge:java-api'
+import io.mochalog.prolog.namespace.ScopedNamespace;
 
-include 'subprojects:mochalog-pl2j'
-include 'subprojects:mochalog-pl2j:pl2j'
-include 'subprojects:mochalog-pl2j:pl2j.ide'
-include 'subprojects:mochalog-pl2j:pl2j.idea'
+/**
+ *
+ */
+public class Query
+{
+    private String query;
+    private ScopedNamespace namespace;
+
+    public Query(String query, ScopedNamespace namespace)
+    {
+        this.query = query;
+        this.namespace = namespace;
+    }
+}

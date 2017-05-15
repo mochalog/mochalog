@@ -14,11 +14,18 @@
  * limitations under the License.
  */
 
-rootProject.name = 'mochalog'
+package io.mochalog.util.format;
 
-include 'subprojects:mochalog-bridge:java-api'
-
-include 'subprojects:mochalog-pl2j'
-include 'subprojects:mochalog-pl2j:pl2j'
-include 'subprojects:mochalog-pl2j:pl2j.ide'
-include 'subprojects:mochalog-pl2j:pl2j.idea'
+/**
+ * Formatter interface of strings using substitution rules
+ */
+public interface Formatter<T>
+{
+    /**
+     * Format a string based on specified substitution rules
+     * @param str String value
+     * @param args Arguments to substitute
+     * @return Formatted object
+     */
+    T format(String str, Object... args);
+}

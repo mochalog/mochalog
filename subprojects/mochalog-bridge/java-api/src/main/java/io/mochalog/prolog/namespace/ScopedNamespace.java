@@ -1,0 +1,99 @@
+/*
+ * Copyright 2017 The Mochalog Authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package io.mochalog.prolog.namespace;
+
+import io.mochalog.prolog.lang.Variable;
+
+import java.util.Map;
+import java.util.HashMap;
+
+/**
+ * Namespace binding names to SWI-Prolog
+ * variables within a given scope
+ */
+public class ScopedNamespace
+{
+    // Bindings between variable names and variables
+    private Map<String, Variable> definitions;
+
+    /**
+     * Constructor.
+     */
+    public ScopedNamespace()
+    {
+        definitions = new HashMap<>();
+    }
+
+    /**
+     * Fetch the Prolog variable bound to the given
+     * name
+     * @param name Variable name
+     * @return Bound variable or null if not defined
+     */
+    public Variable get(String name)
+    {
+        // Check variable exists
+        if (name != null)
+        {
+            return definitions.get(name);
+        }
+
+        return null;
+    }
+
+    /**
+     * Define new Prolog variable with given name
+     * @param name Variable name
+     * @return Check whether variable with given name
+     * is already defined
+     */
+    public boolean define(String name)
+    {
+        Variable variable = new Variable(name);
+        return define(variable);
+    }
+
+    /**
+     * Define new Prolog variable
+     * @param variable Variable to define
+     * @return Check whether variable with given name
+     * is already defined
+     */
+    public boolean define(Variable variable)
+    {
+        // Ensure name has not already been defined
+        // within the namespace
+        if (variable != null && !has(variable.getName()))
+        {
+            definitions.put(variable.getName(), variable);
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Check if Prolog variable with given name
+     * exists
+     * @param name Variable name
+     * @return Status of variable existence
+     */
+    public boolean has(String name)
+    {
+        return name != null && definitions.containsKey(name);
+    }
+}
