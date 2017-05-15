@@ -68,4 +68,14 @@ public class Variable
     {
         this.value = value;
     }
+
+    /**
+     * Convert to string format of variable value
+     * @return Value string
+     */
+    @Override
+    public String toString()
+    {
+        return value.toString();
+    }
 }

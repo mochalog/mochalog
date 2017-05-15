@@ -19,6 +19,7 @@ package io.mochalog.prolog.query;
 import io.mochalog.prolog.namespace.ScopedNamespace;
 
 import org.jpl7.Term;
+import org.jpl7.Variable;
 
 import java.util.Map;
 
