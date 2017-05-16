@@ -19,8 +19,8 @@ package io.mochalog.prolog.query;
 import io.mochalog.prolog.namespace.ScopedNamespace;
 
 import org.jpl7.Term;
-import org.jpl7.Variable;
 
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -28,7 +28,7 @@ import java.util.Map;
  * interpreter. Allows for management of query context,
  * including local namespace and solution stepping.
  */
-public class Query
+public class Query implements Iterable<QuerySolution>
 {
     // String form of Prolog query
     private String queryString;
@@ -38,6 +38,12 @@ public class Query
 
     // Local variable namespace
     private ScopedNamespace namespace;
+
+    // JPL Workaround - Successive calls to hasMoreSolutions()
+    // advance query (not always desired)
+    // Checks if next solution has already been proven by the
+    // SWI-Prolog engine
+    private boolean isNextProven;
 
     /**
      * Constructor.
@@ -50,27 +56,53 @@ public class Query
         jplQuery = new org.jpl7.Query(queryString);
 
         this.namespace = namespace;
+
+        isNextProven();
+    }
+
+    private void isNextProven()
+    {
+        isNextProven = jplQuery.hasMoreSolutions();
+    }
+
+    /**
+     * Check if further solutions to the query exist.
+     * @return True if further solutions exist; false otherwise.
+     */
+    public boolean hasNext()
+    {
+        return isNextProven;
     }
 
     /**
      * Fetch the next solution in the
      * current query context
-     * @return True if query goals could be proved; false
-     * otherwise.
+     * @return Next solution if exists; otherwise null.
      */
-    public boolean next()
+    public QuerySolution next()
     {
         // Check further solutions exist
-        if (jplQuery.hasMoreSolutions())
+        if (!hasNext())
         {
-            // Retrieve the next query solution and update
-            // namespace values
-            Map<String, Term> bindings = jplQuery.nextSolution();
-            namespace.set(bindings);
-            return true;
+            return null;
         }
 
-        return false;
+        // Retrieve the next query solution and update
+        // namespace values
+        Map<String, Term> bindings = jplQuery.nextSolution();
+        namespace.set(bindings);
+        QuerySolution solution = new QuerySolution(namespace);
+
+        // Recheck for further solutions
+        isNextProven();
+
+        return solution;
+    }
+
+    @Override
+    public Iterator<QuerySolution> iterator()
+    {
+        return new QuerySolutionIterator(this);
     }
 
     @Override
