@@ -67,4 +67,15 @@ public class QuerySolutionIterator implements Iterator<QuerySolution>
 
         return next;
     }
+
+    /**
+     * Used for Java 7 compatibility
+     * @throws UnsupportedOperationException Solutions should not be
+     * able to be 'removed' from a query
+     */
+    @Override
+    public void remove() throws UnsupportedOperationException
+    {
+        throw new UnsupportedOperationException("Solutions cannot be removed from a query.");
+    }
 }
