@@ -21,12 +21,19 @@ import io.mochalog.prolog.query.Query;
 import io.mochalog.util.format.Formatter;
 import io.mochalog.prolog.query.QueryFormatter;
 
+import java.nio.file.Path;
+
 /**
  * Environment in which SWI-Prolog interpreter instance
  * can be connected to and interfaced with
  */
 public class PrologEnvironment
 {
+    public static boolean load(Path... paths)
+    {
+        return true;
+    }
+
     /**
      * Formulate a Prolog query to be declared to the
      * SWI-Prolog interpreter

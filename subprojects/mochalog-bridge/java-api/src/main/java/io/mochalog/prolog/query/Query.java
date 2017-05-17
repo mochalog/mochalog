@@ -39,11 +39,22 @@ public class Query implements Iterable<QuerySolution>
     // Local variable namespace
     private ScopedNamespace namespace;
 
-    // JPL Workaround - Successive calls to hasMoreSolutions()
-    // advance query (not always desired)
-    // Checks if next solution has already been proven by the
-    // SWI-Prolog engine
-    private boolean isNextProven;
+    // Current query state
+    // Used for JPL workaround - Query.hasMoreSolutions()
+    // advances state each invocation (undesirable)
+    // State maintained locally to allow for arbitrary checking
+    // for further solution existence
+    private enum State
+    {
+        // State unchecked with SWI-Prolog interpreter
+        // Not yet known whether further solutions exist
+        NOT_VALIDATED,
+        // Prolog failed to satisfy query
+        FAILED,
+        // Prolog succeeded in satisfying query goals (solution exists)
+        SUCCEEDED
+    }
+    private State state;
 
     /**
      * Constructor.
@@ -57,12 +68,16 @@ public class Query implements Iterable<QuerySolution>
 
         this.namespace = namespace;
 
-        isNextProven();
+        setState(State.NOT_VALIDATED);
     }
 
-    private void isNextProven()
+    /**
+     * Set current local query state
+     * @param state New state
+     */
+    private void setState(State state)
     {
-        isNextProven = jplQuery.hasMoreSolutions();
+        this.state = state;
     }
 
     /**
@@ -71,7 +86,13 @@ public class Query implements Iterable<QuerySolution>
      */
     public boolean hasNext()
     {
-        return isNextProven;
+        // Need to recheck for further solutions
+        if (state == State.NOT_VALIDATED)
+        {
+            setState(jplQuery.hasMoreSolutions() ? State.SUCCEEDED : State.FAILED);
+        }
+
+        return state == State.SUCCEEDED;
     }
 
     /**
@@ -93,18 +114,26 @@ public class Query implements Iterable<QuerySolution>
         namespace.set(bindings);
         QuerySolution solution = new QuerySolution(namespace);
 
-        // Recheck for further solutions
-        isNextProven();
+        // Successive queries should check for satisfaction
+        setState(State.NOT_VALIDATED);
 
         return solution;
     }
 
+    /**
+     * Iterate over available solutions for the query
+     * @return Iterator over query solutions
+     */
     @Override
     public Iterator<QuerySolution> iterator()
     {
         return new QuerySolutionIterator(this);
     }
 
+    /**
+     * Convert the query to string format
+     * @return String format
+     */
     @Override
     public String toString()
     {
