@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package io.mochalog.prolog.query;
+package io.mochalog.bridge.prolog.query;
 
-import io.mochalog.prolog.lang.Variable;
-import io.mochalog.prolog.namespace.ScopedNamespace;
+import io.mochalog.bridge.prolog.lang.Variable;
+import io.mochalog.bridge.prolog.namespace.ScopedNamespace;
 
 /**
  * Solution to individual goal successfully proved

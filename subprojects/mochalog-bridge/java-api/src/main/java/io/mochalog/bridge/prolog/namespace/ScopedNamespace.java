@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package io.mochalog.prolog.namespace;
+package io.mochalog.bridge.prolog.namespace;
 
-import io.mochalog.prolog.lang.Variable;
+import io.mochalog.bridge.prolog.lang.Variable;
 
 import org.jpl7.Term;
 

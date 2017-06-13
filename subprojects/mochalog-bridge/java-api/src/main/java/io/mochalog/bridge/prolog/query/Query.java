@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package io.mochalog.prolog.query;
+package io.mochalog.bridge.prolog.query;
 
-import io.mochalog.prolog.namespace.ScopedNamespace;
+import io.mochalog.bridge.prolog.namespace.ScopedNamespace;
 
 import org.jpl7.Term;
 

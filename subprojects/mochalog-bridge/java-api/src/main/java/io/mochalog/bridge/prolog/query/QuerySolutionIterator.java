@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.mochalog.prolog.query;
+package io.mochalog.bridge.prolog.query;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;

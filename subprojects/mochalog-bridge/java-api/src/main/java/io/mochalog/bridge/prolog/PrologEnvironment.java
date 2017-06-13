@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package io.mochalog.prolog;
+package io.mochalog.bridge.prolog;
 
-import io.mochalog.prolog.query.Query;
+import io.mochalog.bridge.prolog.query.QueryFormatter;
+import io.mochalog.bridge.prolog.query.Query;
 
 import io.mochalog.util.format.Formatter;
-import io.mochalog.prolog.query.QueryFormatter;
 
 import java.nio.file.Path;
 
