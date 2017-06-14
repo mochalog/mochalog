@@ -14,4 +14,5 @@
  * limitations under the License.
  */
 
-get_hello_world('Hello World').
+get_hello_world(hello).
+get_hello_world(world).

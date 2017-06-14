@@ -74,7 +74,7 @@ public class JPLTest
     public void basicJavaToPrologQuery()
     {
         // hello_world.pl test resource
-        // Filepath relative to java-bridge directory
+        // Filepath relative to java-api directory
         final String helloWorldPrologFilePath = "src/test/resources/prolog/hello_world.pl";
 
         boolean loaded = consultKnowledgeBase(helloWorldPrologFilePath);
@@ -86,9 +86,9 @@ public class JPLTest
         Map<String, Term> binding = query.oneSolution();
 
         Term result = binding.get("X");
-        // Ensure 'Hello World' string was correctly fetched
+        // Ensure first solution string (hello) was correctly fetched
         // from Prolog file
-        assertEquals("'Hello World'", result.toString());
+        assertEquals("hello", result.toString());
     }
 
     /**
