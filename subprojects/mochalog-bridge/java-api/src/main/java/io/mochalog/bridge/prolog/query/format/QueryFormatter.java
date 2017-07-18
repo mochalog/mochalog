@@ -22,8 +22,6 @@ import io.mochalog.bridge.prolog.namespace.ScopedNamespace;
 import io.mochalog.bridge.prolog.query.Query;
 import io.mochalog.util.format.AbstractFormatter;
 
-import java.util.Optional;
-
 /**
  * Format a Prolog query string with inline substitution
  * rules
@@ -36,6 +34,8 @@ public class QueryFormatter extends AbstractFormatter<Query>
     public QueryFormatter()
     {
         currentNamespace = new ScopedNamespace();
+
+        formatSpec.setRule("V", this::formatVariable);
     }
 
     @Override
@@ -52,37 +52,23 @@ public class QueryFormatter extends AbstractFormatter<Query>
         return query;
     }
 
-    @Override
-    protected Optional<String> formatRule(String rule, Object arg)
-    {
-        String result;
-
-        // Format individual substitution rules
-        switch (rule)
-        {
-            case "S":
-                result = String.valueOf(arg);
-                break;
-            case "V":
-                result = format((Variable) arg);
-                break;
-            default:
-                return Optional.empty();
-        }
-
-        return Optional.of(result);
-    }
-
     /**
      * Format a Prolog variable into an appropriate
      * string representation and add query namespace binding
-     * @param variable Variable term
+     * @param arg Object arg
      * @return Formatted variable string
      */
-    private String format(Variable variable)
+    private String formatVariable(Object arg) throws ClassCastException
     {
-        currentNamespace.define(variable);
-        return variable.getName();
+        if (arg instanceof Variable)
+        {
+            Variable variable = (Variable) arg;
+            currentNamespace.define(variable);
+            return variable.getName();
+        }
+
+        throw new ClassCastException("Failed to convert provided object argument " +
+            "to variable term.");
     }
 
     protected ScopedNamespace getNamespace()

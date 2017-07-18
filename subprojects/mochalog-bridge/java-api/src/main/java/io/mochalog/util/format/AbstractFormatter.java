@@ -18,22 +18,27 @@ package io.mochalog.util.format;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.Optional;
 
 /**
- *
+ * Abstract implementation of formatter interface
  */
 public abstract class AbstractFormatter<T> implements Formatter<T>
 {
+    // Regex pattern to apply for substitution rule identifiers
     private final Pattern RULE_PATTERN;
+    // Formatting rule specification
+    protected FormatSpec formatSpec;
 
     /**
      * Constructor.
      */
-    public AbstractFormatter()
+    protected AbstractFormatter()
     {
         // Precompile regex pattern (faster performance)
         RULE_PATTERN = Pattern.compile("\\$\\w+");
+
+        formatSpec = new FormatSpec();
+        formatSpec.setRule("S", String::valueOf);
     }
 
     /**
@@ -61,24 +66,18 @@ public abstract class AbstractFormatter<T> implements Formatter<T>
             Object arg = args[i];
 
             // Format the specified rule according to given specifications
-            Optional<String> replacement = formatRule(rule, arg);
-            // Replace matched rule with resulting string (if any)
-            replacement.ifPresent(
-                r -> matcher.appendReplacement(formatBuffer, r)
-            );
+            try
+            {
+                String replacement = formatSpec.applyRule(rule, arg);
+                matcher.appendReplacement(formatBuffer, replacement);
+            }
+            catch (NoSuchMethodException e)
+            {
+                System.err.println(e.getMessage());
+            }
         }
 
         matcher.appendTail(formatBuffer);
         return formatBuffer.toString();
     }
-
-
-
-    /**
-     * Format a given rule with the specified object argument
-     * @param rule Substitution rule
-     * @param arg Object argument
-     * @return Replacement string (optional)
-     */
-    protected abstract Optional<String> formatRule(String rule, Object arg);
 }
