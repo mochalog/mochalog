@@ -18,6 +18,7 @@ package io.mochalog.util.format;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.Optional;
 
 /**
  *
@@ -35,7 +36,14 @@ public abstract class AbstractFormatter<T> implements Formatter<T>
         RULE_PATTERN = Pattern.compile("\\$\\w+");
     }
 
-    public String formatInput(String str, Object... args)
+    /**
+     * Parse an input string and perform any necessary
+     * substitutions according to rules specified by '$'
+     * @param str Input string
+     * @param args Arguments to substitute
+     * @return Formatted string
+     */
+    protected String formatString(String str, Object... args)
     {
         final int RULE_BEGIN_INDEX = 1;
 
@@ -52,17 +60,12 @@ public abstract class AbstractFormatter<T> implements Formatter<T>
             String rule = matcher.group().substring(RULE_BEGIN_INDEX);
             Object arg = args[i];
 
-            // Format the specified rule and perform
-            // validation
-            String replacement = formatRule(rule, arg);
-            if (replacement == null)
-            {
-                return null;
-            }
-
-            // Replace matched rule with resulting
-            // string
-            matcher.appendReplacement(formatBuffer, replacement);
+            // Format the specified rule according to given specifications
+            Optional<String> replacement = formatRule(rule, arg);
+            // Replace matched rule with resulting string (if any)
+            replacement.ifPresent(
+                c -> matcher.appendReplacement(formatBuffer, replacement.get())
+            );
         }
 
         matcher.appendTail(formatBuffer);
@@ -73,7 +76,7 @@ public abstract class AbstractFormatter<T> implements Formatter<T>
      * Format a given rule with the specified object argument
      * @param rule Substitution rule
      * @param arg Object argument
-     * @return Replacement string
+     * @return Replacement string (optional)
      */
-    protected abstract String formatRule(String rule, Object arg);
+    protected abstract Optional<String> formatRule(String rule, Object arg);
 }

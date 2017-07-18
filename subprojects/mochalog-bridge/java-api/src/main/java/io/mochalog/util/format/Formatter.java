@@ -17,13 +17,14 @@
 package io.mochalog.util.format;
 
 /**
- * Formatter interface of strings using substitution rules
+ * Formatter of strings using substitution rules
  */
 public interface Formatter<T>
 {
     /**
-     * Format a string based on specified substitution rules
-     * @param str String value
+     * Format a string into given object type based on
+     * specified substitution rules
+     * @param str String input
      * @param args Arguments to substitute
      * @return Formatted object
      */

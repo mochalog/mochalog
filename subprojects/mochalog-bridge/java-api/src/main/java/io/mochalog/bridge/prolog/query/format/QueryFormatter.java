@@ -14,12 +14,15 @@
  * limitations under the License.
  */
 
-package io.mochalog.bridge.prolog.query;
+package io.mochalog.bridge.prolog.query.format;
 
 import io.mochalog.bridge.prolog.lang.Variable;
 import io.mochalog.bridge.prolog.namespace.ScopedNamespace;
 
+import io.mochalog.bridge.prolog.query.Query;
 import io.mochalog.util.format.AbstractFormatter;
+
+import java.util.Optional;
 
 /**
  * Format a Prolog query string with inline substitution
@@ -28,58 +31,55 @@ import io.mochalog.util.format.AbstractFormatter;
 public class QueryFormatter extends AbstractFormatter<Query>
 {
     // Namespace instance to apply to generated queries
-    private ScopedNamespace queryNamespace = null;
+    private ScopedNamespace currentNamespace;
+
+    public QueryFormatter()
+    {
+        currentNamespace = new ScopedNamespace();
+    }
 
     @Override
     public Query format(String str, Object... args)
     {
-        queryNamespace = new ScopedNamespace();
         // Parse query input
-        String formattedQuery = formatInput(str, args);
+        String formattedQueryString = formatString(str, args);
 
         // Create query from input and ensure formatter
         // namespace instance cleared for further format runs
-        Query query = new Query(formattedQuery, queryNamespace);
-        queryNamespace = null;
+        Query query = new Query(formattedQueryString, currentNamespace);
+        currentNamespace = new ScopedNamespace();
 
         return query;
     }
 
     @Override
-    protected String formatRule(String rule, Object arg)
+    protected Optional<String> formatRule(String rule, Object arg)
     {
-        // Format invidual substitution rules
+        // Format individual substitution rules
         // TODO: Currently only supports variables
         switch (rule)
         {
             case "V":
-                return formatVariable(arg);
+                return Optional.of(format((Variable) arg));
             default:
-                return null;
+                return Optional.empty();
         }
     }
 
     /**
      * Format a Prolog variable into an appropriate
      * string representation and add query namespace binding
-     * @param o Object argument
+     * @param variable Variable term
      * @return Formatted variable string
      */
-    private String formatVariable(Object o)
+    private String format(Variable variable)
     {
-        if (o instanceof Variable)
-        {
-            Variable variable = (Variable) o;
+        currentNamespace.define(variable);
+        return variable.getName();
+    }
 
-            if (queryNamespace == null)
-            {
-                queryNamespace = new ScopedNamespace();
-            }
-
-            queryNamespace.define(variable);
-            return variable.getName();
-        }
-
-        return null;
+    protected ScopedNamespace getNamespace()
+    {
+        return currentNamespace;
     }
 }

@@ -16,7 +16,7 @@
 
 package io.mochalog.bridge.prolog;
 
-import io.mochalog.bridge.prolog.query.QueryFormatter;
+import io.mochalog.bridge.prolog.query.format.QueryFormatter;
 import io.mochalog.bridge.prolog.query.Query;
 
 import io.mochalog.util.format.Formatter;
