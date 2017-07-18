@@ -64,13 +64,15 @@ public abstract class AbstractFormatter<T> implements Formatter<T>
             Optional<String> replacement = formatRule(rule, arg);
             // Replace matched rule with resulting string (if any)
             replacement.ifPresent(
-                c -> matcher.appendReplacement(formatBuffer, replacement.get())
+                r -> matcher.appendReplacement(formatBuffer, r)
             );
         }
 
         matcher.appendTail(formatBuffer);
         return formatBuffer.toString();
     }
+
+
 
     /**
      * Format a given rule with the specified object argument

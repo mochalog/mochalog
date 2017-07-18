@@ -55,15 +55,22 @@ public class QueryFormatter extends AbstractFormatter<Query>
     @Override
     protected Optional<String> formatRule(String rule, Object arg)
     {
+        String result;
+
         // Format individual substitution rules
-        // TODO: Currently only supports variables
         switch (rule)
         {
+            case "S":
+                result = String.valueOf(arg);
+                break;
             case "V":
-                return Optional.of(format((Variable) arg));
+                result = format((Variable) arg);
+                break;
             default:
                 return Optional.empty();
         }
+
+        return Optional.of(result);
     }
 
     /**
