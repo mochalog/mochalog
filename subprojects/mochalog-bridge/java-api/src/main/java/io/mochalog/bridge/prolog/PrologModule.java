@@ -16,32 +16,36 @@
 
 package io.mochalog.bridge.prolog;
 
-import io.mochalog.bridge.prolog.query.format.QueryFormatter;
 import io.mochalog.bridge.prolog.query.Query;
-
+import io.mochalog.bridge.prolog.query.format.QueryFormatter;
 import io.mochalog.util.format.Formatter;
 
-import java.nio.file.Path;
-
 /**
- * Environment in which SWI-Prolog interpreter instance
- * can be connected to and interfaced with
+ * Sandboxed database of SWI-Prolog predicates and clauses which
+ * can be manipulated and queried
  */
-public class PrologEnvironment
+public class PrologModule
 {
-    public static boolean load(Path... paths)
+    // Module name
+    private String name;
+
+    /**
+     * Constructor
+     * @param name Module name
+     */
+    public PrologModule(String name)
     {
-        return true;
+        this.name = name;
     }
 
     /**
      * Formulate a Prolog query to be declared to the
-     * SWI-Prolog interpreter
+     * SWI-Prolog interpreter in the given module namespace
      * @param query Formatted query string
      * @param args Query arguments
      * @return Query object
      */
-    public static Query query(String query, Object... args)
+    public Query query(String query, Object... args)
     {
         Formatter<Query> formatter = new QueryFormatter();
         return formatter.format(query, args);
