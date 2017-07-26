@@ -23,13 +23,10 @@ import java.util.NoSuchElementException;
  * Iterator over an ordered collection of solutions to a
  * Prolog query
  */
-// Currently thinly wraps functionality which already exists in
-// Query. Practically better than having Query serve as its own iterator
-// from modularisation perspective
 public class QuerySolutionIterator implements Iterator<QuerySolution>
 {
-    // Query to iterate over
-    private Query query;
+    // Query session being manipulated
+    private QueryRun queryRun;
 
     /**
      * Constructor.
@@ -37,7 +34,7 @@ public class QuerySolutionIterator implements Iterator<QuerySolution>
      */
     public QuerySolutionIterator(Query query)
     {
-        this.query = query;
+        queryRun = new QueryRun(query);
     }
 
     /**
@@ -47,7 +44,7 @@ public class QuerySolutionIterator implements Iterator<QuerySolution>
     @Override
     public boolean hasNext()
     {
-        return query.hasNext();
+        return queryRun.hasSolution();
     }
 
     /**
@@ -58,14 +55,15 @@ public class QuerySolutionIterator implements Iterator<QuerySolution>
     @Override
     public QuerySolution next() throws NoSuchElementException
     {
-        QuerySolution next = query.next();
-        // Check next solution exists
-        if (next == null)
-        {
-            throw new NoSuchElementException("No further solutions exist for given query.");
-        }
+        QuerySolution solution = queryRun.getSolution();
 
-        return next;
+        try
+        {
+            queryRun.progressToNextSolution();
+        }
+        catch (NoSuchElementException e) {}
+        
+        return solution;
     }
 
     /**

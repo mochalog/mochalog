@@ -18,117 +18,38 @@ package io.mochalog.bridge.prolog.query;
 
 import io.mochalog.bridge.prolog.namespace.ScopedNamespace;
 
-import org.jpl7.Term;
-
 import java.util.Iterator;
-import java.util.Map;
 
 /**
  * Represents query provided to the SWI-Prolog
- * interpreter. Allows for management of query context,
- * including local namespace and solution stepping.
+ * interpreter, managing localised query namespace.
  */
 public class Query implements Iterable<QuerySolution>
 {
     // String form of Prolog query
-    private String queryString;
-    // Internal JPL query (facilitates
-    // actual connection to Prolog interpreter)
-    private org.jpl7.Query jplQuery;
-
+    private String text;
     // Local variable namespace
     private ScopedNamespace namespace;
 
-    // Current query state
-    // Used for JPL workaround - Query.hasMoreSolutions()
-    // advances state each invocation (undesirable)
-    // State maintained locally to allow for arbitrary checking
-    // for further solution existence
-    private enum State
-    {
-        // State unchecked with SWI-Prolog interpreter
-        // Not yet known whether further solutions exist
-        NOT_VALIDATED,
-        // Prolog failed to satisfy query
-        FAILED,
-        // Prolog succeeded in satisfying query goals (solution exists)
-        SUCCEEDED
-    }
-    private State state;
-
     /**
      * Constructor.
-     * @param query Query string
+     * @param text Query string
      * @param namespace Variable bindings (local to query)
      */
-    public Query(String query, ScopedNamespace namespace)
+    public Query(String text, ScopedNamespace namespace)
     {
-        queryString = query;
-        jplQuery = new org.jpl7.Query(queryString);
-
+        this.text = text;
         this.namespace = namespace;
-
-        setState(State.NOT_VALIDATED);
     }
 
     /**
-     * Set current local query state
-     * @param state New state
+     * Convert the query to string format
+     * @return String format
      */
-    private void setState(State state)
+    @Override
+    public String toString()
     {
-        this.state = state;
-    }
-
-    /**
-     * Check if further solutions to the query exist.
-     * @return True if further solutions exist; false otherwise.
-     */
-    public boolean hasNext()
-    {
-        // Need to recheck for further solutions
-        if (state == State.NOT_VALIDATED)
-        {
-            setState(jplQuery.hasMoreSolutions() ? State.SUCCEEDED : State.FAILED);
-        }
-
-        return state == State.SUCCEEDED;
-    }
-
-    /**
-     * Fetch the next solution in the
-     * current query context
-     * @return Next solution if exists; otherwise null.
-     */
-    public QuerySolution next()
-    {
-        // Check further solutions exist
-        if (!hasNext())
-        {
-            return null;
-        }
-
-        // Retrieve the next query solution and update
-        // namespace values
-        Map<String, Term> bindings = jplQuery.nextSolution();
-        namespace.set(bindings);
-        QuerySolution solution = new QuerySolution(namespace);
-
-        // Successive queries should check for satisfaction
-        setState(State.NOT_VALIDATED);
-
-        return solution;
-    }
-
-    /**
-     * Get the namespace of variable bindings local to
-     * this query
-     * TODO: Should not be exposed
-     * @return Variable namespace
-     */
-    public ScopedNamespace getNamespace()
-    {
-        return namespace;
+        return text;
     }
 
     /**
@@ -139,15 +60,5 @@ public class Query implements Iterable<QuerySolution>
     public Iterator<QuerySolution> iterator()
     {
         return new QuerySolutionIterator(this);
-    }
-
-    /**
-     * Convert the query to string format
-     * @return String format
-     */
-    @Override
-    public String toString()
-    {
-        return queryString;
     }
 }

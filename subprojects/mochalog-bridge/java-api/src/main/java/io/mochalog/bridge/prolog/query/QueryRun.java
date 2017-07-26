@@ -69,9 +69,7 @@ public class QueryRun
                 // Retrieve the next query solution and update
                 // namespace values
                 Map<String, Term> bindings = internalQuery.nextSolution();
-                ScopedNamespace namespace = query.getNamespace();
-                namespace.set(bindings);
-
+                ScopedNamespace namespace = new ScopedNamespace(bindings);
                 solution = new QuerySolution(namespace);
             }
         }

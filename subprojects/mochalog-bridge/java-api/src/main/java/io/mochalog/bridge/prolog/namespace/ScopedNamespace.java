@@ -41,6 +41,16 @@ public class ScopedNamespace
     }
 
     /**
+     * Constructor.
+     * @param bindings Variable bindings to initialise with
+     */
+    public ScopedNamespace(Map<String, Term> bindings)
+    {
+        this();
+        set(bindings);
+    }
+
+    /**
      * Fetch the Prolog variable bound to the given
      * name
      * @param name Variable name

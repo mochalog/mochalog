@@ -62,7 +62,7 @@ public class QueryTest
             assert(solutionIndex < expectedSolutionCount);
             // Ensure the fetched solution corresponds to
             // what was expected
-            assertEquals(expectedSolutions[solutionIndex++], variable.toString());
+            assertEquals(expectedSolutions[solutionIndex++], solution.get("X").toString());
         }
 
         // Ensure we have received the amount of solutions
