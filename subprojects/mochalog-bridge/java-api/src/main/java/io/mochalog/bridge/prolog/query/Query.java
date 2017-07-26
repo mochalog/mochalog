@@ -121,6 +121,17 @@ public class Query implements Iterable<QuerySolution>
     }
 
     /**
+     * Get the namespace of variable bindings local to
+     * this query
+     * TODO: Should not be exposed
+     * @return Variable namespace
+     */
+    public ScopedNamespace getNamespace()
+    {
+        return namespace;
+    }
+
+    /**
      * Iterate over available solutions for the query
      * @return Iterator over query solutions
      */
