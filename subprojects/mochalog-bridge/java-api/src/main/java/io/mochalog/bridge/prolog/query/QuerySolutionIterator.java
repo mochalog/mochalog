@@ -62,7 +62,7 @@ public class QuerySolutionIterator implements Iterator<QuerySolution>
             queryRun.progressToNextSolution();
         }
         catch (NoSuchElementException e) {}
-        
+
         return solution;
     }
 

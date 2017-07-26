@@ -16,10 +16,14 @@
 
 package io.mochalog.bridge.prolog.query;
 
+import io.mochalog.bridge.prolog.lang.Module;
 import io.mochalog.bridge.prolog.namespace.ScopedNamespace;
+
 import org.jpl7.Term;
 
+import java.util.Formatter;
 import java.util.Map;
+
 import java.util.NoSuchElementException;
 
 /**
@@ -127,9 +131,29 @@ public class QueryRun
      */
     public QueryRun(Query query)
     {
+        this(query.toString());
         this.query = query;
+    }
+
+    /**
+     * Constructor.
+     * @param query Query to run
+     * @param workingModule Module to run query from
+     */
+    public QueryRun(Query query, Module workingModule)
+    {
+        this(String.format("%s:(%s)", workingModule.getName(), query.toString()));
+        this.query = query;
+    }
+
+    /**
+     * Constructor.
+     * @param text String format of query
+     */
+    private QueryRun(String text)
+    {
         // Open a new JPL query
-        internalQuery = new org.jpl7.Query(query.toString());
+        internalQuery = new org.jpl7.Query(text);
 
         // Start immediately with a solution available
         // Standard JPL query would require that nextSolution()
