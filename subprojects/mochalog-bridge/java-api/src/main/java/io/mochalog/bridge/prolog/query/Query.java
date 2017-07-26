@@ -18,6 +18,9 @@ package io.mochalog.bridge.prolog.query;
 
 import io.mochalog.bridge.prolog.namespace.ScopedNamespace;
 
+import io.mochalog.bridge.prolog.query.format.QueryFormatter;
+import io.mochalog.util.format.Formatter;
+
 import java.util.Iterator;
 
 /**
@@ -60,5 +63,18 @@ public class Query implements Iterable<QuerySolution>
     public Iterator<QuerySolution> iterator()
     {
         return new QuerySolutionIterator(this);
+    }
+
+    /**
+     * Formulate a query based on a format string
+     * and substitution arguments
+     * @param query Formatted query string
+     * @param args Query arguments
+     * @return Query object
+     */
+    public static Query format(String query, Object... args)
+    {
+        Formatter<Query> formatter = new QueryFormatter();
+        return formatter.format(query, args);
     }
 }

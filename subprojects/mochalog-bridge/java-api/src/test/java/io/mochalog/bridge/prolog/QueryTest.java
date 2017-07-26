@@ -50,7 +50,8 @@ public class QueryTest
 
         // Perform query to Prolog file
         Variable variable = new Variable("X");
-        Query query = new PrologModule("prolog").query("get_hello_world($V)", variable);
+
+        Query query = Query.format("get_hello_world($V)", variable);
 
         int solutionIndex = 0;
         int expectedSolutionCount = expectedSolutions.length;
