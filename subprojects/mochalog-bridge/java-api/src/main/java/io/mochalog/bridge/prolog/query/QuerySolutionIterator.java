@@ -56,13 +56,7 @@ public class QuerySolutionIterator implements Iterator<QuerySolution>
     public QuerySolution next() throws NoSuchElementException
     {
         QuerySolution solution = queryRun.getSolution();
-
-        try
-        {
-            queryRun.progressToNextSolution();
-        }
-        catch (NoSuchElementException e) {}
-
+        queryRun.next();
         return solution;
     }
 

@@ -19,10 +19,8 @@ package io.mochalog.bridge.prolog.query;
 import io.mochalog.bridge.prolog.lang.Module;
 import io.mochalog.bridge.prolog.namespace.ScopedNamespace;
 
-import org.jpl7.Term;
-
-import java.util.Formatter;
-import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
 
 import java.util.NoSuchElementException;
 
@@ -34,96 +32,19 @@ import java.util.NoSuchElementException;
  */
 public class QueryRun
 {
-    /**
-     * Response to a request for further query
-     * solutions made to the SWI-Prolog interpreter. Can
-     * either fail (indicating no more solutions) or succeed
-     * and provide additional solutions.
-     */
-    private class SolutionResponse
-    {
-        // Index of solution which was requested
-        private int index;
-        // Requested solution (may not exist)
-        private QuerySolution solution;
+    // Index of current solution in stream
+    private int index;
 
-        /**
-         * Constructor.
-         * @param index Index of solution being requested
-         */
-        SolutionResponse(int index)
-        {
-            this.index = index;
-            // Retrieve response
-            fetchSolution();
-        }
-
-        /**
-         * Retrieve response data from SWI-Prolog interpreter
-         * <p>
-         * Arrangement in which single library calls are enforced
-         * each request cycle is due to fact that JPL changes state each time
-         * hasMoreSolutions() is called
-         */
-        private void fetchSolution()
-        {
-            // Check if further solutions exist
-            if (internalQuery.hasMoreSolutions())
-            {
-                // Retrieve the next query solution and update
-                // namespace values
-                Map<String, Term> bindings = internalQuery.nextSolution();
-                ScopedNamespace namespace = new ScopedNamespace(bindings);
-                solution = new QuerySolution(namespace);
-            }
-        }
-
-        /**
-         * Get the index for solution being requested
-         * @return Solution index
-         */
-        public int getIndex()
-        {
-            return index;
-        }
-
-        /**
-         * Check if solution request was successful
-         * @return True if solution exists, false otherwise.
-         */
-        boolean hasSolution()
-        {
-            return solution != null;
-        }
-
-        /**
-         * Get the solution which was fetched from SWI-Prolog,
-         * if it exists.
-         * @return Solution to query
-         * @throws NoSuchElementException No further solutions exist
-         */
-        QuerySolution getSolution() throws NoSuchElementException
-        {
-            if (!hasSolution())
-            {
-                throw new NoSuchElementException("No further solutions exist for given query.");
-            }
-
-            return solution;
-        }
-    }
-
-    // Prolog query data
-    private Query query;
     // Internal JPL query (facilitates
     // low-level connection to SWI-Prolog native interface)
-    private org.jpl7.Query internalQuery;
+    private org.jpl7.Query interpreterQuery;
 
-    // Index of current solution in broader query scope
-    private int index;
-    // Current solution and next solution retrieved are maintained
-    // in order to ensure state is consistent
-    private SolutionResponse currentSolutionResponse, nextSolutionResponse;
+    // Solutions which have been retrieved from SWI-Prolog
+    // interpreter
+    private List<QuerySolution> solutionStream;
+    // Flag to indicate whether all query solutions have
+    // been retrieved
+    private boolean allSolutionsFetched;
 
     /**
      * Constructor.
@@ -132,7 +53,6 @@ public class QueryRun
     public QueryRun(Query query)
     {
         this(query.toString());
-        this.query = query;
     }
 
     /**
@@ -143,7 +63,6 @@ public class QueryRun
     public QueryRun(Query query, Module workingModule)
     {
         this(String.format("%s:(%s)", workingModule.getName(), query.toString()));
-        this.query = query;
     }
 
     /**
@@ -152,14 +71,13 @@ public class QueryRun
      */
     private QueryRun(String text)
     {
-        // Open a new JPL query
-        internalQuery = new org.jpl7.Query(text);
+        // Start stream at beginning
+        index = 0;
+        // Set up solution cache
+        solutionStream = new ArrayList<>();
 
-        // Start immediately with a solution available
-        // Standard JPL query would require that nextSolution()
-        // be called first in order to retrieve first solution
-        currentSolutionResponse = new SolutionResponse(0);
-        nextSolutionResponse = new SolutionResponse(1);
+        // Open a new JPL query
+        interpreterQuery = new org.jpl7.Query(text);
     }
 
     /**
@@ -167,9 +85,43 @@ public class QueryRun
      * the current solution index
      * @return True if solution exists, false otherwise.
      */
-    public synchronized boolean hasSolution()
+    public boolean hasSolution()
     {
-        return currentSolutionResponse.hasSolution();
+        return hasSolution(index);
+    }
+
+    /**
+     * Check if further solutions to the query exist.
+     * @return True if further solutions exist; false otherwise.
+     */
+    public boolean hasFurtherSolutions()
+    {
+        return hasSolution(index + 1);
+    }
+
+    /**
+     * Check if there is a solution available at
+     * the given solution index
+     * @return True if solution exists, false otherwise.
+     */
+    public boolean hasSolution(int index)
+    {
+        // Solution has already been fetched, must exist
+        if (isSolutionCached(index))
+        {
+            return true;
+        }
+        // Solution not yet fetched, verify whether
+        // interpreter has valid solution available
+        // at this index
+        else if (!allSolutionsFetched)
+        {
+            return index == this.index + 1 ?
+                fetchNextSolution() :
+                fetchSolution(index);
+        }
+
+        return false;
     }
 
     /**
@@ -178,46 +130,127 @@ public class QueryRun
      * @return Current solution
      * @throws NoSuchElementException No solution exists at this index
      */
-    public synchronized QuerySolution getSolution() throws NoSuchElementException
+    public QuerySolution getSolution() throws NoSuchElementException
     {
-        return currentSolutionResponse.getSolution();
+        return getSolution(index);
     }
 
     /**
-     * Check if further solutions to the query exist.
-     * @return True if further solutions exist; false otherwise.
+     * Get the solution available at the given solution
+     * index
+     * @param index Solution index
+     * @return Solution at given index
+     * @throws NoSuchElementException No solution exists at this index
      */
-    public synchronized boolean hasFurtherSolutions()
+    public QuerySolution getSolution(int index) throws NoSuchElementException
     {
-        return nextSolutionResponse.hasSolution();
+        // Ensure a solution exists at this index
+        if (!hasSolution(index))
+        {
+            throw new NoSuchElementException("Solution at index " + index + " does not exist.");
+        }
+
+        return solutionStream.get(index);
     }
 
     /**
-     * Retrieve the next query solution (progesses query state onwards)
+     * Retrieve the next query solution (progresses stream onwards)
      * @return Next query solution
      * @throws NoSuchElementException If no further solutions exist
      */
-    public QuerySolution progressToNextSolution() throws NoSuchElementException
+    public QuerySolution nextSolution() throws NoSuchElementException
     {
-        // Request the next solution be retrieved given it exists
-        // Moves query state onwards
-        requestNextSolution();
-        // Pass requested solution back to caller
+        // Progress stream onwards
+        ++index;
         return getSolution();
     }
 
     /**
-     * Update solution response queue to include
-     * next solution
+     * Progress the query stream onwards to next solution
+     * @return True if next solution exists, false otherwise.
      */
-    private void requestNextSolution()
+    public boolean next()
     {
-        // Increment currently viewed solution
+        // Progress stream onwards
         ++index;
-        // Move next solution into view and ensure we have
-        // requested following solution (ensure state remains consistent)
-        currentSolutionResponse = nextSolutionResponse;
-        nextSolutionResponse = new SolutionResponse(index + 1);
+        return hasSolution();
+    }
+
+    /**
+     * Retrieve all solutions from the interpreter
+     * and add to stream
+     */
+    private void fetchAllSolutions()
+    {
+        // Iteratively fetch each additional solution
+        // until none remain
+        while (fetchNextSolution());
+    }
+
+    /**
+     * Retrieve the solution at the given index from
+     * interpreter.
+     * <p>
+     * Due to linearity of interpreter stream, each
+     * solution prior to the requested solution will also be
+     * fetched
+     * @param index Solution index
+     * @return True if solution exists, false otherwise.
+     */
+    private boolean fetchSolution(int index)
+    {
+        if (!isSolutionCached(index))
+        {
+            // Retrieve and cache each solution up to and
+            // including the requested index
+            int solutionsToFetch = index + 1 - solutionStream.size();
+            for (int i = 0; i <= solutionsToFetch; ++i)
+            {
+                // Terminate the fetch operation if we
+                // reach end of stream
+                if (!fetchNextSolution())
+                {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Fetch the next solution in the stream
+     * from the interpreter
+     * @return True if solution exists, false otherwise.
+     */
+    private boolean fetchNextSolution()
+    {
+        // Check if further solutions exist
+        if (interpreterQuery.hasMoreSolutions())
+        {
+            // Retrieve the next query solution and update
+            // namespace values
+            ScopedNamespace namespace =
+                    new ScopedNamespace(interpreterQuery.nextSolution());
+            solutionStream.add(new QuerySolution(namespace));
+
+            return true;
+        }
+
+        // No further solutions to fetch
+        allSolutionsFetched = true;
+        return false;
+    }
+
+    /**
+     * Check if the solution with the requested index
+     * is in cache
+     * @param index Solution index
+     * @return True if solution is available, false otherwise.
+     */
+    private boolean isSolutionCached(int index)
+    {
+        return index < solutionStream.size();
     }
 
     /**

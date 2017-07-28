@@ -68,6 +68,6 @@ public class QueryTest
 
         // Ensure we have received the amount of solutions
         // we expected
-        assert(solutionIndex == expectedSolutionCount);
+        assertEquals(expectedSolutionCount, solutionIndex);
     }
 }
