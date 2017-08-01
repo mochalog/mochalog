@@ -16,8 +16,6 @@
 
 package io.mochalog.bridge.prolog.query;
 
-import io.mochalog.bridge.prolog.namespace.ScopedNamespace;
-
 import io.mochalog.bridge.prolog.query.format.QueryFormatter;
 import io.mochalog.util.format.Formatter;
 
@@ -31,18 +29,14 @@ public class Query implements Iterable<QuerySolution>
 {
     // String form of Prolog query
     private String text;
-    // Local variable namespace
-    private ScopedNamespace namespace;
 
     /**
      * Constructor.
      * @param text Query string
-     * @param namespace Variable bindings (local to query)
      */
-    public Query(String text, ScopedNamespace namespace)
+    public Query(String text)
     {
         this.text = text;
-        this.namespace = namespace;
     }
 
     /**

@@ -17,11 +17,13 @@
 package io.mochalog.bridge.prolog;
 
 import io.mochalog.bridge.prolog.lang.Variable;
+import io.mochalog.bridge.prolog.namespace.NoSuchVariableException;
 import io.mochalog.bridge.prolog.query.Query;
 import io.mochalog.bridge.prolog.query.QuerySolution;
 
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 /**
  * Test suite for Java to Prolog queries
@@ -49,9 +51,7 @@ public class QueryTest
         final String[] expectedSolutions = { "hello", "world" };
 
         // Perform query to Prolog file
-        Variable variable = new Variable("X");
-
-        Query query = Query.format("get_hello_world($V)", variable);
+        Query query = Query.format("get_hello_world(X)");
 
         int solutionIndex = 0;
         int expectedSolutionCount = expectedSolutions.length;
@@ -63,7 +63,14 @@ public class QueryTest
             assert(solutionIndex < expectedSolutionCount);
             // Ensure the fetched solution corresponds to
             // what was expected
-            assertEquals(expectedSolutions[solutionIndex++], solution.get("X").toString());
+            try
+            {
+                assertEquals(expectedSolutions[solutionIndex++], solution.get("X").toString());
+            }
+            catch (NoSuchVariableException e)
+            {
+                fail();
+            }
         }
 
         // Ensure we have received the amount of solutions

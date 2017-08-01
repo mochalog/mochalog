@@ -16,39 +16,40 @@
 
 package io.mochalog.bridge.prolog.query;
 
-import io.mochalog.bridge.prolog.lang.Variable;
-import io.mochalog.bridge.prolog.namespace.ScopedNamespace;
+import io.mochalog.bridge.prolog.namespace.NoSuchVariableException;
+import io.mochalog.bridge.prolog.namespace.Namespace;
+
+import org.jpl7.Term;
 
 /**
  * Solution to individual goal successfully proved
- * by the SWI-Prolog engine
- * <p>
- * Provides manual access to variable bindings
- * (as opposed to automatic rebinding)
+ * by the SWI-Prolog engine (with variable unification)
  */
 public class QuerySolution
 {
-    // Snapshot of the parent query namespace
-    // after goal successfully proved
-    private final ScopedNamespace namespaceSnapshot;
+    // Solution-level namespace containing
+    // variable unifications
+    private final Namespace namespace;
 
     /**
      * Constructor.
-     * @param namespaceSnapshot Snapshot of query namespace
+     * @param namespace Unification namespace
      */
-    public QuerySolution(ScopedNamespace namespaceSnapshot)
+    public QuerySolution(Namespace namespace)
     {
-        this.namespaceSnapshot = namespaceSnapshot;
+        this.namespace = namespace;
     }
 
     /**
-     * Get a variable binding corresponding to the
-     * given name
+     * Get a value to which a variable corresponding to the
+     * given name unified
      * @param name Variable name
-     * @return Associated variable binding
+     * @return Unified value
+     * @throws NoSuchVariableException Variable with given name
+     * is undefined
      */
-    public Variable get(String name)
+    public Term get(String name) throws NoSuchVariableException
     {
-        return namespaceSnapshot.get(name);
+        return namespace.get(name);
     }
 }

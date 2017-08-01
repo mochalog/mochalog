@@ -86,6 +86,8 @@ public class Prolog
      */
     public QueryRun ask(Query query)
     {
-        return new QueryRun(query, workingModule);
+        QueryRun.Builder builder = new QueryRun.Builder(query);
+        builder.setWorkingModule(workingModule);
+        return builder.build();
     }
 }

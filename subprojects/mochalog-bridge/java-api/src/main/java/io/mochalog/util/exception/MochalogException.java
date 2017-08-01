@@ -14,25 +14,20 @@
  * limitations under the License.
  */
 
-package io.mochalog.bridge.prolog.query.format;
-
-import io.mochalog.bridge.prolog.query.Query;
-import io.mochalog.util.format.AbstractFormatter;
+package io.mochalog.util.exception;
 
 /**
- * Format a Prolog query string with inline substitution
- * rules
+ *
  */
-public class QueryFormatter extends AbstractFormatter<Query>
+public class MochalogException extends Exception
 {
-    @Override
-    public Query format(String str, Object... args)
+    public MochalogException()
     {
-        // Parse query input
-        String formattedQueryString = formatString(str, args);
+        super();
+    }
 
-        // Create query from input and ensure formatter
-        // namespace instance cleared for further format runs
-        return new Query(formattedQueryString);
+    public MochalogException(String message)
+    {
+        super(message);
     }
 }

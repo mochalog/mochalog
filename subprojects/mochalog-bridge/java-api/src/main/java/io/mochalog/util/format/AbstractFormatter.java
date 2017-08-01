@@ -35,7 +35,7 @@ public abstract class AbstractFormatter<T> implements Formatter<T>
     protected AbstractFormatter()
     {
         // Precompile regex pattern (faster performance)
-        RULE_PATTERN = Pattern.compile("\\$\\w+");
+        RULE_PATTERN = Pattern.compile("@\\w+");
 
         formatSpec = new FormatSpec();
         formatSpec.setRule("S", String::valueOf);

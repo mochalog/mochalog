@@ -34,7 +34,8 @@ public class QuerySolutionIterator implements Iterator<QuerySolution>
      */
     public QuerySolutionIterator(Query query)
     {
-        queryRun = new QueryRun(query);
+        QueryRun.Builder builder = new QueryRun.Builder(query);
+        queryRun = builder.build();
     }
 
     /**

@@ -17,6 +17,10 @@
 package io.mochalog.bridge.prolog.query;
 
 import io.mochalog.bridge.prolog.lang.Module;
+import io.mochalog.bridge.prolog.lang.Variable;
+
+import io.mochalog.bridge.prolog.namespace.Namespace;
+import io.mochalog.bridge.prolog.namespace.ReadOnlyNamespace;
 import io.mochalog.bridge.prolog.namespace.ScopedNamespace;
 
 import java.util.List;
@@ -32,6 +36,35 @@ import java.util.NoSuchElementException;
  */
 public class QueryRun
 {
+    public static class Builder
+    {
+        private Query query;
+        private Module workingModule;
+
+        public Builder(Query query)
+        {
+            this.query = query;
+        }
+
+        public void setWorkingModule(Module module)
+        {
+            this.workingModule = module;
+        }
+
+        public QueryRun build()
+        {
+            String text = buildQueryText(query, workingModule);
+            return new QueryRun(text);
+        }
+
+        private String buildQueryText(Query query, Module workingModule)
+        {
+            return workingModule == null ?
+                query.toString() :
+                String.format("%s:(%s)", workingModule.getName(), query.toString());
+        }
+    }
+
     // Index of current solution in stream
     private int index;
 
@@ -46,27 +79,11 @@ public class QueryRun
     // been retrieved
     private boolean allSolutionsFetched;
 
-    /**
-     * Constructor.
-     * @param query Query to run
-     */
-    public QueryRun(Query query)
-    {
-        this(query.toString());
-    }
+    // Namespace local to the given query session
+    private ScopedNamespace namespace;
 
     /**
-     * Constructor.
-     * @param query Query to run
-     * @param workingModule Module to run query from
-     */
-    public QueryRun(Query query, Module workingModule)
-    {
-        this(String.format("%s:(%s)", workingModule.getName(), query.toString()));
-    }
-
-    /**
-     * Constructor.
+     * Private constructor.
      * @param text String format of query
      */
     private QueryRun(String text)
@@ -78,6 +95,8 @@ public class QueryRun
 
         // Open a new JPL query
         interpreterQuery = new org.jpl7.Query(text);
+
+        namespace = new ScopedNamespace();
     }
 
     /**
@@ -230,8 +249,8 @@ public class QueryRun
         {
             // Retrieve the next query solution and update
             // namespace values
-            ScopedNamespace namespace =
-                    new ScopedNamespace(interpreterQuery.nextSolution());
+            Namespace namespace =
+                    new ReadOnlyNamespace(interpreterQuery.nextSolution());
             solutionStream.add(new QuerySolution(namespace));
 
             return true;
