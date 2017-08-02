@@ -16,6 +16,7 @@
 
 package io.mochalog.bridge.prolog.query;
 
+import io.mochalog.bridge.prolog.lang.Module;
 import io.mochalog.bridge.prolog.query.format.QueryFormatter;
 import io.mochalog.util.format.Formatter;
 
@@ -70,5 +71,12 @@ public class Query implements Iterable<QuerySolution>
     {
         Formatter<Query> formatter = new QueryFormatter();
         return formatter.format(query, args);
+    }
+
+    public static String runnableInModule(Query query, Module module)
+    {
+        return module == null ?
+            query.toString() :
+            String.format("%s:(%s)", module.getName(), query.toString());
     }
 }

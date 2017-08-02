@@ -14,26 +14,29 @@
  * limitations under the License.
  */
 
-package io.mochalog.util.exception;
+package io.mochalog.bridge.prolog.query.exception;
+
+import io.mochalog.util.exception.UncheckedMochalogException;
 
 /**
- * Checked exception related to Mochalog operation
+ * Exception indicating that a requested query solution does
+ * not exist
  */
-public class MochalogException extends Exception
+public class NoSuchSolutionException extends UncheckedMochalogException
 {
     /**
-     * Constructor. No custom message.
+     * Constructor.
      */
-    public MochalogException()
+    public NoSuchSolutionException()
     {
         super();
     }
 
     /**
      * Constructor.
-     * @param message Custom exception message
+     * @param message Exception message
      */
-    public MochalogException(String message)
+    public NoSuchSolutionException(String message)
     {
         super(message);
     }

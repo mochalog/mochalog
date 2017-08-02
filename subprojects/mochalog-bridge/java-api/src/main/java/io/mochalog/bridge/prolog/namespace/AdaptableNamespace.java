@@ -21,11 +21,25 @@ import org.jpl7.Term;
 import java.util.Map;
 
 /**
- *
+ * Namespace which is capable of being dynamically
+ * modified
  */
 public interface AdaptableNamespace extends Namespace
 {
+    /**
+     * Set the variable with the given name to
+     * a specified value. Create the variable
+     * if it does not already exist.
+     * @param name Variable name
+     * @param value Value to set
+     */
     void set(String name, Term value);
 
+    /**
+     * Set a collection of variables to
+     * respectively mapped values. Create new variables
+     * if they do not already exist.
+     * @param bindings Variable bindings to set
+     */
     void set(Map<String, Term> bindings);
 }

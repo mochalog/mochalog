@@ -17,14 +17,14 @@
 package io.mochalog.util.exception;
 
 /**
- * Checked exception related to Mochalog operation
+ * Unchecked runtime exception related to Mochalog operation
  */
-public class MochalogException extends Exception
+public abstract class UncheckedMochalogException extends RuntimeException
 {
     /**
      * Constructor. No custom message.
      */
-    public MochalogException()
+    public UncheckedMochalogException()
     {
         super();
     }
@@ -33,7 +33,7 @@ public class MochalogException extends Exception
      * Constructor.
      * @param message Custom exception message
      */
-    public MochalogException(String message)
+    public UncheckedMochalogException(String message)
     {
         super(message);
     }

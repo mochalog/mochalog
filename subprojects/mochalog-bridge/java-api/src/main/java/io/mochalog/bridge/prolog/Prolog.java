@@ -18,8 +18,10 @@ package io.mochalog.bridge.prolog;
 
 import io.mochalog.bridge.prolog.lang.Module;
 import io.mochalog.bridge.prolog.query.Query;
-import io.mochalog.bridge.prolog.query.QueryRun;
 import io.mochalog.bridge.prolog.query.QuerySolution;
+import io.mochalog.bridge.prolog.query.QuerySolutionList;
+import io.mochalog.bridge.prolog.query.collectors.QuerySolutionCollector;
+import io.mochalog.bridge.prolog.query.collectors.SequentialQuerySolutionCollector;
 
 /**
  * Interface to sandboxed SWI-Prolog interpreter context
@@ -64,7 +66,7 @@ public class Prolog
      */
     public boolean prove(Query query)
     {
-        return ask(query).hasSolution();
+        return ask(query).hasSolutions();
     }
 
     /**
@@ -74,9 +76,19 @@ public class Prolog
      * @param query Query to fetch solution to
      * @return Solution
      */
-    public QuerySolution askSolution(Query query)
+    public QuerySolution askForSolution(Query query)
     {
-        return ask(query).getSolution();
+        return ask(query).fetchFirstSolution();
+    }
+
+    /**
+     * Ask for list view of solutions to given query.
+     * @param query Query to fetch solutions to
+     * @return Solution list
+     */
+    public QuerySolutionList askForSolutions(Query query)
+    {
+        return new QuerySolutionList(query, workingModule);
     }
 
     /**
@@ -84,9 +96,10 @@ public class Prolog
      * @param query Query to open
      * @return Query session
      */
-    public QueryRun ask(Query query)
+    public QuerySolutionCollector ask(Query query)
     {
-        QueryRun.Builder builder = new QueryRun.Builder(query);
+        SequentialQuerySolutionCollector.Builder builder =
+            new SequentialQuerySolutionCollector.Builder(query);
         builder.setWorkingModule(workingModule);
         return builder.build();
     }

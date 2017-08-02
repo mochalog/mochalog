@@ -19,11 +19,27 @@ package io.mochalog.bridge.prolog.namespace;
 import org.jpl7.Term;
 
 /**
- *
+ * Namespace which maps named variables to Prolog
+ * term values. Provides the capacity to read
+ * variable values.
  */
 public interface Namespace
 {
+    /**
+     * Get the value associated with the given
+     * variable name
+     * @param name Variable name
+     * @return Value associated
+     * @throws NoSuchVariableException Variable with given
+     * name does not exist
+     */
     Term get(String name) throws NoSuchVariableException;
 
+    /**
+     * Check if variable with name is defined in
+     * the namespace
+     * @param name Variable name
+     * @return True if defined, false otherwise.
+     */
     boolean has(String name);
 }

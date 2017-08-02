@@ -16,20 +16,49 @@
 
 package io.mochalog.bridge.prolog.namespace;
 
-import io.mochalog.util.exception.MochalogException;
+import io.mochalog.util.exception.UncheckedMochalogException;
 
 /**
- *
+ * Exception indicating no variable with the given name
+ * was found in a given namespace.
  */
-public class NoSuchVariableException extends MochalogException
+public class NoSuchVariableException extends UncheckedMochalogException
 {
-    public NoSuchVariableException()
+    /**
+     * Constructor. No custom message provided.
+     * @param name Variable name
+     */
+    public NoSuchVariableException(String name)
     {
-        super();
+        this(name, "");
     }
 
-    public NoSuchVariableException(String message)
+    /**
+     * Constructor. Resulting exception text will include
+     * the variable name that was not found and a custom message.
+     * @param name Variable name
+     * @param message Custom messsage
+     */
+    public NoSuchVariableException(String name, String message)
     {
-        super(message);
+        super(getExceptionMessage(name, message));
+    }
+
+    /**
+     * Construct the exception message from a given variable
+     * name and a custom message.
+     * @param name Variable name
+     * @param message Custom message
+     * @return Exception message
+     */
+    private static String getExceptionMessage(String name, String message)
+    {
+        String exceptionMessage = "Variable " + name + " undefined.";
+        if (message != null && !message.equals(""))
+        {
+            exceptionMessage += " " + message;
+        }
+
+        return exceptionMessage;
     }
 }

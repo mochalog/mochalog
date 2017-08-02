@@ -21,12 +21,19 @@ import org.jpl7.Term;
 import java.util.Map;
 
 /**
- *
+ * Namespace which is only capable of being read from.
+ * Variable bindings are defined on construction and not
+ * capable of being modified subequently.
  */
 public class ReadOnlyNamespace implements Namespace
 {
+    // Bindings of variable names to term values
     private final Map<String, Term> bindings;
 
+    /**
+     * Constructor.
+     * @param bindings Variable bindings
+     */
     public ReadOnlyNamespace(Map<String, Term> bindings)
     {
         this.bindings = bindings;
@@ -37,9 +44,10 @@ public class ReadOnlyNamespace implements Namespace
     {
         Term value = bindings.get(name);
 
+        // Check variable is defined in the namespace
         if (value == null)
         {
-            throw new NoSuchVariableException("Variable " + name + " undefined.");
+            throw new NoSuchVariableException(name);
         }
 
         return value;
