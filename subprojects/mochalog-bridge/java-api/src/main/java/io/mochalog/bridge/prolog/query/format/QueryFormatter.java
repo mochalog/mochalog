@@ -16,9 +16,6 @@
 
 package io.mochalog.bridge.prolog.query.format;
 
-import io.mochalog.bridge.prolog.lang.Variable;
-import io.mochalog.bridge.prolog.namespace.ScopedNamespace;
-
 import io.mochalog.bridge.prolog.query.Query;
 import io.mochalog.util.format.AbstractFormatter;
 
@@ -28,14 +25,12 @@ import io.mochalog.util.format.AbstractFormatter;
  */
 public class QueryFormatter extends AbstractFormatter<Query>
 {
-    // Namespace instance to apply to generated queries
-    private ScopedNamespace currentNamespace;
-
     public QueryFormatter()
     {
-        currentNamespace = new ScopedNamespace();
+        super();
 
-        formatSpec.setRule("V", this::formatVariable);
+        // Prolog strings are wrapped in quote characters
+        formatSpec.setRule("S", o -> "\"" + String.valueOf(o) + "\"");
     }
 
     @Override
@@ -46,33 +41,6 @@ public class QueryFormatter extends AbstractFormatter<Query>
 
         // Create query from input and ensure formatter
         // namespace instance cleared for further format runs
-        Query query = new Query(formattedQueryString, currentNamespace);
-        currentNamespace = new ScopedNamespace();
-
-        return query;
-    }
-
-    /**
-     * Format a Prolog variable into an appropriate
-     * string representation and add query namespace binding
-     * @param arg Object arg
-     * @return Formatted variable string
-     */
-    private String formatVariable(Object arg) throws ClassCastException
-    {
-        if (arg instanceof Variable)
-        {
-            Variable variable = (Variable) arg;
-            currentNamespace.define(variable);
-            return variable.getName();
-        }
-
-        throw new ClassCastException("Failed to convert provided object argument " +
-            "to variable term.");
-    }
-
-    protected ScopedNamespace getNamespace()
-    {
-        return currentNamespace;
+        return new Query(formattedQueryString);
     }
 }

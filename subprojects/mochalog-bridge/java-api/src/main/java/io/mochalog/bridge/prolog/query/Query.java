@@ -16,108 +16,38 @@
 
 package io.mochalog.bridge.prolog.query;
 
-import io.mochalog.bridge.prolog.namespace.ScopedNamespace;
-
-import org.jpl7.Term;
+import io.mochalog.bridge.prolog.lang.Module;
+import io.mochalog.bridge.prolog.query.format.QueryFormatter;
+import io.mochalog.util.format.Formatter;
 
 import java.util.Iterator;
-import java.util.Map;
 
 /**
  * Represents query provided to the SWI-Prolog
- * interpreter. Allows for management of query context,
- * including local namespace and solution stepping.
+ * interpreter, managing localised query namespace.
  */
 public class Query implements Iterable<QuerySolution>
 {
     // String form of Prolog query
-    private String queryString;
-    // Internal JPL query (facilitates
-    // actual connection to Prolog interpreter)
-    private org.jpl7.Query jplQuery;
-
-    // Local variable namespace
-    private ScopedNamespace namespace;
-
-    // Current query state
-    // Used for JPL workaround - Query.hasMoreSolutions()
-    // advances state each invocation (undesirable)
-    // State maintained locally to allow for arbitrary checking
-    // for further solution existence
-    private enum State
-    {
-        // State unchecked with SWI-Prolog interpreter
-        // Not yet known whether further solutions exist
-        NOT_VALIDATED,
-        // Prolog failed to satisfy query
-        FAILED,
-        // Prolog succeeded in satisfying query goals (solution exists)
-        SUCCEEDED
-    }
-    private State state;
+    private String text;
 
     /**
      * Constructor.
-     * @param query Query string
-     * @param namespace Variable bindings (local to query)
+     * @param text Query string
      */
-    public Query(String query, ScopedNamespace namespace)
+    public Query(String text)
     {
-        queryString = query;
-        jplQuery = new org.jpl7.Query(queryString);
-
-        this.namespace = namespace;
-
-        setState(State.NOT_VALIDATED);
+        this.text = text;
     }
 
     /**
-     * Set current local query state
-     * @param state New state
+     * Convert the query to string format
+     * @return String format
      */
-    private void setState(State state)
+    @Override
+    public String toString()
     {
-        this.state = state;
-    }
-
-    /**
-     * Check if further solutions to the query exist.
-     * @return True if further solutions exist; false otherwise.
-     */
-    public boolean hasNext()
-    {
-        // Need to recheck for further solutions
-        if (state == State.NOT_VALIDATED)
-        {
-            setState(jplQuery.hasMoreSolutions() ? State.SUCCEEDED : State.FAILED);
-        }
-
-        return state == State.SUCCEEDED;
-    }
-
-    /**
-     * Fetch the next solution in the
-     * current query context
-     * @return Next solution if exists; otherwise null.
-     */
-    public QuerySolution next()
-    {
-        // Check further solutions exist
-        if (!hasNext())
-        {
-            return null;
-        }
-
-        // Retrieve the next query solution and update
-        // namespace values
-        Map<String, Term> bindings = jplQuery.nextSolution();
-        namespace.set(bindings);
-        QuerySolution solution = new QuerySolution(namespace);
-
-        // Successive queries should check for satisfaction
-        setState(State.NOT_VALIDATED);
-
-        return solution;
+        return text;
     }
 
     /**
@@ -131,12 +61,22 @@ public class Query implements Iterable<QuerySolution>
     }
 
     /**
-     * Convert the query to string format
-     * @return String format
+     * Formulate a query based on a format string
+     * and substitution arguments
+     * @param query Formatted query string
+     * @param args Query arguments
+     * @return Query object
      */
-    @Override
-    public String toString()
+    public static Query format(String query, Object... args)
     {
-        return queryString;
+        Formatter<Query> formatter = new QueryFormatter();
+        return formatter.format(query, args);
+    }
+
+    public static String runnableInModule(Query query, Module module)
+    {
+        return module == null ?
+            query.toString() :
+            String.format("%s:(%s)", module.getName(), query.toString());
     }
 }

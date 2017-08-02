@@ -16,12 +16,17 @@
 
 package io.mochalog.bridge.prolog;
 
-import io.mochalog.bridge.prolog.lang.Variable;
+import io.mochalog.bridge.prolog.namespace.NoSuchVariableException;
 import io.mochalog.bridge.prolog.query.Query;
 import io.mochalog.bridge.prolog.query.QuerySolution;
 
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * Test suite for Java to Prolog queries
@@ -34,23 +39,22 @@ public class QueryTest
      * solutions retrieved match expected values
      */
     @Test
-    public void checkQuerySolutions()
+    public void checkQuerySolutions() throws IOException
     {
         // hello_world.pl test resource
         // Filepath relative to java-bridge directory
-        final String helloWorldPrologFilePath = "src/test/resources/prolog/hello_world.pl";
+        Prolog prolog = new Prolog("test_hello_world");
+        final Path path = Paths.get("src/test/resources/prolog/hello_world.pl");
 
         // Ensure Prolog file was correctly loaded
         // by SWI-Prolog interpreter
-        boolean loaded = org.jpl7.Query.hasSolution("consult('" + helloWorldPrologFilePath + "')");
-        assert(loaded);
+        assert(prolog.loadFile(path));
 
         // Solutions expected from get_hello_world query
         final String[] expectedSolutions = { "hello", "world" };
 
         // Perform query to Prolog file
-        Variable variable = new Variable("X");
-        Query query = PrologEnvironment.query("get_hello_world($V)", variable);
+        Query query = Query.format("get_hello_world(X)");
 
         int solutionIndex = 0;
         int expectedSolutionCount = expectedSolutions.length;
@@ -62,11 +66,18 @@ public class QueryTest
             assert(solutionIndex < expectedSolutionCount);
             // Ensure the fetched solution corresponds to
             // what was expected
-            assertEquals(expectedSolutions[solutionIndex++], variable.toString());
+            try
+            {
+                assertEquals(expectedSolutions[solutionIndex++], solution.get("X").toString());
+            }
+            catch (NoSuchVariableException e)
+            {
+                fail();
+            }
         }
 
         // Ensure we have received the amount of solutions
         // we expected
-        assert(solutionIndex == expectedSolutionCount);
+        assertEquals(expectedSolutionCount, solutionIndex);
     }
 }

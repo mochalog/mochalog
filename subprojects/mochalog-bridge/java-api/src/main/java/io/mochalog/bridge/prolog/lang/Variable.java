@@ -55,7 +55,7 @@ public class Variable
      * Get the variable value
      * @return Variable value
      */
-    public Term get()
+    public Term value()
     {
         return value;
     }

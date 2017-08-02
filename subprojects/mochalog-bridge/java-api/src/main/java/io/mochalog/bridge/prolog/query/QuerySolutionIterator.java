@@ -16,6 +16,11 @@
 
 package io.mochalog.bridge.prolog.query;
 
+import io.mochalog.bridge.prolog.lang.Module;
+import io.mochalog.bridge.prolog.query.collectors.QuerySolutionCollector;
+import io.mochalog.bridge.prolog.query.collectors.SequentialQuerySolutionCollector;
+import io.mochalog.bridge.prolog.query.exception.NoSuchSolutionException;
+
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -23,13 +28,12 @@ import java.util.NoSuchElementException;
  * Iterator over an ordered collection of solutions to a
  * Prolog query
  */
-// Currently thinly wraps functionality which already exists in
-// Query. Practically better than having Query serve as its own iterator
-// from modularisation perspective
 public class QuerySolutionIterator implements Iterator<QuerySolution>
 {
-    // Query to iterate over
-    private Query query;
+    // Index of currently viewed solution
+    private int index;
+    // Interface for the accumulation of query solutions
+    private QuerySolutionCollector collector;
 
     /**
      * Constructor.
@@ -37,7 +41,34 @@ public class QuerySolutionIterator implements Iterator<QuerySolution>
      */
     public QuerySolutionIterator(Query query)
     {
-        this.query = query;
+        this(
+            new SequentialQuerySolutionCollector.Builder(query)
+                .build()
+        );
+    }
+
+    /**
+     * Constructor.
+     * @param query Query to iterate over
+     * @param workingModule Module to operate query from
+     */
+    public QuerySolutionIterator(Query query, Module workingModule)
+    {
+        this(
+            new SequentialQuerySolutionCollector.Builder(query)
+                .setWorkingModule(workingModule)
+                .build()
+        );
+    }
+
+    /**
+     * Constructor.
+     * @param collector Existing solution collector
+     */
+    public QuerySolutionIterator(QuerySolutionCollector collector)
+    {
+        this.collector = collector;
+        index = 0;
     }
 
     /**
@@ -47,7 +78,7 @@ public class QuerySolutionIterator implements Iterator<QuerySolution>
     @Override
     public boolean hasNext()
     {
-        return query.hasNext();
+        return collector.hasSolution(index);
     }
 
     /**
@@ -58,14 +89,16 @@ public class QuerySolutionIterator implements Iterator<QuerySolution>
     @Override
     public QuerySolution next() throws NoSuchElementException
     {
-        QuerySolution next = query.next();
-        // Check next solution exists
-        if (next == null)
+        try
         {
-            throw new NoSuchElementException("No further solutions exist for given query.");
+            QuerySolution solution = collector.fetchSolution(index);
+            ++index;
+            return solution;
         }
-
-        return next;
+        catch (NoSuchSolutionException e)
+        {
+            throw new NoSuchElementException(e.getMessage());
+        }
     }
 
     /**

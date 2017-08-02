@@ -16,6 +16,7 @@
 
 package io.mochalog.bridge.prolog.namespace;
 
+import io.mochalog.bridge.prolog.lang.ScopedContext;
 import io.mochalog.bridge.prolog.lang.Variable;
 
 import org.jpl7.Term;
@@ -24,10 +25,10 @@ import java.util.Map;
 import java.util.HashMap;
 
 /**
- * Namespace binding names to SWI-Prolog
+ * Namespace binding names to Prolog
  * variables within a given scope
  */
-public class ScopedNamespace
+public class ScopedNamespace implements AdaptableNamespace, ScopedContext
 {
     // Bindings between variable names and variables
     private Map<String, Variable> definitions;
@@ -40,21 +41,16 @@ public class ScopedNamespace
         definitions = new HashMap<>();
     }
 
-    /**
-     * Fetch the Prolog variable bound to the given
-     * name
-     * @param name Variable name
-     * @return Bound variable or null if not defined
-     */
-    public Variable get(String name)
+    @Override
+    public Term get(String name) throws NoSuchVariableException
     {
-        // Check variable exists
-        if (name != null)
+        Variable variable = definitions.get(name);
+        if (variable == null)
         {
-            return definitions.get(name);
+            throw new NoSuchVariableException("Variable " + name + " undefined.");
         }
 
-        return null;
+        return variable.value();
     }
 
     /**
@@ -66,7 +62,7 @@ public class ScopedNamespace
      */
     public void set(String name, Term value)
     {
-        Variable variable = get(name);
+        Variable variable = definitions.get(name);
         // Check variable exists
         if (variable == null)
         {
@@ -81,13 +77,9 @@ public class ScopedNamespace
      * Set the values of multiple variables.
      * @param bindings Binding between names and values
      */
+    @Override
     public void set(Map<String, Term> bindings)
     {
-        if (bindings == null)
-        {
-            return;
-        }
-
         for (Map.Entry<String, Term> binding : bindings.entrySet())
         {
             // Set the value of the variable corresponding
@@ -107,12 +99,8 @@ public class ScopedNamespace
     public Variable define(String name)
     {
         Variable variable = new Variable(name);
-        if (define(variable))
-        {
-            return variable;
-        }
-
-        return null;
+        define(variable);
+        return variable;
     }
 
     /**
@@ -125,9 +113,10 @@ public class ScopedNamespace
     {
         // Ensure name has not already been defined
         // within the namespace
-        if (variable != null && !has(variable.getName()))
+        String name = variable.getName();
+        if (!has(name))
         {
-            definitions.put(variable.getName(), variable);
+            definitions.put(name, variable);
             return true;
         }
 
@@ -140,8 +129,9 @@ public class ScopedNamespace
      * @param name Variable name
      * @return Status of variable existence
      */
+    @Override
     public boolean has(String name)
     {
-        return name != null && definitions.containsKey(name);
+        return definitions.containsKey(name);
     }
 }
