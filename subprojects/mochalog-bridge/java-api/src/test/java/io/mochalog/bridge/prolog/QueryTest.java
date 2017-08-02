@@ -16,7 +16,6 @@
 
 package io.mochalog.bridge.prolog;
 
-import io.mochalog.bridge.prolog.lang.Variable;
 import io.mochalog.bridge.prolog.namespace.NoSuchVariableException;
 import io.mochalog.bridge.prolog.query.Query;
 import io.mochalog.bridge.prolog.query.QuerySolution;
@@ -24,6 +23,10 @@ import io.mochalog.bridge.prolog.query.QuerySolution;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
+
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * Test suite for Java to Prolog queries
@@ -36,16 +39,16 @@ public class QueryTest
      * solutions retrieved match expected values
      */
     @Test
-    public void checkQuerySolutions()
+    public void checkQuerySolutions() throws IOException
     {
         // hello_world.pl test resource
         // Filepath relative to java-bridge directory
-        final String helloWorldPrologFilePath = "src/test/resources/prolog/hello_world.pl";
+        Prolog prolog = new Prolog("test_hello_world");
+        final Path path = Paths.get("src/test/resources/prolog/hello_world.pl");
 
         // Ensure Prolog file was correctly loaded
         // by SWI-Prolog interpreter
-        boolean loaded = org.jpl7.Query.hasSolution("consult('" + helloWorldPrologFilePath + "')");
-        assert(loaded);
+        assert(prolog.loadFile(path));
 
         // Solutions expected from get_hello_world query
         final String[] expectedSolutions = { "hello", "world" };

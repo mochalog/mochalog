@@ -69,7 +69,9 @@ public abstract class AbstractFormatter<T> implements Formatter<T>
             try
             {
                 String replacement = formatSpec.applyRule(rule, arg);
-                matcher.appendReplacement(formatBuffer, replacement);
+                // Ensure replacement string is converted into literal
+                // string (ensure \ and $ characters are treated correctly)
+                matcher.appendReplacement(formatBuffer, Matcher.quoteReplacement(replacement));
             }
             catch (NoSuchMethodException e)
             {

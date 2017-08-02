@@ -23,12 +23,24 @@ import io.mochalog.bridge.prolog.query.QuerySolutionList;
 import io.mochalog.bridge.prolog.query.collectors.QuerySolutionCollector;
 import io.mochalog.bridge.prolog.query.collectors.SequentialQuerySolutionCollector;
 
+import java.io.IOException;
+import java.nio.file.Path;
+
 /**
  * Interface to sandboxed SWI-Prolog interpreter context
  */
 public class Prolog
 {
     private Module workingModule;
+
+    /**
+     * Constructor.
+     * @param name Working module name
+     */
+    public Prolog(String name)
+    {
+        this(new Module(name));
+    }
 
     /**
      * Constructor.
@@ -57,6 +69,17 @@ public class Prolog
     public void setWorkingModule(Module module)
     {
         this.workingModule = module;
+    }
+
+    /**
+     * Load a given file into the current context
+     * @param path Path to Prolog source file
+     * @return True if file loading was successful, false otherwise.
+     * @throws IOException File IO error occurred
+     */
+    public boolean loadFile(Path path) throws IOException
+    {
+        return workingModule.importFile(path);
     }
 
     /**

@@ -16,6 +16,15 @@
 
 package io.mochalog.bridge.prolog.lang;
 
+import io.mochalog.bridge.prolog.query.Query;
+import io.mochalog.bridge.prolog.query.collectors.QuerySolutionCollector;
+import io.mochalog.bridge.prolog.query.collectors.SequentialQuerySolutionCollector;
+
+import java.io.IOError;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 /**
  * Representation of a SWI-Prolog module (predicate namespace)
  */
@@ -50,5 +59,45 @@ public class Module
     public String toString()
     {
         return name;
+    }
+
+    /**
+     * Load a given file into the current module
+     * @param filepath Path to Prolog source file
+     * @return True if file loading was successful, false otherwise.
+     * @throws IOException File IO error occurred
+     */
+    public boolean importFile(Path filepath) throws IOException
+    {
+        // Ensure valid file path was supplied
+        if (!Files.exists(filepath))
+        {
+            throw new IOException("Specified file path does not exist.");
+        }
+
+        try
+        {
+            // Formulate query to load Prolog files into
+            // a given module
+            String absolutePath = filepath.toAbsolutePath().toString();
+            // Escape \ characters in the given file path to
+            // prevent SWI-Prolog escaping subsequent characters
+            // TODO: Provide facility to enable this behaviour through
+            // QueryFormatter
+            String escapedAbsolutePath = absolutePath.replace("\\", "\\\\");
+            Query query = Query.format("load_files(@S, [module(@S)])",
+                escapedAbsolutePath, this);
+
+            SequentialQuerySolutionCollector.Builder builder =
+                new SequentialQuerySolutionCollector.Builder(query);
+            QuerySolutionCollector collector = builder.build();
+            // Ensure files were successfully loaded
+            return collector.hasSolutions();
+        }
+        catch (IOError e)
+        {
+            throw new IOException("File path could not be converted " +
+                "to absolute file path.");
+        }
     }
 }

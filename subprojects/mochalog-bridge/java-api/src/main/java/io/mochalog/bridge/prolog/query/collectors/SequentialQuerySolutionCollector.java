@@ -135,28 +135,31 @@ public class SequentialQuerySolutionCollector extends AbstractQuerySolutionColle
     @Override
     public QuerySolution fetchSolution(int index) throws NoSuchSolutionException
     {
-        if (!isSolutionCached(index))
+        if (isSolutionCached(index))
+        {
+            // Solution has already been retrieved from
+            // the interpreter
+            return solutionCache.get(index);
+        }
+        else
         {
             // Sequentially retrieve and cache each solution up to and
             // including the requested index
-            QuerySolution solution = null;
-            int solutionsToFetch = index + 1 - solutionCache.size();
-            for (int i = 0; i <= solutionsToFetch; ++i)
+            try
             {
-                try
+                int precedingSolutionsToFetch = index - solutionCache.size();
+                for (int i = 0; i < precedingSolutionsToFetch; ++i)
                 {
-                    solution = fetchNextSolution();
+                    fetchNextSolution();
                 }
-                catch (EndOfQueryException e)
-                {
-                    throw new NoSuchSolutionException(e.getMessage());
-                }
+
+                return fetchNextSolution();
             }
-
-            return solution;
+            catch (EndOfQueryException e)
+            {
+                throw new NoSuchSolutionException(e.getMessage());
+            }
         }
-
-        return solutionCache.get(index);
     }
 
     @Override

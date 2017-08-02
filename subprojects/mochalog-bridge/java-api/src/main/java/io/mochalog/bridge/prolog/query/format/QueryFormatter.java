@@ -25,6 +25,14 @@ import io.mochalog.util.format.AbstractFormatter;
  */
 public class QueryFormatter extends AbstractFormatter<Query>
 {
+    public QueryFormatter()
+    {
+        super();
+
+        // Prolog strings are wrapped in quote characters
+        formatSpec.setRule("S", o -> "\"" + String.valueOf(o) + "\"");
+    }
+
     @Override
     public Query format(String str, Object... args)
     {
