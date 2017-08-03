@@ -83,6 +83,48 @@ public class Prolog
     }
 
     /**
+     * Helper method wrapping assertz/1 (add a new clause to the end of a predicate)
+     * @param term Term to assert
+     * @param args Substitution arguments to apply to term
+     * @return True if assertion succeeded, false otherwise.
+     */
+    public boolean assertLast(String term, Object... args)
+    {
+        Query query = Query.format("assertz(" + term + ")", args);
+        return prove(query);
+    }
+
+    /**
+     * Helper method wrapping retract/1 (remove first clause in predicate)
+     * @param term Term to retract
+     * @return True if retraction succeeded, false otherwise.
+     */
+    public boolean retract(String term)
+    {
+        return prove("retract(" + term + ")");
+    }
+
+    /**
+     * Helper method wrapping retractall/1 (remove all clauses in predicate)
+     * @param term Term to retract
+     * @return True if retraction succeeded, false otherwise
+     */
+    public boolean retractAll(String term)
+    {
+        return prove("retractall(" + term + ")");
+    }
+
+    /**
+     * Verify if textual query is provable
+     * @param text Query text
+     * @return True if provable, false otherwise.
+     */
+    public boolean prove(String text)
+    {
+        return prove(new Query(text));
+    }
+
+    /**
      * Verify if query is provable
      * @param query Query to prove
      * @return True if provable, false otherwise
