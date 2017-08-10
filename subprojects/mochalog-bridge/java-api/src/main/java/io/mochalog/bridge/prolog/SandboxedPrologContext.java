@@ -26,6 +26,7 @@ import io.mochalog.bridge.prolog.query.collectors.QuerySolutionCollector;
 import io.mochalog.bridge.prolog.query.collectors.SequentialQuerySolutionCollector;
 
 import io.mochalog.util.format.Formatter;
+import org.jpl7.Term;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -85,35 +86,54 @@ public class SandboxedPrologContext implements PrologContext
     }
 
     @Override
+    public Term get(String name)
+    {
+        return askForSolution("@A(Result)", name).get("Result");
+    }
+
+    @Override
     public boolean assertFirst(String clause, Object... args)
     {
-        Formatter formatter = new Query.Formatter();
-        String formattedClause = formatter.format(clause, args);
-        return prove("asserta(@A)", formattedClause);
+        return modifyDynamicPredicate("asserta", clause, args);
     }
 
     @Override
     public boolean assertLast(String clause, Object... args)
     {
+        return modifyDynamicPredicate("assertz", clause, args);
+    }
+
+    @Override
+    public boolean retract(String clause, Object... args)
+    {
+        return modifyDynamicPredicate("retract", clause, args);
+    }
+
+    @Override
+    public boolean retractAll(String clause, Object... args)
+    {
+        return modifyDynamicPredicate("retractall", clause, args);
+    }
+
+    /**
+     * Perform a modification of the SWI-Prolog clause database
+     * (e.g. asserta, assertz, retract, retractall, etc.)
+     * @param modifier Modification meta-predicate to apply
+     * @param clause Clause to modify dynamic predicate with
+     * @param args Substitution arguments to apply to clause
+     * @return True if modification succeeded, false otherwise.
+     */
+    // TODO: The existence of this method makes the case for either an
+    // AbstractPrologContext or recursive query formatting
+    private boolean modifyDynamicPredicate(String modifier, String clause, Object... args)
+    {
+        // Apply substitution arguments to internal clause argument
+        // before formatting metapredicate
         Formatter formatter = new Query.Formatter();
         String formattedClause = formatter.format(clause, args);
-        return prove("assertz(@A)", formattedClause);
-    }
-
-    @Override
-    public boolean retract(String term, Object... args)
-    {
-        Formatter formatter = new Query.Formatter();
-        String formattedTerm = formatter.format(term, args);
-        return prove("retract(@A)", formattedTerm);
-    }
-
-    @Override
-    public boolean retractAll(String term, Object... args)
-    {
-        Formatter formatter = new Query.Formatter();
-        String formattedTerm = formatter.format(term, args);
-        return prove("retractall(@A)", formattedTerm);
+        // Perform meta-predicate query allowing for modification
+        // of dynamic predicates
+        return prove("@A(@A)", modifier, formattedClause);
     }
 
     @Override

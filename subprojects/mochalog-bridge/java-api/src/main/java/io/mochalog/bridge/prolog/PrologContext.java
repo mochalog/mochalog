@@ -21,6 +21,8 @@ import io.mochalog.bridge.prolog.query.QuerySolution;
 import io.mochalog.bridge.prolog.query.QuerySolutionList;
 import io.mochalog.bridge.prolog.query.collectors.QuerySolutionCollector;
 
+import org.jpl7.Term;
+
 import java.nio.file.Path;
 import java.io.IOException;
 
@@ -39,6 +41,14 @@ public interface PrologContext
     boolean loadFile(Path path) throws IOException;
 
     /**
+     * Get the term 'value' argument of a Prolog fact whose
+     * functor is name/1.
+     * @param name Name of Prolog fact
+     * @return Term value
+     */
+    Term get(String name);
+
+    /**
      * Wrapper of asserta/1 (add a new clause to the start of a predicate)
      * @param clause Clause to assert
      * @param args Substitution arguments to apply to clause
@@ -55,20 +65,20 @@ public interface PrologContext
     boolean assertLast(String clause, Object... args);
 
     /**
-     * Wrapper of retract/1 (remove first matching term in predicate)
-     * @param term Term to retract
-     * @param args Substitution arguments to apply to term
+     * Wrapper of retract/1 (remove first matching clause in predicate)
+     * @param clause Clause to retract
+     * @param args Substitution arguments to apply to clause
      * @return True if retraction succeeded, false otherwise.
      */
-    boolean retract(String term, Object... args);
+    boolean retract(String clause, Object... args);
 
     /**
-     * Wrapper of retractall/1 (remove all matching terms in predicate)
-     * @param term Term to retract
-     * @param args Substitution arguments to apply to term
+     * Wrapper of retractall/1 (remove all matching clauses in predicate)
+     * @param clause Clause to retract
+     * @param args Substitution arguments to apply to clause
      * @return True if retraction succeeded, false otherwise.
      */
-    boolean retractAll(String term, Object... args);
+    boolean retractAll(String clause, Object... args);
 
     /**
      * Verify if unformatted textual query is provable
