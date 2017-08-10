@@ -39,11 +39,11 @@ public class QueryTest
      * solutions retrieved match expected values
      */
     @Test
-    public void checkQuerySolutions() throws IOException
+    public void querySolutionsTest() throws IOException
     {
         // hello_world.pl test resource
         // Filepath relative to java-bridge directory
-        SandboxedPrologContext prolog = new SandboxedPrologContext("test_hello_world");
+        PrologContext prolog = new SandboxedPrologContext("query_solution_test");
         final Path path = Paths.get("src/test/resources/prolog/hello_world.pl");
 
         // Ensure Prolog file was correctly loaded
@@ -79,5 +79,36 @@ public class QueryTest
         // Ensure we have received the amount of solutions
         // we expected
         assertEquals(expectedSolutionCount, solutionIndex);
+    }
+
+    /**
+     * Test if query setter syntax (previousValue <- newValue)
+     * is functional in a simulated scenario
+     */
+    @Test
+    public void querySetterTest()
+    {
+        PrologContext prolog = new SandboxedPrologContext("query_setter_test");
+
+        // student(:Name, :StudentId)
+        assert(prolog.assertFirst("student(student_a, 0)"));
+        assert(prolog.assertFirst("student(student_b, 1)"));
+
+        // school(:StudentName, :SchoolName)
+        String schoolName = "Simulated School";
+        assert(prolog.assertFirst("school(student_a, @S)", schoolName));
+        assert(prolog.assertFirst("school(student_b, @S)", schoolName));
+
+        // Attempt to change the school of the student with ID 0 to 'New Simulated School'
+        // and change their given student ID to 2
+        String newSchoolName = "New Simulated School";
+        assert(prolog.prove("student(Student, 0 <- 2), school(Student, CurrentSchool <- @S)",
+            newSchoolName));
+
+        // Check if values were correctly set
+        QuerySolution solution =
+            prolog.askForSolution("student(student_a, StudentId), school(student_a, School)");
+        assertEquals(2, solution.get("StudentId").intValue());
+        assertEquals("\'New Simulated School\'", solution.get("School").toString());
     }
 }

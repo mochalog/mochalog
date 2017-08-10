@@ -27,7 +27,7 @@ public abstract class AbstractFormatter implements Formatter
     // Regex pattern to apply for substitution rule identifiers
     private final Pattern RULE_PATTERN;
     // Formatting rule specification
-    private final FormatSpec formatSpec;
+    private final FormatSpec FORMAT_SPEC;
 
     /**
      * Constructor.
@@ -36,7 +36,7 @@ public abstract class AbstractFormatter implements Formatter
     {
         // Precompile regex pattern (faster performance)
         RULE_PATTERN = Pattern.compile("@\\w+");
-        formatSpec = new FormatSpec();
+        FORMAT_SPEC = new FormatSpec();
     }
 
     @Override
@@ -60,7 +60,7 @@ public abstract class AbstractFormatter implements Formatter
             // Format the specified rule according to given specifications
             try
             {
-                String replacement = formatSpec.applyRule(rule, arg);
+                String replacement = FORMAT_SPEC.applyRule(rule, arg);
                 // Ensure replacement string is converted into literal
                 // string (ensure \ and $ characters are treated correctly)
                 matcher.appendReplacement(formatBuffer, Matcher.quoteReplacement(replacement));
@@ -78,6 +78,6 @@ public abstract class AbstractFormatter implements Formatter
     @Override
     public void setRule(String identifier, FormattingRule rule)
     {
-        formatSpec.setRule(identifier, rule);
+        FORMAT_SPEC.setRule(identifier, rule);
     }
 }

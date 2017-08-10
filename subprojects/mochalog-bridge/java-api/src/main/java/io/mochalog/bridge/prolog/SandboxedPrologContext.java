@@ -78,12 +78,7 @@ public class SandboxedPrologContext implements PrologContext
         this.workingModule = module;
     }
 
-    /**
-     * Load a given file into the current context
-     * @param path Path to Prolog source file
-     * @return True if file loading was successful, false otherwise.
-     * @throws IOException File IO error occurred
-     */
+    @Override
     public boolean loadFile(Path path) throws IOException
     {
         return workingModule.importFile(path);

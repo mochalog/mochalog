@@ -21,7 +21,8 @@ import io.mochalog.bridge.prolog.query.QuerySolution;
 import io.mochalog.bridge.prolog.query.QuerySolutionList;
 import io.mochalog.bridge.prolog.query.collectors.QuerySolutionCollector;
 
-import org.jpl7.Term;
+import java.nio.file.Path;
+import java.io.IOException;
 
 /**
  * Interface to the SWI-Prolog intepreter context, allowing
@@ -29,6 +30,14 @@ import org.jpl7.Term;
  */
 public interface PrologContext
 {
+    /**
+     * Load a given file into the current context
+     * @param path Path to Prolog source file
+     * @return True if file loading was successful, false otherwise.
+     * @throws IOException File IO error occurred
+     */
+    boolean loadFile(Path path) throws IOException;
+
     /**
      * Wrapper of asserta/1 (add a new clause to the start of a predicate)
      * @param clause Clause to assert
