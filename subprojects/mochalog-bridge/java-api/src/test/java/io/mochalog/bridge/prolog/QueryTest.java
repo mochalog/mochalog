@@ -43,7 +43,7 @@ public class QueryTest
     {
         // hello_world.pl test resource
         // Filepath relative to java-bridge directory
-        Prolog prolog = new Prolog("test_hello_world");
+        SandboxedPrologContext prolog = new SandboxedPrologContext("test_hello_world");
         final Path path = Paths.get("src/test/resources/prolog/hello_world.pl");
 
         // Ensure Prolog file was correctly loaded

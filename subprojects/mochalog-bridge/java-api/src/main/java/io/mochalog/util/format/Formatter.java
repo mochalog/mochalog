@@ -19,14 +19,23 @@ package io.mochalog.util.format;
 /**
  * Formatter of strings using substitution rules
  */
-public interface Formatter<T>
+public interface Formatter
 {
     /**
      * Format a string into given object type based on
      * specified substitution rules
      * @param str String input
      * @param args Arguments to substitute
-     * @return Formatted object
+     * @return Formatted string
      */
-    T format(String str, Object... args);
+    String format(String str, Object... args);
+
+    /**
+     * Define the rule to apply when a given rule
+     * identifier is matched during in-progress string
+     * formatting
+     * @param identifier Rule identifier to match
+     * @param rule Rule to apply
+     */
+    void setRule(String identifier, FormattingRule rule);
 }

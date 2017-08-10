@@ -17,27 +17,34 @@
 package io.mochalog.bridge.prolog;
 
 import io.mochalog.bridge.prolog.lang.Module;
+
 import io.mochalog.bridge.prolog.query.Query;
 import io.mochalog.bridge.prolog.query.QuerySolution;
 import io.mochalog.bridge.prolog.query.QuerySolutionList;
+
 import io.mochalog.bridge.prolog.query.collectors.QuerySolutionCollector;
 import io.mochalog.bridge.prolog.query.collectors.SequentialQuerySolutionCollector;
+
+import io.mochalog.util.format.Formatter;
 
 import java.io.IOException;
 import java.nio.file.Path;
 
 /**
- * Interface to sandboxed SWI-Prolog interpreter context
+ * Interface to <i>sandboxed</i> SWI-Prolog interpreter context.
+ * Context provides access controls via SWI-Prolog modules allowing
+ * knowledge bases to be segregated in a concurrent environment
  */
-public class Prolog
+public class SandboxedPrologContext implements PrologContext
 {
+    // Module from which queries will be scoped
     private Module workingModule;
 
     /**
      * Constructor.
      * @param name Working module name
      */
-    public Prolog(String name)
+    public SandboxedPrologContext(String name)
     {
         this(new Module(name));
     }
@@ -46,13 +53,13 @@ public class Prolog
      * Constructor.
      * @param module Working module
      */
-    public Prolog(Module module)
+    public SandboxedPrologContext(Module module)
     {
         setWorkingModule(module);
     }
 
     /**
-     * Get module queries are being routed to
+     * Get module queries are being scoped from
      * in current Prolog context
      * @return Working module
      */
@@ -62,7 +69,7 @@ public class Prolog
     }
 
     /**
-     * Set module queries are being routed to
+     * Set module queries are being scoped from
      * in current Prolog context
      * @param module Working module
      */
@@ -82,85 +89,87 @@ public class Prolog
         return workingModule.importFile(path);
     }
 
-    /**
-     * Helper method wrapping assertz/1 (add a new clause to the end of a predicate)
-     * @param term Term to assert
-     * @param args Substitution arguments to apply to term
-     * @return True if assertion succeeded, false otherwise.
-     */
-    public boolean assertLast(String term, Object... args)
+    @Override
+    public boolean assertFirst(String clause, Object... args)
     {
-        Query query = Query.format("assertz(" + term + ")", args);
-        return prove(query);
+        Formatter formatter = new Query.Formatter();
+        String formattedClause = formatter.format(clause, args);
+        return prove("asserta(@A)", formattedClause);
     }
 
-    /**
-     * Helper method wrapping retract/1 (remove first clause in predicate)
-     * @param term Term to retract
-     * @return True if retraction succeeded, false otherwise.
-     */
-    public boolean retract(String term)
+    @Override
+    public boolean assertLast(String clause, Object... args)
     {
-        return prove("retract(" + term + ")");
+        Formatter formatter = new Query.Formatter();
+        String formattedClause = formatter.format(clause, args);
+        return prove("assertz(@A)", formattedClause);
     }
 
-    /**
-     * Helper method wrapping retractall/1 (remove all clauses in predicate)
-     * @param term Term to retract
-     * @return True if retraction succeeded, false otherwise
-     */
-    public boolean retractAll(String term)
+    @Override
+    public boolean retract(String term, Object... args)
     {
-        return prove("retractall(" + term + ")");
+        Formatter formatter = new Query.Formatter();
+        String formattedTerm = formatter.format(term, args);
+        return prove("retract(@A)", formattedTerm);
     }
 
-    /**
-     * Verify if textual query is provable
-     * @param text Query text
-     * @return True if provable, false otherwise.
-     */
-    public boolean prove(String text)
+    @Override
+    public boolean retractAll(String term, Object... args)
     {
-        return prove(new Query(text));
+        Formatter formatter = new Query.Formatter();
+        String formattedTerm = formatter.format(term, args);
+        return prove("retractall(@A)", formattedTerm);
     }
 
-    /**
-     * Verify if query is provable
-     * @param query Query to prove
-     * @return True if provable, false otherwise
-     */
+    @Override
+    public boolean prove(String text, Object... args)
+    {
+        return prove(Query.format(text, args));
+    }
+
+    @Override
     public boolean prove(Query query)
     {
         return ask(query).hasSolutions();
     }
 
-    /**
-     * Ask for solution to given query.
-     * <p>
-     * Useful when only single solution is necessary
-     * @param query Query to fetch solution to
-     * @return Solution
-     */
+    @Override
+    public QuerySolution askForSolution(String text, Object... args)
+    {
+        return askForSolution(Query.format(text, args));
+    }
+
+    @Override
     public QuerySolution askForSolution(Query query)
     {
         return ask(query).fetchFirstSolution();
     }
 
-    /**
-     * Ask for list view of solutions to given query.
-     * @param query Query to fetch solutions to
-     * @return Solution list
-     */
-    public QuerySolutionList askForSolutions(Query query)
+    @Override
+    public QuerySolution askForSolution(Query query, int index)
+    {
+        return ask(query).fetchSolution(index);
+    }
+
+    @Override
+    public QuerySolutionList askForAllSolutions(String text, Object... args)
+    {
+        return askForAllSolutions(Query.format(text, args));
+    }
+
+    @Override
+    public QuerySolutionList askForAllSolutions(Query query)
     {
         return new QuerySolutionList(query, workingModule);
     }
 
-    /**
-     * Open a new query session in SWI-Prolog interpreter
-     * @param query Query to open
-     * @return Query session
-     */
+    @Override
+    public QuerySolutionCollector ask(String text, Object... args)
+    {
+        return ask(Query.format(text, args));
+    }
+
+    @Override
     public QuerySolutionCollector ask(Query query)
     {
         SequentialQuerySolutionCollector.Builder builder =

@@ -16,7 +16,6 @@
 
 package io.mochalog.bridge.prolog.namespace;
 
-import io.mochalog.bridge.prolog.lang.ScopedContext;
 import io.mochalog.bridge.prolog.lang.Variable;
 
 import org.jpl7.Term;
@@ -28,7 +27,7 @@ import java.util.HashMap;
  * Namespace binding names to Prolog
  * variables within a given scope
  */
-public class ScopedNamespace implements AdaptableNamespace, ScopedContext
+public class ScopedNamespace implements AdaptableNamespace
 {
     // Bindings between variable names and variables
     private Map<String, Variable> definitions;

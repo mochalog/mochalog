@@ -17,8 +17,8 @@
 package io.mochalog.bridge.prolog.query;
 
 import io.mochalog.bridge.prolog.lang.Module;
-import io.mochalog.bridge.prolog.query.format.QueryFormatter;
-import io.mochalog.util.format.Formatter;
+
+import io.mochalog.util.format.AbstractFormatter;
 
 import java.util.Iterator;
 
@@ -28,6 +28,19 @@ import java.util.Iterator;
  */
 public class Query implements Iterable<QuerySolution>
 {
+    public static class Formatter extends AbstractFormatter
+    {
+        public Formatter()
+        {
+            super();
+
+            // Prolog atom value
+            setRule("A", String::valueOf);
+            // Prolog strings are wrapped in quote characters
+            setRule("S", o -> "\"" + String.valueOf(o) + "\"");
+        }
+    }
+
     // String form of Prolog query
     private String text;
 
@@ -69,8 +82,9 @@ public class Query implements Iterable<QuerySolution>
      */
     public static Query format(String query, Object... args)
     {
-        Formatter<Query> formatter = new QueryFormatter();
-        return formatter.format(query, args);
+        Formatter formatter = new Formatter();
+        String formattedQuery = formatter.format(query, args);
+        return new Query(formattedQuery);
     }
 
     public static String runnableInModule(Query query, Module module)

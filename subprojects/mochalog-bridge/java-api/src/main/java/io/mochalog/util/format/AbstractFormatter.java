@@ -20,14 +20,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Abstract implementation of formatter interface
+ * Abstract implementation of string formatter interface
  */
-public abstract class AbstractFormatter<T> implements Formatter<T>
+public abstract class AbstractFormatter implements Formatter
 {
     // Regex pattern to apply for substitution rule identifiers
     private final Pattern RULE_PATTERN;
     // Formatting rule specification
-    protected FormatSpec formatSpec;
+    private final FormatSpec formatSpec;
 
     /**
      * Constructor.
@@ -36,19 +36,11 @@ public abstract class AbstractFormatter<T> implements Formatter<T>
     {
         // Precompile regex pattern (faster performance)
         RULE_PATTERN = Pattern.compile("@\\w+");
-
         formatSpec = new FormatSpec();
-        formatSpec.setRule("S", String::valueOf);
     }
 
-    /**
-     * Parse an input string and perform any necessary
-     * substitutions according to rules specified by '$'
-     * @param str Input string
-     * @param args Arguments to substitute
-     * @return Formatted string
-     */
-    protected String formatString(String str, Object... args)
+    @Override
+    public String format(String str, Object... args)
     {
         final int RULE_BEGIN_INDEX = 1;
 
@@ -81,5 +73,11 @@ public abstract class AbstractFormatter<T> implements Formatter<T>
 
         matcher.appendTail(formatBuffer);
         return formatBuffer.toString();
+    }
+
+    @Override
+    public void setRule(String identifier, FormattingRule rule)
+    {
+        formatSpec.setRule(identifier, rule);
     }
 }
