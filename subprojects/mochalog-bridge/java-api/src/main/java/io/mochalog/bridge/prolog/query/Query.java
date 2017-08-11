@@ -20,9 +20,7 @@ import io.mochalog.bridge.prolog.lang.Module;
 
 import io.mochalog.util.format.AbstractFormatter;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -53,9 +51,11 @@ public class Query implements Iterable<QuerySolution>
             super();
 
             // Prolog atom value
-            setRule("A", String::valueOf);
+            setRule("A", (i, o) -> String.valueOf(o));
             // Prolog strings are wrapped in quote characters
-            setRule("S", o -> "\"" + String.valueOf(o) + "\"");
+            setRule("S", (i, o) -> "\"" + String.valueOf(o) + "\"");
+            // Prolog integer
+            setRule("I", Formatter::formatInteger);
 
             // Basic regex pattern defining a Prolog compound
             COMPOUND_PATTERN = Pattern.compile("\\w+\\([^(]*\\)");
@@ -73,7 +73,7 @@ public class Query implements Iterable<QuerySolution>
         }
 
         @Override
-        public String format(String str, Object... args)
+        public String format(String str, Object... args) throws IllegalFormatException
         {
             String formattedStr = super.format(str, args);
 
@@ -112,6 +112,34 @@ public class Query implements Iterable<QuerySolution>
 
             compoundMatcher.appendTail(queryBuffer);
             return queryBuffer.toString() + setterCompounds.toString();
+        }
+
+        /**
+         * Format a given object argument into an integer string
+         * with Prolog specifications
+         * @param identifier Rule identifier
+         * @param o Object substitution argument
+         * @return Formatted integer replacement string
+         * @throws IllegalFormatException Unable to convert given object
+         * into an integer
+         */
+        private static String formatInteger(String identifier, Object o)
+            throws IllegalFormatException
+        {
+            if (!(o instanceof Number))
+            {
+                // TODO: Currently only gives the first character of the identifier
+                // This is reasonable currently due to all conversion codes
+                // being a single character - Should be changed in future (create
+                // custom exception)
+                throw new IllegalFormatConversionException(identifier.charAt(0), o.getClass());
+            }
+            else
+            {
+                Number number = (Number) o;
+                int intValue = number.intValue();
+                return String.valueOf(intValue);
+            }
         }
     }
 

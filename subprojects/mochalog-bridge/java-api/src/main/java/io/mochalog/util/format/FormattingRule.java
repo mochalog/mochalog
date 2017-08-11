@@ -16,13 +16,21 @@
 
 package io.mochalog.util.format;
 
-import java.util.function.Function;
+import java.util.IllegalFormatException;
 
 /**
  * Functional interface which allows for the transformation
  * of an object argument into a formatted string
  */
 @FunctionalInterface
-public interface FormattingRule extends Function<Object, String>
+public interface FormattingRule
 {
+    /**
+     * Apply the rule specified by the given identifier
+     * @param identifier Conversion code
+     * @param o Object substitution argument
+     * @return Formatted replacement string
+     * @throws IllegalFormatException Rule was unable to be applied to the given object
+     */
+    String apply(String identifier, Object o) throws IllegalFormatException;
 }

@@ -16,6 +16,8 @@
 
 package io.mochalog.util.format;
 
+import java.util.IllegalFormatException;
+
 /**
  * Formatter of strings using substitution rules
  */
@@ -27,8 +29,10 @@ public interface Formatter
      * @param str String input
      * @param args Arguments to substitute
      * @return Formatted string
+     * @throws IllegalFormatException Unable to format the given
+     * input string using the provided substitution arguments
      */
-    String format(String str, Object... args);
+    String format(String str, Object... args) throws IllegalFormatException;
 
     /**
      * Define the rule to apply when a given rule

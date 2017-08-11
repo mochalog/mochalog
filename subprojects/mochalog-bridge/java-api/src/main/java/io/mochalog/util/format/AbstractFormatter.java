@@ -16,6 +16,7 @@
 
 package io.mochalog.util.format;
 
+import java.util.IllegalFormatException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -40,7 +41,7 @@ public abstract class AbstractFormatter implements Formatter
     }
 
     @Override
-    public String format(String str, Object... args)
+    public String format(String str, Object... args) throws IllegalFormatException
     {
         final int RULE_BEGIN_INDEX = 1;
 
@@ -58,17 +59,10 @@ public abstract class AbstractFormatter implements Formatter
             Object arg = args[i];
 
             // Format the specified rule according to given specifications
-            try
-            {
-                String replacement = FORMAT_SPEC.applyRule(rule, arg);
-                // Ensure replacement string is converted into literal
-                // string (ensure \ and $ characters are treated correctly)
-                matcher.appendReplacement(formatBuffer, Matcher.quoteReplacement(replacement));
-            }
-            catch (NoSuchMethodException e)
-            {
-                System.err.println(e.getMessage());
-            }
+            String replacement = FORMAT_SPEC.applyRule(rule, arg);
+            // Ensure replacement string is converted into literal
+            // string (ensure \ and $ characters are treated correctly)
+            matcher.appendReplacement(formatBuffer, Matcher.quoteReplacement(replacement));
         }
 
         matcher.appendTail(formatBuffer);

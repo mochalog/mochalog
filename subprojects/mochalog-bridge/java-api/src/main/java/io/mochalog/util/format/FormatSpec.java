@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import java.util.IllegalFormatException;
+import java.util.UnknownFormatConversionException;
 
 /**
  * Specification of bindings between string identifiers
@@ -56,19 +57,16 @@ public class FormatSpec
      * @return Formatted string
      * @throws IllegalFormatException Unable to format given object argument
      * according to specified rule
-     * @throws NoSuchMethodException No rule exists corresponding to the
-     * given identifier
      */
-    public String applyRule(String identifier, Object arg) throws IllegalFormatException,
-        NoSuchMethodException
+    public String applyRule(String identifier, Object arg) throws IllegalFormatException
     {
         FormattingRule rule = formattingRules.get(identifier);
         if (rule == null)
         {
-            throw new NoSuchMethodException("Formatting rule not available corresponding " +
+            throw new UnknownFormatConversionException("Formatting rule not available corresponding " +
                 "to given identifier " + identifier);
         }
 
-        return rule.apply(arg);
+        return rule.apply(identifier, arg);
     }
 }
