@@ -29,6 +29,8 @@ buildscript {
 }
 
 subprojects {
+    group = 'io.mochalog.pl2j'
+
     ext.xtextVersion = '2.10.0'
     repositories {
         jcenter()

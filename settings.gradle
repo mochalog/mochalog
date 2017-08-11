@@ -14,11 +14,25 @@
  * limitations under the License.
  */
 
-rootProject.name = 'mochalog'
+rootProject.name = 'io.mochalog'
 
-include 'subprojects:mochalog-bridge:java-api'
+final def JAVA_BRIDGE = ':io.mochalog.bridge.java',
+          PL2J_PARENT = ':io.mochalog.pl2j',
+          PL2J_CORE = ':io.mochalog.pl2j:pl2j',
+          PL2J_ECLIPSE = ':io.mochalog.pl2j:pl2j.ide',
+          PL2J_IDEA = ':io.mochalog.pl2j:pl2j.idea'
 
-include 'subprojects:mochalog-pl2j'
-include 'subprojects:mochalog-pl2j:pl2j'
-include 'subprojects:mochalog-pl2j:pl2j.ide'
-include 'subprojects:mochalog-pl2j:pl2j.idea'
+// Define settings for Java API of Mochalog bridge
+include JAVA_BRIDGE
+project(JAVA_BRIDGE).projectDir = file('subprojects/mochalog-bridge/java-api')
+
+// Define settings for Prolog to Java (PL2J) transpilation
+// subprojects
+include PL2J_PARENT
+project(PL2J_PARENT).projectDir = file('subprojects/mochalog-pl2j')
+include PL2J_CORE
+project(PL2J_CORE).name = 'core'
+include PL2J_ECLIPSE
+project(PL2J_ECLIPSE).name = 'eclipse'
+include PL2J_IDEA
+project(PL2J_IDEA).name = 'idea'

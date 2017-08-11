@@ -15,7 +15,7 @@
  */
 
 group 'io.mochalog'
-version '0.1.3'
+version '0.2.0-SNAPSHOT'
 
 description =
     """
@@ -28,3 +28,30 @@ description =
     See https://github.com/mochalog/mochalog for more information.
     Copyright (c) 2017, The Mochalog Authors.
     """
+
+apply plugin: 'maven-publish'
+
+// Publish built subprojects to Maven repository
+subprojects {
+    // Ensure that we maintain the Mochalog group structure
+    // unless explicitly redefined in a subproject
+    if (!project.hasProperty("group")) {
+        project.group = rootProject.group
+    }
+
+    // Apply the version specified by the root project if
+    // no subproject version is explicitly defined in subproject
+    if (!project.hasProperty("version") || project.version == 'unspecified') {
+        project.version = rootProject.version
+    }
+
+    publishing {
+        publications {
+            "${project.name}"(MavenPublication) {
+                groupId project.group
+                artifactId project.name
+                version project.version
+            }
+        }
+    }
+}

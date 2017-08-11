@@ -17,7 +17,7 @@
 // Sourced from skeleton Gradle Xtext integration
 
 dependencies {
-    compile project(':subprojects:mochalog-pl2j:pl2j')
+    compile project(':io.mochalog.pl2j:core')
     compile "org.eclipse.xtext:org.eclipse.xtext.ide:${xtextVersion}"
     compile "org.eclipse.xtext:org.eclipse.xtext.xbase.ide:${xtextVersion}"
 }

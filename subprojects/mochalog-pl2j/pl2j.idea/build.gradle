@@ -23,8 +23,8 @@ apply plugin: 'org.xtext.idea-repository'
 apply plugin: 'download-idea-logger'
 
 dependencies {
-    compile project(':subprojects:mochalog-pl2j:pl2j')
-    compile project(':subprojects:mochalog-pl2j:pl2j.ide')
+    compile project(':io.mochalog.pl2j:core')
+    compile project(':io.mochalog.pl2j:eclipse')
 }
 
 // Ensure Travis-CI builds Xtext IDEA project
