@@ -14,7 +14,7 @@ env:
 
 before_install:
     # Ensure SWI-Prolog is downloaded/built on to the build server
-    - sudo thirdparty/swi-prolog/swipl-install.sh $SWIPL_VERSION
+    - sudo ./thirdparty/swi-prolog/swipl-install.sh $SWIPL_VERSION
 
 # To prevent cache being uploaded after each build due to Gradle
 # must perform the following
