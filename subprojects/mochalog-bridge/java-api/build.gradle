@@ -23,7 +23,11 @@ repositories {
     mavenCentral()
 }
 
-test {
+// Ensure we only set this system property given
+// we are performing tests (avoid unnecessarily
+// polluting build environment) - Achieved
+// by setting in execution phase
+test.doFirst {
     // Add SWI-Prolog shared library directory to java.library.path
     systemProperty 'java.library.path', swiPrologBinaryDir
 }
