@@ -17,4 +17,4 @@ install:
     # installed and configured (build times would be much larger
     # if we rely on swipl_install.sh)
     # As tests are not required for publishing, they can be disabled
-    ./gradlew clean build -x test
+    ./gradlew clean publishToMavenLocal -x test
