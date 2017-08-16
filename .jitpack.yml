@@ -1,0 +1,20 @@
+# Configure Jitpack build options (https://jitpack.io/)
+# Jitpack is currently offered due to lack of Maven Central packaging
+# such that clients can depend on Mochalog
+# In future, Mochalog releases will be directly available via
+# Maven Central and Jitpack dependency will no long be necessary
+
+jdk:
+    - oraclejdk8
+
+env:
+    # Set Intellij IDEA environment variables
+    IDEA_VERSION: "171.4249.39"
+
+install:
+    # Disable tests for Mochalog Jitpack builds
+    # Build environments testing Mochalog must have SWI-Prolog
+    # installed and configured (build times would be much larger
+    # if we rely on swipl_install.sh)
+    # As tests are not required for publishing, they can be disabled
+    ./gradlew clean build -x test
