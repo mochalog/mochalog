@@ -105,7 +105,7 @@ public class Query implements Iterable<QuerySolution>
                         Matcher.quoteReplacement(previousCompound));
 
                     // Add the necessary setter constructs to the end of the query
-                    setterCompounds.append(", retract(").append(previousCompound).append(")");
+                    setterCompounds.append(", retractall(").append(previousCompound).append(")");
                     setterCompounds.append(", assertz(").append(newCompound).append(")");
                 }
             }
