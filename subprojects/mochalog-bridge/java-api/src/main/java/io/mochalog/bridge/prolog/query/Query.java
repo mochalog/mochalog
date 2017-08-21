@@ -144,7 +144,7 @@ public class Query implements Iterable<QuerySolution>
     }
 
     // String form of Prolog query
-    private String text;
+    private final String text;
 
     /**
      * Constructor.
@@ -189,10 +189,43 @@ public class Query implements Iterable<QuerySolution>
         return new Query(formattedQuery);
     }
 
+    /**
+     * Generate a string form of the given query which
+     * is runnable from the specified module
+     * @param query Query to convert
+     * @param module Module to run query from
+     * @return Transformed query string
+     */
     public static String runnableInModule(Query query, Module module)
     {
         return module == null ?
             query.toString() :
             String.format("%s:(%s)", module.getName(), query.toString());
+    }
+
+    @Override
+    public final boolean equals(Object o)
+    {
+        // Early termination for self-identity
+        if (this == o)
+        {
+            return true;
+        }
+
+        // null/type validation
+        if (o != null && o instanceof Query)
+        {
+            Query query = (Query) o;
+            // Field comparisons
+            return Objects.equals(text, query.text);
+        }
+
+        return false;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return Objects.hashCode(text);
     }
 }

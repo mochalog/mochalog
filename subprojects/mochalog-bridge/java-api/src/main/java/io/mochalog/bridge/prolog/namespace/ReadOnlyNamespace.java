@@ -19,6 +19,7 @@ package io.mochalog.bridge.prolog.namespace;
 import org.jpl7.Term;
 
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Namespace which is only capable of being read from.
@@ -57,5 +58,31 @@ public class ReadOnlyNamespace implements Namespace
     public boolean has(String name)
     {
         return bindings.containsKey(name);
+    }
+
+    @Override
+    public final boolean equals(Object o)
+    {
+        // Early termination for self-identity
+        if (this == o)
+        {
+            return true;
+        }
+
+        // null/type validation
+        if (o != null && o instanceof ReadOnlyNamespace)
+        {
+            ReadOnlyNamespace namespace = (ReadOnlyNamespace) o;
+            // Field comparisons
+            return Objects.equals(bindings, namespace.bindings);
+        }
+
+        return false;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return Objects.hashCode(bindings);
     }
 }

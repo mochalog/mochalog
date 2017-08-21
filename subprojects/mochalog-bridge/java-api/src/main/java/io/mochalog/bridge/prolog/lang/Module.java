@@ -20,10 +20,12 @@ import io.mochalog.bridge.prolog.query.Query;
 import io.mochalog.bridge.prolog.query.collectors.QuerySolutionCollector;
 import io.mochalog.bridge.prolog.query.collectors.SequentialQuerySolutionCollector;
 
-import java.io.IOError;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Objects;
+
+import java.io.IOError;
+import java.io.IOException;
 
 /**
  * Representation of a SWI-Prolog module (predicate namespace)
@@ -31,7 +33,7 @@ import java.nio.file.Path;
 public class Module
 {
     // Identifier for the module
-    private String name;
+    private final String name;
 
     /**
      * Constructor.
@@ -99,5 +101,31 @@ public class Module
             throw new IOException("File path could not be converted " +
                 "to absolute file path.");
         }
+    }
+
+    @Override
+    public final boolean equals(Object o)
+    {
+        // Early termination for self-identity
+        if (this == o)
+        {
+            return true;
+        }
+
+        // null/type validation
+        if (o != null && o instanceof Module)
+        {
+            Module module = (Module) o;
+            // Field comparisons
+            return Objects.equals(name, module.name);
+        }
+
+        return false;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return Objects.hashCode(name);
     }
 }

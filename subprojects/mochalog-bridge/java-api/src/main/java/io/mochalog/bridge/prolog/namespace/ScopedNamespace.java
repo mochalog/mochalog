@@ -22,6 +22,7 @@ import org.jpl7.Term;
 
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Objects;
 
 /**
  * Namespace binding names to Prolog
@@ -132,5 +133,31 @@ public class ScopedNamespace implements AdaptableNamespace
     public boolean has(String name)
     {
         return definitions.containsKey(name);
+    }
+
+    @Override
+    public final boolean equals(Object o)
+    {
+        // Early termination for self-identity
+        if (this == o)
+        {
+            return true;
+        }
+
+        // null/type validation
+        if (o != null && o instanceof ScopedNamespace)
+        {
+            ScopedNamespace namespace = (ScopedNamespace) o;
+            // Field comparisons
+            return Objects.equals(definitions, namespace.definitions);
+        }
+
+        return false;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return Objects.hashCode(definitions);
     }
 }

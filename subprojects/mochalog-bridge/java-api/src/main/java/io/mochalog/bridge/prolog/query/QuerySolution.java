@@ -21,6 +21,8 @@ import io.mochalog.bridge.prolog.namespace.Namespace;
 
 import org.jpl7.Term;
 
+import java.util.Objects;
+
 /**
  * Solution to individual goal successfully proved
  * by the SWI-Prolog engine (with variable unification)
@@ -51,5 +53,31 @@ public class QuerySolution
     public Term get(String name) throws NoSuchVariableException
     {
         return namespace.get(name);
+    }
+
+    @Override
+    public final boolean equals(Object o)
+    {
+        // Early termination for self-identity
+        if (this == o)
+        {
+            return true;
+        }
+
+        // null/type validation
+        if (o != null && o instanceof QuerySolution)
+        {
+            QuerySolution solution = (QuerySolution) o;
+            // Field comparisons
+            return Objects.equals(namespace, solution.namespace);
+        }
+
+        return false;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return Objects.hashCode(namespace);
     }
 }

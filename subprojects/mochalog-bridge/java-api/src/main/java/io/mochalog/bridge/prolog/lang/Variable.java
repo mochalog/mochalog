@@ -18,6 +18,8 @@ package io.mochalog.bridge.prolog.lang;
 
 import org.jpl7.Term;
 
+import java.util.Objects;
+
 /**
  * Representation of a variable type
  * in SWI-Prolog
@@ -77,5 +79,31 @@ public class Variable
     public String toString()
     {
         return value.toString();
+    }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        // Early termination for self-identity
+        if (this == o)
+        {
+            return true;
+        }
+
+        // null/type validation
+        if (o != null && o instanceof Variable)
+        {
+            Variable variable = (Variable) o;
+            // Field comparisons
+            return Objects.equals(name, variable.name);
+        }
+
+        return false;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return Objects.hashCode(name);
     }
 }
