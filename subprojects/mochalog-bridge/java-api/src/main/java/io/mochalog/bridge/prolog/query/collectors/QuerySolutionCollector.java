@@ -75,8 +75,18 @@ public interface QuerySolutionCollector
      */
     QuerySolution fetchSolution(int index) throws NoSuchSolutionException;
 
+    /**
+     * Fetch the first solution to the query.
+     * @return First solution
+     * @throws NoSuchSolutionException Query has no solutions
+     */
     QuerySolution fetchFirstSolution() throws NoSuchSolutionException;
 
+    /**
+     * Fetch the last solution to the query.
+     * @return Last solution
+     * @throws NoSuchSolutionException Query has no solutions
+     */
     QuerySolution fetchLastSolution() throws NoSuchSolutionException;
 
     /**

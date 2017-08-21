@@ -25,6 +25,7 @@ import io.mochalog.bridge.prolog.query.QuerySolutionList;
 import io.mochalog.bridge.prolog.query.collectors.QuerySolutionCollector;
 import io.mochalog.bridge.prolog.query.collectors.SequentialQuerySolutionCollector;
 
+import io.mochalog.bridge.prolog.query.exception.NoSuchSolutionException;
 import io.mochalog.util.format.Formatter;
 import org.jpl7.Term;
 
@@ -150,18 +151,21 @@ public class SandboxedPrologContext implements PrologContext
 
     @Override
     public QuerySolution askForSolution(String text, Object... args)
+        throws NoSuchSolutionException
     {
         return askForSolution(Query.format(text, args));
     }
 
     @Override
     public QuerySolution askForSolution(Query query)
+        throws NoSuchSolutionException
     {
         return ask(query).fetchFirstSolution();
     }
 
     @Override
     public QuerySolution askForSolution(Query query, int index)
+        throws NoSuchSolutionException
     {
         return ask(query).fetchSolution(index);
     }

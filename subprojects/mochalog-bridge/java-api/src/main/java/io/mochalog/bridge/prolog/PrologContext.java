@@ -21,6 +21,7 @@ import io.mochalog.bridge.prolog.query.QuerySolution;
 import io.mochalog.bridge.prolog.query.QuerySolutionList;
 import io.mochalog.bridge.prolog.query.collectors.QuerySolutionCollector;
 
+import io.mochalog.bridge.prolog.query.exception.NoSuchSolutionException;
 import org.jpl7.Term;
 
 import java.nio.file.Path;
@@ -102,8 +103,10 @@ public interface PrologContext
      * @param text Query text to fetch solution of
      * @param args Substitution arguments to apply to text
      * @return Solution
+     * @throws NoSuchSolutionException Query has no solutions
      */
-    QuerySolution askForSolution(String text, Object... args);
+    QuerySolution askForSolution(String text, Object... args)
+        throws NoSuchSolutionException;
 
     /**
      * Ask for first solution to given query.
@@ -111,16 +114,20 @@ public interface PrologContext
      * Useful when only single solution is necessary
      * @param query Query to fetch solution of
      * @return Solution
+     * @throws NoSuchSolutionException Query has no solutions
      */
-    QuerySolution askForSolution(Query query);
+    QuerySolution askForSolution(Query query)
+        throws NoSuchSolutionException;
 
     /**
      * Ask for solution in a given index to a query.
      * @param query Query to fetch solution of
      * @param index Index of solution to fetch
      * @return Solution
+     * @throws NoSuchSolutionException No solutions exist at the given index
      */
-    QuerySolution askForSolution(Query query, int index);
+    QuerySolution askForSolution(Query query, int index)
+        throws NoSuchSolutionException;
 
     /**
      * Ask for list view of all solutions to unformatted query.
