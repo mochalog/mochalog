@@ -196,4 +196,10 @@ public class SandboxedPrologContext implements PrologContext
         builder.setWorkingModule(workingModule);
         return builder.build();
     }
+
+    @Override
+    public String toString()
+    {
+        return workingModule.getName();
+    }
 }
