@@ -146,7 +146,11 @@ public class SandboxedPrologContext implements PrologContext
     @Override
     public boolean prove(Query query)
     {
-        return ask(query).hasSolutions();
+        QuerySolutionCollector collector = ask(query);
+        boolean result = collector.hasSolutions();
+        // Ensure temporary collector closed
+        collector.detach();
+        return result;
     }
 
     @Override
@@ -160,14 +164,34 @@ public class SandboxedPrologContext implements PrologContext
     public QuerySolution askForSolution(Query query)
         throws NoSuchSolutionException
     {
-        return ask(query).fetchFirstSolution();
+        QuerySolutionCollector collector = ask(query);
+        try
+        {
+            return collector.fetchFirstSolution();
+        }
+        finally
+        {
+            // Ensure temporary collector closed
+            // regardless of result
+            collector.detach();
+        }
     }
 
     @Override
     public QuerySolution askForSolution(Query query, int index)
         throws NoSuchSolutionException
     {
-        return ask(query).fetchSolution(index);
+        QuerySolutionCollector collector = ask(query);
+        try
+        {
+            return collector.fetchSolution(index);
+        }
+        finally
+        {
+            // Ensure temporary collector closed
+            // regardless of result
+            collector.detach();
+        }
     }
 
     @Override

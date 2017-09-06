@@ -60,6 +60,9 @@ public class SequentialQuerySolutionCollector extends AbstractQuerySolutionColle
         }
     }
 
+    // Flag indicating whether solution collector
+    // remains attached to interpreter
+    private boolean isAttached;
     // Internal JPL query (facilitates
     // low-level connection to SWI-Prolog native interface)
     private org.jpl7.Query interpreterQuery;
@@ -82,6 +85,8 @@ public class SequentialQuerySolutionCollector extends AbstractQuerySolutionColle
 
         // Open a new JPL query
         interpreterQuery = new org.jpl7.Query(text);
+        // Signal attachment to intepreter
+        isAttached = true;
     }
 
     @Override
@@ -195,7 +200,7 @@ public class SequentialQuerySolutionCollector extends AbstractQuerySolutionColle
     private QuerySolution fetchNextSolution() throws EndOfQueryException
     {
         // Check if further solutions exist
-        if (!allSolutionsFetched && interpreterQuery.hasMoreSolutions())
+        if (isAttached && !allSolutionsFetched && interpreterQuery.hasMoreSolutions())
         {
             // Retrieve the next query solution and update
             // namespace values
@@ -209,6 +214,10 @@ public class SequentialQuerySolutionCollector extends AbstractQuerySolutionColle
 
         // No further solutions to fetch
         allSolutionsFetched = true;
+        // Close the collector when all solutions
+        // are fetched
+        detach();
+
         throw new EndOfQueryException("No further query solutions remain.");
     }
 
@@ -221,5 +230,21 @@ public class SequentialQuerySolutionCollector extends AbstractQuerySolutionColle
     private boolean isSolutionCached(int index)
     {
         return index < solutionCache.size();
+    }
+
+    @Override
+    public boolean detach()
+    {
+        if (isAttached)
+        {
+            // Close the underlying query
+            // Necessary as neglecting to close
+            // JPL queries can resulting in Prolog
+            // engine deadlocks
+            interpreterQuery.close();
+            isAttached = false;
+        }
+
+        return true;
     }
 }

@@ -24,6 +24,10 @@ import java.util.Collection;
 /**
  * Collect the solutions to a given query at the
  * time of initialisation.
+ * <p>
+ * Provides a <i>best effort</i> view of the
+ * solutions to a query, as collector may be forcibly
+ * killed before all solutions could be retrieved.
  */
 public interface QuerySolutionCollector
 {
@@ -94,4 +98,12 @@ public interface QuerySolutionCollector
      * @return Array of query solutions
      */
     QuerySolution[] fetchAllSolutions();
+
+    /**
+     * Detach the collector from the interpreter
+     * and close any unlerlying query resources.
+     * @return True if detach operation was successful,
+     * false otherwise.
+     */
+    boolean detach();
 }
