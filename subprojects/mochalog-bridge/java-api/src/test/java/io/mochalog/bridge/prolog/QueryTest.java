@@ -22,6 +22,7 @@ import io.mochalog.bridge.prolog.query.QuerySolution;
 
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
@@ -110,5 +111,36 @@ public class QueryTest
             prolog.askForSolution("student(student_a, StudentId), school(student_a, School)");
         assertEquals(2, solution.get("StudentId").intValue());
         assertEquals("\'New Simulated School\'", solution.get("School").toString());
+    }
+
+    /**
+     * Ensure all data is completely sandboxed through modules.
+     */
+    @Test
+    public void ensureSandboxedModules()
+    {
+        PrologContext firstModule = new SandboxedPrologContext("module_1");
+        PrologContext secondModule = new SandboxedPrologContext("module_2");
+
+        // Ensure that removing data will not result in exceptions
+        assert(firstModule.prove("dynamic module_2_data/0"));
+        assert(secondModule.prove("dynamic module_1_data/0"));
+
+        // Ensure data is not added/accessible by both modules
+        assert(firstModule.assertFirst("module_1_data"));
+        assert(secondModule.assertFirst("module_2_data"));
+
+        assert(firstModule.prove("module_1_data"));
+        assertFalse(firstModule.prove("module_2_data"));
+
+        assert(secondModule.prove("module_2_data"));
+        assertFalse(secondModule.prove("module_1_data"));
+
+        assert(firstModule.assertFirst("shared_predicate"));
+        assert(secondModule.assertFirst("shared_predicate"));
+
+        // Ensure data is not removed from both modules
+        assert(firstModule.retract("shared_predicate"));
+        assert(secondModule.prove("shared_predicate"));
     }
 }
