@@ -26,8 +26,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 /**
  * Test suite for Java to Prolog queries
@@ -45,11 +43,9 @@ public class QueryTest
         // hello_world.pl test resource
         // Filepath relative to java-bridge directory
         PrologContext prolog = new SandboxedPrologContext("query_solution_test");
-        final Path path = Paths.get("src/test/resources/prolog/hello_world.pl");
-
         // Ensure Prolog file was correctly loaded
         // by SWI-Prolog interpreter
-        assert(prolog.loadFile(path));
+        assert(prolog.importFile("src/test/resources/prolog/hello_world.pl"));
 
         // Solutions expected from get_hello_world query
         final String[] expectedSolutions = { "hello", "world" };

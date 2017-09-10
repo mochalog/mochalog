@@ -19,17 +19,14 @@ package io.mochalog.bridge.prolog;
 import io.mochalog.bridge.prolog.lang.Module;
 
 import io.mochalog.bridge.prolog.query.Query;
-import io.mochalog.bridge.prolog.query.QuerySolution;
 import io.mochalog.bridge.prolog.query.QuerySolutionList;
 
 import io.mochalog.bridge.prolog.query.collectors.QuerySolutionCollector;
 import io.mochalog.bridge.prolog.query.collectors.SequentialQuerySolutionCollector;
 
-import io.mochalog.bridge.prolog.query.exception.NoSuchSolutionException;
-import io.mochalog.util.format.Formatter;
-import org.jpl7.Term;
-
+import java.io.IOError;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 /**
@@ -37,10 +34,10 @@ import java.nio.file.Path;
  * Context provides access controls via SWI-Prolog modules allowing
  * knowledge bases to be segregated in a concurrent environment
  */
-public class SandboxedPrologContext implements PrologContext
+public class SandboxedPrologContext extends AbstractPrologContext
 {
     // Module from which queries will be scoped
-    private Module workingModule;
+    private final Module workingModule;
 
     /**
      * Constructor.
@@ -57,7 +54,48 @@ public class SandboxedPrologContext implements PrologContext
      */
     public SandboxedPrologContext(Module module)
     {
-        setWorkingModule(module);
+        this.workingModule = module;
+        prove("use_module('../prolog-api/src/main/prolog/mochalog.pl')");
+    }
+
+    @Override
+    public boolean importFile(Path path) throws IOException
+    {
+        // Ensure valid file path was supplied
+        if (!Files.exists(path))
+        {
+            throw new IOException("Specified file path does not exist.");
+        }
+
+        try
+        {
+            // Convert to absolute path with forward-slash file
+            // separators
+            Path absolutePath = path.toAbsolutePath();
+            String escapedPath = absolutePath.toString().replace('\\', '/');
+            // Import file into the current module
+            return prove("import_file(@S, @A)", escapedPath, workingModule.getName());
+        }
+        catch (IOError e)
+        {
+            throw new IOException("File path could not be converted " +
+                "to absolute file path.");
+        }
+    }
+
+    @Override
+    public QuerySolutionList askForAllSolutions(Query query)
+    {
+        return new QuerySolutionList(query, workingModule);
+    }
+
+    @Override
+    public QuerySolutionCollector ask(Query query)
+    {
+        SequentialQuerySolutionCollector.Builder builder =
+            new SequentialQuerySolutionCollector.Builder(query);
+        builder.setWorkingModule(workingModule);
+        return builder.build();
     }
 
     /**
@@ -68,157 +106,6 @@ public class SandboxedPrologContext implements PrologContext
     public Module getWorkingModule()
     {
         return workingModule;
-    }
-
-    /**
-     * Set module queries are being scoped from
-     * in current Prolog context
-     * @param module Working module
-     */
-    public void setWorkingModule(Module module)
-    {
-        this.workingModule = module;
-    }
-
-    @Override
-    public boolean loadFile(Path path) throws IOException
-    {
-        return workingModule.importFile(path);
-    }
-
-    @Override
-    public Term get(String name)
-    {
-        return askForSolution("@A(Result)", name).get("Result");
-    }
-
-    @Override
-    public boolean assertFirst(String clause, Object... args)
-    {
-        return modifyDynamicPredicate("asserta", clause, args);
-    }
-
-    @Override
-    public boolean assertLast(String clause, Object... args)
-    {
-        return modifyDynamicPredicate("assertz", clause, args);
-    }
-
-    @Override
-    public boolean retract(String clause, Object... args)
-    {
-        return modifyDynamicPredicate("retract", clause, args);
-    }
-
-    @Override
-    public boolean retractAll(String clause, Object... args)
-    {
-        return modifyDynamicPredicate("retractall", clause, args);
-    }
-
-    /**
-     * Perform a modification of the SWI-Prolog clause database
-     * (e.g. asserta, assertz, retract, retractall, etc.)
-     * @param modifier Modification meta-predicate to apply
-     * @param clause Clause to modify dynamic predicate with
-     * @param args Substitution arguments to apply to clause
-     * @return True if modification succeeded, false otherwise.
-     */
-    // TODO: The existence of this method makes the case for either an
-    // AbstractPrologContext or recursive query formatting
-    private boolean modifyDynamicPredicate(String modifier, String clause, Object... args)
-    {
-        // Apply substitution arguments to internal clause argument
-        // before formatting metapredicate
-        Formatter formatter = new Query.Formatter();
-        String formattedClause = formatter.format(clause, args);
-        // Perform meta-predicate query allowing for modification
-        // of dynamic predicates
-        return prove("@A(@A)", modifier, formattedClause);
-    }
-
-    @Override
-    public boolean prove(String text, Object... args)
-    {
-        return prove(Query.format(text, args));
-    }
-
-    @Override
-    public boolean prove(Query query)
-    {
-        QuerySolutionCollector collector = ask(query);
-        boolean result = collector.hasSolutions();
-        // Ensure temporary collector closed
-        collector.detach();
-        return result;
-    }
-
-    @Override
-    public QuerySolution askForSolution(String text, Object... args)
-        throws NoSuchSolutionException
-    {
-        return askForSolution(Query.format(text, args));
-    }
-
-    @Override
-    public QuerySolution askForSolution(Query query)
-        throws NoSuchSolutionException
-    {
-        QuerySolutionCollector collector = ask(query);
-        try
-        {
-            return collector.fetchFirstSolution();
-        }
-        finally
-        {
-            // Ensure temporary collector closed
-            // regardless of result
-            collector.detach();
-        }
-    }
-
-    @Override
-    public QuerySolution askForSolution(Query query, int index)
-        throws NoSuchSolutionException
-    {
-        QuerySolutionCollector collector = ask(query);
-        try
-        {
-            return collector.fetchSolution(index);
-        }
-        finally
-        {
-            // Ensure temporary collector closed
-            // regardless of result
-            collector.detach();
-        }
-    }
-
-    @Override
-    public QuerySolutionList askForAllSolutions(String text, Object... args)
-    {
-        return askForAllSolutions(Query.format(text, args));
-    }
-
-    @Override
-    public QuerySolutionList askForAllSolutions(Query query)
-    {
-        return new QuerySolutionList(query, workingModule);
-    }
-
-    @Override
-    public QuerySolutionCollector ask(String text, Object... args)
-    {
-        return ask(Query.format(text, args));
-    }
-
-    @Override
-    public QuerySolutionCollector ask(Query query)
-    {
-        SequentialQuerySolutionCollector.Builder builder =
-            new SequentialQuerySolutionCollector.Builder(query);
-        builder.setWorkingModule(workingModule);
-        return builder.build();
     }
 
     @Override

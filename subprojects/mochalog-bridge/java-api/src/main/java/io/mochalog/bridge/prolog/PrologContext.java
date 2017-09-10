@@ -34,12 +34,20 @@ import java.io.IOException;
 public interface PrologContext
 {
     /**
-     * Load a given file into the current context
+     * Import a given source file into the current context.
      * @param path Path to Prolog source file
      * @return True if file loading was successful, false otherwise.
      * @throws IOException File IO error occurred
      */
-    boolean loadFile(Path path) throws IOException;
+    boolean importFile(String path) throws IOException;
+
+    /**
+     * Import a given source file into the current context.
+     * @param path Abstract path to Prolog source file
+     * @return True if file loading was successful, false otherwise.
+     * @throws IOException File IO error occurred
+     */
+    boolean importFile(Path path) throws IOException;
 
     /**
      * Get the term 'value' argument of a Prolog fact whose
