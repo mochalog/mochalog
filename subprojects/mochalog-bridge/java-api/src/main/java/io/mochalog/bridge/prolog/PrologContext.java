@@ -24,6 +24,7 @@ import io.mochalog.bridge.prolog.query.collectors.QuerySolutionCollector;
 import io.mochalog.bridge.prolog.query.exception.NoSuchSolutionException;
 import org.jpl7.Term;
 
+import java.net.URL;
 import java.nio.file.Path;
 import java.io.IOException;
 
@@ -40,6 +41,14 @@ public interface PrologContext
      * @throws IOException File IO error occurred
      */
     boolean importFile(String path) throws IOException;
+
+    /**
+     * Import a file at a given URL into the current context.
+     * @param url URL to Prolog source file
+     * @return True if file loading was successful, false otherwise.
+     * @throws IOException File IO error occurred
+     */
+    boolean importFile(URL url) throws IOException;
 
     /**
      * Import a given source file into the current context.

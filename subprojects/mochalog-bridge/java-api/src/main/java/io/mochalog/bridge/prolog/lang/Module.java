@@ -16,16 +16,7 @@
 
 package io.mochalog.bridge.prolog.lang;
 
-import io.mochalog.bridge.prolog.query.Query;
-import io.mochalog.bridge.prolog.query.collectors.QuerySolutionCollector;
-import io.mochalog.bridge.prolog.query.collectors.SequentialQuerySolutionCollector;
-
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Objects;
-
-import java.io.IOError;
-import java.io.IOException;
 
 /**
  * Representation of a SWI-Prolog module (predicate namespace)

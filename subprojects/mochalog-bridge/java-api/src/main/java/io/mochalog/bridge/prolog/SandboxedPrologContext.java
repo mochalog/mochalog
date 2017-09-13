@@ -23,9 +23,11 @@ import io.mochalog.bridge.prolog.query.QuerySolutionList;
 
 import io.mochalog.bridge.prolog.query.collectors.QuerySolutionCollector;
 import io.mochalog.bridge.prolog.query.collectors.SequentialQuerySolutionCollector;
+import io.mochalog.util.io.PathUtils;
 
 import java.io.IOError;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -55,32 +57,28 @@ public class SandboxedPrologContext extends AbstractPrologContext
     public SandboxedPrologContext(Module module)
     {
         this.workingModule = module;
-        prove("use_module('prolog/mochalog.pl')");
-    }
-
-    @Override
-    public boolean importFile(Path path) throws IOException
-    {
-        // Ensure valid file path was supplied
-        if (!Files.exists(path))
-        {
-            throw new IOException("Specified file path does not exist.");
-        }
 
         try
         {
-            // Convert to absolute path with forward-slash file
-            // separators
-            Path absolutePath = path.toAbsolutePath();
-            String escapedPath = absolutePath.toString().replace('\\', '/');
-            // Import file into the current module
-            return prove("import_file(@S, @A)", escapedPath, workingModule.getName());
+            // Attempt to either load from resource path (useful when
+            // element of JAR dependency) or from direct source
+            // access (useful for test release)
+            URL url = getClass().getResource("prolog/mochalog.pl");
+            String filePath = url != null ? PathUtils.getResolvableFilePath(url) :
+                "prolog/mochalog.pl";
+            prove("use_module(@S)", filePath);
         }
-        catch (IOError e)
+        catch (IOException e)
         {
-            throw new IOException("File path could not be converted " +
-                "to absolute file path.");
+            System.err.println("Failed to resolve mochalog.pl.");
+            e.printStackTrace();
         }
+    }
+
+    @Override
+    protected boolean importFileImpl(String path) throws IOException
+    {
+        return prove("import_file(@S, @A)", path, workingModule.getName());
     }
 
     @Override
