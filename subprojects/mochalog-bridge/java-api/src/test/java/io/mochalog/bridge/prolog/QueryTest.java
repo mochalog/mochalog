@@ -56,7 +56,7 @@ public class QueryTest
         int solutionIndex = 0;
         int expectedSolutionCount = expectedSolutions.length;
 
-        for (QuerySolution solution : query)
+        for (QuerySolution solution : prolog.askForAllSolutions(query))
         {
             // Ensure we have not received more solutions than
             // expected

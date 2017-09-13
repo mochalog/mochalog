@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
  * Represents query provided to the SWI-Prolog
  * interpreter, managing localised query namespace.
  */
-public class Query implements Iterable<QuerySolution>
+public class Query
 {
     /**
      * Formatter of Prolog query strings using substitution rules
@@ -163,16 +163,6 @@ public class Query implements Iterable<QuerySolution>
     public String toString()
     {
         return text;
-    }
-
-    /**
-     * Iterate over available solutions for the query
-     * @return Iterator over query solutions
-     */
-    @Override
-    public Iterator<QuerySolution> iterator()
-    {
-        return new QuerySolutionIterator(this);
     }
 
     /**
