@@ -45,7 +45,7 @@ public class QueryTest
         PrologContext prolog = new SandboxedPrologContext("query_solution_test");
         // Ensure Prolog file was correctly loaded
         // by SWI-Prolog interpreter
-        assert(prolog.importFile("src/test/resources/prolog/hello_world.pl"));
+        assert(prolog.importFile("prolog/hello_world.pl"));
 
         // Solutions expected from get_hello_world query
         final String[] expectedSolutions = { "hello", "world" };

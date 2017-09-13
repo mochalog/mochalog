@@ -17,14 +17,17 @@
 rootProject.name = 'io.mochalog'
 
 final def JAVA_BRIDGE = ':io.mochalog.bridge.java',
+          PROLOG_BRIDGE = ':io.mochalog.bridge.prolog',
           PL2J_PARENT = ':io.mochalog.pl2j',
           PL2J_CORE = ':io.mochalog.pl2j:pl2j',
           PL2J_ECLIPSE = ':io.mochalog.pl2j:pl2j.ide',
           PL2J_IDEA = ':io.mochalog.pl2j:pl2j.idea'
 
-// Define settings for Java API of Mochalog bridge
+// Define settings for Java/Prolog API of Mochalog bridge
 include JAVA_BRIDGE
 project(JAVA_BRIDGE).projectDir = file('subprojects/mochalog-bridge/java-api')
+include PROLOG_BRIDGE
+project(PROLOG_BRIDGE).projectDir = file('subprojects/mochalog-bridge/prolog-api')
 
 // Define settings for Prolog to Java (PL2J) transpilation
 // subprojects

@@ -27,13 +27,18 @@ repositories {
     maven { url 'https://jitpack.io' }
 }
 
-// Ensure we only set this system property given
-// we are performing tests (avoid unnecessarily
-// polluting build environment) - Achieved
-// by setting in execution phase
-test.doFirst {
-    // Add SWI-Prolog shared library directory to java.library.path
-    systemProperty 'java.library.path', swiPrologBinaryDir
+test {
+    // Ensure processed test resources are directly
+    // accessible to JUnit tests (mirrors JAR filepath)
+    workingDir 'build/resources/test'
+    // Ensure we only set this system property given
+    // we are performing tests (avoid unnecessarily
+    // polluting build environment) - Achieved
+    // by setting in execution phase
+    doFirst {
+        // Add SWI-Prolog shared library directory to java.library.path
+        systemProperty 'java.library.path', swiPrologBinaryDir
+    }
 }
 
 dependencies {
@@ -47,6 +52,9 @@ dependencies {
     testImplementation group: 'junit', name: 'junit', version: '4.12'
 }
 
+// Ensure Prolog interface sources are included as
+// resource dependencies for published artifacts
+
 // Publish Java sources to subproject Maven repository
 publishing {
     publications {
@@ -54,6 +62,16 @@ publishing {
             from components.java
         }
     }
+}
+
+// Ensure Prolog bridge interface sources are
+// available to Java bridge at runtime
+def prologBridgeResources = "${project(':io.mochalog.bridge.prolog').projectDir}/src/main/prolog"
+processResources.from(prologBridgeResources) {
+    into 'prolog'
+}
+processTestResources.from(prologBridgeResources) {
+    into 'prolog'
 }
 
 /**

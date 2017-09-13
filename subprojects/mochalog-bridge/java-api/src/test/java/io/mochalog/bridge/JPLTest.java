@@ -75,7 +75,7 @@ public class JPLTest
     {
         // hello_world.pl test resource
         // Filepath relative to java-api directory
-        final String helloWorldPrologFilePath = "src/test/resources/prolog/hello_world.pl";
+        final String helloWorldPrologFilePath = "prolog/hello_world.pl";
 
         boolean loaded = consultKnowledgeBase(helloWorldPrologFilePath);
         assert(loaded);

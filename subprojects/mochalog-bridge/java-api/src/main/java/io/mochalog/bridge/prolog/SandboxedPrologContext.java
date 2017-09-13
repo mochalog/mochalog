@@ -55,7 +55,7 @@ public class SandboxedPrologContext extends AbstractPrologContext
     public SandboxedPrologContext(Module module)
     {
         this.workingModule = module;
-        prove("use_module('../prolog-api/src/main/prolog/mochalog.pl')");
+        prove("use_module('prolog/mochalog.pl')");
     }
 
     @Override
