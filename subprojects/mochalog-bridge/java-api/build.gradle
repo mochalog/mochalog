@@ -52,9 +52,6 @@ dependencies {
     testImplementation group: 'junit', name: 'junit', version: '4.12'
 }
 
-// Ensure Prolog interface sources are included as
-// resource dependencies for published artifacts
-
 // Publish Java sources to subproject Maven repository
 publishing {
     publications {
