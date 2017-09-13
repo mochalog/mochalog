@@ -63,7 +63,7 @@ public class SandboxedPrologContext extends AbstractPrologContext
             // Attempt to either load from resource path (useful when
             // element of JAR dependency) or from direct source
             // access (useful for test release)
-            URL url = getClass().getResource("prolog/mochalog.pl");
+            URL url = getClass().getResource("/prolog/mochalog.pl");
             String filePath = url != null ? PathUtils.getResolvableFilePath(url) :
                 "prolog/mochalog.pl";
             prove("use_module(@S)", filePath);
