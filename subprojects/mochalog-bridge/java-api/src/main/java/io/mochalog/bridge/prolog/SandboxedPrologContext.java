@@ -25,10 +25,7 @@ import io.mochalog.bridge.prolog.query.collectors.QuerySolutionCollector;
 import io.mochalog.bridge.prolog.query.collectors.SequentialQuerySolutionCollector;
 import io.mochalog.util.io.PathUtils;
 
-import java.io.IOError;
 import java.io.IOException;
-import java.net.URL;
-import java.nio.file.Files;
 import java.nio.file.Path;
 
 /**
@@ -57,28 +54,21 @@ public class SandboxedPrologContext extends AbstractPrologContext
     public SandboxedPrologContext(Module module)
     {
         this.workingModule = module;
-
-        try
-        {
-            // Attempt to either load from resource path (useful when
-            // element of JAR dependency) or from direct source
-            // access (useful for test release)
-            URL url = getClass().getResource("/prolog/mochalog.pl");
-            String filePath = url != null ? PathUtils.getResolvableFilePath(url) :
-                "prolog/mochalog.pl";
-            prove("use_module(@S)", filePath);
-        }
-        catch (IOException e)
-        {
-            System.err.println("Failed to resolve mochalog.pl.");
-            e.printStackTrace();
-        }
+        prove("use_module('prolog/mochalog.pl')");
     }
 
     @Override
-    protected boolean importFileImpl(String path) throws IOException
+    public boolean importFile(String path) throws IOException
     {
-        return prove("import_file(@S, @A)", path, workingModule.getName());
+        String resolvablePath = PathUtils.getResolvableFilePath(path);
+        return prove("import_file(@S, @A)", resolvablePath, workingModule.getName());
+    }
+
+    @Override
+    public boolean importFile(Path path) throws IOException
+    {
+        String resolvablePath = PathUtils.getResolvableFilePath(path);
+        return prove("import_file(@S, @A)", resolvablePath, workingModule.getName());
     }
 
     @Override

@@ -24,15 +24,7 @@ import io.mochalog.bridge.prolog.query.collectors.QuerySolutionCollector;
 import io.mochalog.bridge.prolog.query.exception.NoSuchSolutionException;
 import io.mochalog.util.format.Formatter;
 
-import io.mochalog.util.io.PathUtils;
 import org.jpl7.Term;
-
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 /**
  * Abstract implementation of an interface to the SWI-Prolog
@@ -40,35 +32,6 @@ import java.nio.file.Paths;
  */
 public abstract class AbstractPrologContext implements PrologContext
 {
-    @Override
-    public boolean importFile(String path) throws IOException
-    {
-        return importFileImpl(PathUtils.getResolvableFilePath(path));
-    }
-
-    @Override
-    public boolean importFile(URL url) throws IOException
-    {
-        return importFileImpl(PathUtils.getResolvableFilePath(url));
-    }
-
-    @Override
-    public boolean importFile(Path path) throws IOException
-    {
-        return importFileImpl(PathUtils.getResolvableFilePath(path));
-    }
-
-    /**
-     * Implementation of import of Prolog source files.
-     * <p>
-     * Paths can be assumed to be fully resolvable and
-     * Prolog compatible.
-     * @param path File path
-     * @return True if import was successful, false otherwise.
-     * @throws IOException File IO error occurred
-     */
-    protected abstract boolean importFileImpl(String path) throws IOException;
-
     @Override
     public Term get(String name)
     {

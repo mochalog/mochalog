@@ -18,9 +18,6 @@ package io.mochalog.util.io;
 
 import java.io.IOError;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -40,31 +37,6 @@ public class PathUtils
     public static String getResolvableFilePath(String path) throws IOException
     {
         return getResolvableFilePath(Paths.get(path));
-    }
-
-    /**
-     * Convert URL object to validated file path string.
-     * @param url File URL
-     * @return Validated path string
-     * @throws IOException IO error occurred.
-     */
-    public static String getResolvableFilePath(URL url) throws IOException
-    {
-        if (url == null)
-        {
-            throw new IllegalArgumentException("Illegal null URL reference specified.");
-        }
-
-        try
-        {
-            // Import from a given URL
-            URI uri = url.toURI();
-            return getResolvableFilePath(Paths.get(uri));
-        }
-        catch (URISyntaxException e)
-        {
-            throw new IOException("File at given URL not available.");
-        }
     }
 
     /**

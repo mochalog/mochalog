@@ -43,14 +43,6 @@ public interface PrologContext
     boolean importFile(String path) throws IOException;
 
     /**
-     * Import a file at a given URL into the current context.
-     * @param url URL to Prolog source file
-     * @return True if file loading was successful, false otherwise.
-     * @throws IOException File IO error occurred
-     */
-    boolean importFile(URL url) throws IOException;
-
-    /**
      * Import a given source file into the current context.
      * @param path Abstract path to Prolog source file
      * @return True if file loading was successful, false otherwise.
