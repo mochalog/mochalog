@@ -13,3 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+apply plugin: 'java'
+apply plugin: 'maven-publish'
+
+// Prolog pack versions should not contain SNAPSHOT values
+version '0.1.0'
+
+// Publish Prolog sources to Prolog pack in Maven repository
+publishing {
+    publications {
+        "${project.name}"(MavenPublication) {
+            artifact generateMochalogPack
+        }
+    }
+}
+
+/**
+ * Generate a .zip file corresponding to
+ * a Prolog pack containing the Mochalog Prolog interface
+ */
+task generateMochalogPack(type: Zip) {
+    from 'src/main/prolog/mochalog'
+
+    // Ensure pack.pl file is correctly
+    // updated corresponding to the current version
+    filesMatching('pack.pl') {
+        expand(version: project.version)
+    }
+}
