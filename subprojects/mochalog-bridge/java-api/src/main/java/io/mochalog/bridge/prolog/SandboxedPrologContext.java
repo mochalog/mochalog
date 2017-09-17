@@ -62,7 +62,8 @@ public class SandboxedPrologContext extends AbstractPrologContext
         try
         {
             // Ignore output from pack_install routine
-            prove("with_output_to(atom(_), pack_install('@A', [interactive(false), silent(true)]))",
+            // TODO: Remove need to force re-upgrade (currently in place due to error logging
+            prove("pack_install('@A', [interactive(false), silent(true), upgrade(true)])",
                 PackLoader.getPackResource("mochalog"));
             // Build against Mochalog API module
             prove("use_module(library(mochalog))");
