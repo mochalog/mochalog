@@ -36,10 +36,10 @@ task buildMochalogPack(type: Zip) {
 }
 
 /**
- * Generate a .zip file containing io.mochalog.bridge.prolog
+ * Generate a .jar file containing io.mochalog.bridge.prolog
  * Java classes for accessing Prolog packs and pack archives
  */
-task buildPrologPackArchive(dependsOn: buildMochalogPack, type: Zip) {
+task buildPrologPackArchive(dependsOn: buildMochalogPack, type: Jar) {
     baseName 'prolog-packs'
 
     from sourceSets.main.output
