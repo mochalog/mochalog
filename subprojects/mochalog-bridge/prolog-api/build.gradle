@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-apply plugin: 'java'
+apply plugin: 'java-library'
 apply plugin: 'maven-publish'
 
 // Prolog pack versions should not contain SNAPSHOT values
@@ -24,7 +24,7 @@ version '0.1.0'
 publishing {
     publications {
         "${project.name}"(MavenPublication) {
-            artifact generateMochalogPack
+            artifact buildSourceJar
         }
     }
 }
@@ -33,12 +33,28 @@ publishing {
  * Generate a .zip file corresponding to
  * a Prolog pack containing the Mochalog Prolog interface
  */
-task generateMochalogPack(type: Zip) {
-    from 'src/main/prolog/mochalog'
+task buildMochalogPack(type: Zip) {
+    from 'src/main/prolog/packs/mochalog'
 
     // Ensure pack.pl file is correctly
     // updated corresponding to the current version
     filesMatching('pack.pl') {
+        expand(version: project.version)
+    }
+}
+
+/**
+ * Generate a .jar file containing io.mochalog.bridge.prolog
+ * Java sources and generated Prolog packs
+ */
+task buildSourceJar(dependsOn: buildMochalogPack, type: Jar) {
+    from sourceSets.main.output
+    from (buildMochalogPack.outputs.files) {
+        into 'packs'
+    }
+
+    from ('src/main/prolog/packs/mochalog-version') {
+        into 'packs'
         expand(version: project.version)
     }
 }

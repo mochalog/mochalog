@@ -23,8 +23,8 @@ buildscript {
     }
 
     dependencies {
-        classpath 'org.xtext:xtext-gradle-plugin:1.0.17'
-        classpath 'org.xtext:xtext-idea-gradle-plugin:1.0.17'
+        classpath 'org.xtext:xtext-gradle-plugin:1.0.19'
+        classpath 'org.xtext:xtext-idea-gradle-plugin:1.0.19'
     }
 }
 
