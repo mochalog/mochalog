@@ -98,7 +98,7 @@ for ignored_package in ${ignored_packages}; do
     ignore_args="$ignore_args --without-$ignored_package"
 done
 
-./configure ${include_args} ${ignore_args} "--enable-shared"
+./configure ${include_args} ${ignore_args}
 
 echo "Installing selected SWI-Prolog $version subpackages ..."
 make > /dev/null 2>&1
