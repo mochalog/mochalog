@@ -82,8 +82,17 @@ make install > /dev/null 2>&1
 # Configure and build SWI-Prolog packages (including JPL and plUnit)
 cd packages
 
+# Ensure library dependencies for archive and ssl packages are
+# installed prior to package install
+# Libraries required are libarchive-dev and libssl-dev
+echo "Installing libarchive-dev (dependency of SWI-Prolog archive package) ..."
+apt-get install libarchive-dev -y -q
+echo "Installing libssl-dev (dependency of SWI-Prolog ssl package) ..."
+apt-get install libssl-dev -y -q
+
 # Packages to include in build
-included_packages="clib cpp chr clpqr http pldoc plunit jpl sgml ssl utf8proc"
+included_packages="archive clib cpp chr clpqr http pldoc plunit jpl \
+sgml ssl utf8proc"
 include_args=""
 for included_package in ${included_packages}; do
     include_args="$include_args --with-$included_package"
