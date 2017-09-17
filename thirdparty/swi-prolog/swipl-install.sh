@@ -83,15 +83,15 @@ make install > /dev/null 2>&1
 cd packages
 
 # Packages to include in build
-included_packages="clib cpp chr clpqr pldoc plunit jpl utf8proc"
+included_packages="clib cpp chr clpqr http pldoc plunit jpl sgml utf8proc "
 include_args=""
 for included_package in ${included_packages}; do
     include_args="$include_args --with-$included_package"
 done
 
 # Packages to exclude from build
-ignored_packages="odbc table xpce sgml RDF semweb http nlp ssl \
-tipc zlib protobufs windows PDT libedit readline archive pengines \
+ignored_packages="odbc table xpce RDF semweb nlp ssl tipc \
+zlib protobufs windows PDT libedit readline archive pengines \
 cql bdb"
 ignore_args=""
 for ignored_package in ${ignored_packages}; do

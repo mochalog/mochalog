@@ -9,9 +9,6 @@ env:
         # Set SWI-Prolog environment variables
         - SWIPL_VERSION="7.4.1"
         - SWI_HOME_DIR="/usr/local/lib/swipl-$SWIPL_VERSION"
-        # Fixed with workaround detailed at
-        # https://github.com/yuce/pyswip/issues/10
-        - LD_PRELOAD="$SWI_HOME_DIR/lib/x86_64-linux/libswipl.so.$SWIPL_VERSION"
         # Set Intellij IDEA environment variables
         - IDEA_VERSION="171.4249.39"
 
