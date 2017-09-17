@@ -100,7 +100,7 @@ done
 
 # Packages to exclude from build
 ignored_packages="odbc table xpce RDF semweb nlp tipc \
-zlib protobufs windows PDT libedit readline archive pengines \
+zlib protobufs windows PDT libedit readline pengines \
 cql bdb"
 ignore_args=""
 for ignored_package in ${ignored_packages}; do
