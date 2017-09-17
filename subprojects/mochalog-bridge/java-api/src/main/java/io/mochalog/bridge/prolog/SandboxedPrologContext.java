@@ -16,6 +16,7 @@
 
 package io.mochalog.bridge.prolog;
 
+import io.mochalog.bridge.prolog.api.PackLoader;
 import io.mochalog.bridge.prolog.lang.Module;
 
 import io.mochalog.bridge.prolog.query.Query;
@@ -25,6 +26,7 @@ import io.mochalog.bridge.prolog.query.collectors.QuerySolutionCollector;
 import io.mochalog.bridge.prolog.query.collectors.SequentialQuerySolutionCollector;
 import io.mochalog.util.io.PathUtils;
 
+import java.io.IOError;
 import java.io.IOException;
 import java.nio.file.Path;
 
@@ -42,7 +44,7 @@ public class SandboxedPrologContext extends AbstractPrologContext
      * Constructor.
      * @param name Working module name
      */
-    public SandboxedPrologContext(String name)
+    public SandboxedPrologContext(String name) throws IOError
     {
         this(new Module(name));
     }
@@ -51,10 +53,24 @@ public class SandboxedPrologContext extends AbstractPrologContext
      * Constructor.
      * @param module Working module
      */
-    public SandboxedPrologContext(Module module)
+    public SandboxedPrologContext(Module module) throws IOError
     {
         this.workingModule = module;
-        prove("use_module('prolog/mochalog.pl')");
+
+        // Load the Mochalog Prolog bridge API into the given
+        // Prolog context
+        try
+        {
+            // Ignore output from pack_install routine
+            prove("with_output_to(atom(_), pack_install('@A', [interactive(false), silent(true)]))",
+                PackLoader.getPackResource("mochalog"));
+            // Build against Mochalog API module
+            prove("use_module(library(mochalog))");
+        }
+        catch (IOException e)
+        {
+            throw new IOError(e);
+        }
     }
 
     @Override

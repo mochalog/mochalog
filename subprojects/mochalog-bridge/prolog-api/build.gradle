@@ -20,20 +20,12 @@ apply plugin: 'maven-publish'
 // Prolog pack versions should not contain SNAPSHOT values
 version '0.1.0'
 
-// Publish Prolog sources to Prolog pack in Maven repository
-publishing {
-    publications {
-        "${project.name}"(MavenPublication) {
-            artifact buildSourceJar
-        }
-    }
-}
-
 /**
  * Generate a .zip file corresponding to
- * a Prolog pack containing the Mochalog Prolog interface
+ * Prolog pack containing the Mochalog Prolog interface
  */
 task buildMochalogPack(type: Zip) {
+    baseName 'mochalog'
     from 'src/main/prolog/packs/mochalog'
 
     // Ensure pack.pl file is correctly
@@ -44,12 +36,14 @@ task buildMochalogPack(type: Zip) {
 }
 
 /**
- * Generate a .jar file containing io.mochalog.bridge.prolog
- * Java sources and generated Prolog packs
+ * Generate a .zip file containing io.mochalog.bridge.prolog
+ * Java classes for accessing Prolog packs and pack archives
  */
-task buildSourceJar(dependsOn: buildMochalogPack, type: Jar) {
+task buildPrologPackArchive(dependsOn: buildMochalogPack, type: Zip) {
+    baseName 'prolog-packs'
+
     from sourceSets.main.output
-    from (buildMochalogPack.outputs.files) {
+    from(buildMochalogPack.outputs.files) {
         into 'packs'
     }
 
@@ -57,4 +51,24 @@ task buildSourceJar(dependsOn: buildMochalogPack, type: Jar) {
         into 'packs'
         expand(version: project.version)
     }
+}
+
+configurations {
+    packs
+}
+
+// Publish Prolog sources to Prolog pack in Maven repository
+publishing {
+    publications {
+        "${project.name}"(MavenPublication) {
+            artifact buildPrologPackArchive
+        }
+    }
+}
+
+// Ensure that the packs configuration
+// creates all archives necessary for SWI-Prolog
+// pack_install
+artifacts {
+    packs buildPrologPackArchive
 }
