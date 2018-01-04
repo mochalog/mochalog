@@ -63,7 +63,7 @@ publishing {
     publications {
         "${project.name}"(MavenPublication) {
             from components.java
-            artifact sourceJar
+            artifact sourcesJar
         }
     }
 }
