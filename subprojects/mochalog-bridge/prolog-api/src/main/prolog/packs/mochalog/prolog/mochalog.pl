@@ -46,7 +46,12 @@ import_file(File, Module, Options) :-
     %! Ensure file stream is closed after use
     close(FileStream).
 
+<<<<<<< Updated upstream
 mlg_dump_kb(Module) :-
+=======
+/*
+save_kb(Module) :-
+>>>>>>> Stashed changes
 	(agentName(Name) -> true ; Name = default),
 	(step(Step) ; Step = "none"), !,
 	strings_concat(["kb-", Name, "-", Step, ".pl"], FileName),
@@ -54,3 +59,7 @@ mlg_dump_kb(Module) :-
 	set_output(F),
 	listing,
 	close(F).
+<<<<<<< Updated upstream
+=======
+	*/
+>>>>>>> Stashed changes

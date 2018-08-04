@@ -1,4 +1,4 @@
-# Mochalog :coffee:
+ # Mochalog :coffee:
 
 [![Travis-CI](https://img.shields.io/travis/mochalog/mochalog.svg)](https://travis-ci.org/mochalog/mochalog/builds)
 
