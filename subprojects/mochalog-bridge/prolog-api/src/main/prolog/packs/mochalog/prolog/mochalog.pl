@@ -45,3 +45,12 @@ import_file(File, Module, Options) :-
     Module:load_files(FileID,[ stream(FileStream) | Options ]),
     %! Ensure file stream is closed after use
     close(FileStream).
+
+mlg_dump_kb(Module) :-
+	(agentName(Name) -> true ; Name = default),
+	(step(Step) ; Step = "none"), !,
+	strings_concat(["kb-", Name, "-", Step, ".pl"], FileName),
+	open(FileName, write, F),
+	set_output(F),
+	listing,
+	close(F).

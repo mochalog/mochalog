@@ -63,6 +63,7 @@ public class SandboxedPrologContext extends AbstractPrologContext
         {
             // Ignore output from pack_install routine
             // TODO: Remove need to force re-upgrade (currently in place due to error logging
+            // pack_install comes from library(prolog_pack): http://www.swi-prolog.org/pldoc/man?section=prologpack
             prove("pack_install('@A', [interactive(false), silent(true), upgrade(true)])",
                 PackLoader.getPackResource("mochalog"));
             // Build against Mochalog API module
