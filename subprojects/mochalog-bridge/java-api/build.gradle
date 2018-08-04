@@ -43,14 +43,13 @@ dependencies {
     // bug
     // Details here:
     // https://github.com/mochalog/packages-jpl/commit/d17c27ef3abb09201b9a992d81272c3b948f6026
-    api group: 'com.github.mochalog', name: 'packages-jpl', version: 'd17c27ef3a'
+    api group: 'com.github.ssardina', name: 'packages-jpl', version: '3d7b1b6'
     // Compile project against Mochalog Prolog pack available
     // in io.mochalog.bridge.prolog project
     implementation project(path: ':io.mochalog.bridge.prolog', configuration: 'packs')
 
     testImplementation group: 'junit', name: 'junit', version: '4.12'
 }
-
 
 task sourcesJar ( type: Jar, dependsOn: classes ) {
     classifier 'sources'
