@@ -81,6 +81,6 @@ static getSwiPrologBinaryDir() throws GradleException {
 
     def os = OperatingSystem.current()
     // Currently only supports 64 bit Linux
-    def librarySubDir = os.isWindows() ? "bin" : "lib/x86_64-linux"
+    def librarySubDir = os.isWindows() ? "bin" : "lib/amd64"
     return swiPrologHomeDir + "/" + librarySubDir
 }
