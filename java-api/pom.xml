@@ -50,6 +50,20 @@
 
     <build>
         <plugins>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.19.1</version>
+                <configuration>
+                    <systemPropertyVariables>
+                        <propertyName>java.library.path</propertyName>
+                        <buildDirectory>/usr/lib/swi-prolog/lib/amd64/</buildDirectory>
+                    </systemPropertyVariables>
+                </configuration>
+            </plugin>
+
+
+
+
             <!-- Assemble into JAR -->
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
@@ -75,6 +89,5 @@
             </plugin>
         </plugins>
     </build>
-
 
 </project>
