@@ -16,4 +16,4 @@
 
 name(mochalog).
 title('Prolog API for the Mochalog Java-Prolog interface.').
-version('${version}').
+version(0.1.0).

@@ -44,6 +44,16 @@
 
 
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/prolog/</directory>
+                <includes>
+                    <include>**/*</include>
+                </includes>
+            </resource>
+
+        </resources>
+
         <plugins>
             <!-- Assemble into JAR -->
             <plugin>
