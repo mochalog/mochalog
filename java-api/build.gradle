@@ -1,0 +1,86 @@
+/*
+ * Copyright 2017 The Mochalog Authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import org.gradle.internal.os.OperatingSystem
+
+apply plugin: 'java-library'
+apply plugin: 'maven-publish'
+
+repositories {
+    mavenCentral()
+
+    // Add JitPack dependency to allow
+    // access to Mochalog JPL fork
+    maven { url 'https://jitpack.io' }
+}
+
+// Ensure we only set this system property given
+// we are performing tests (avoid unnecessarily
+// polluting build environment) - Achieved
+// by setting in execution phase
+test.doFirst {
+    // Add SWI-Prolog shared library directory to java.library.path
+    systemProperty 'java.library.path', swiPrologBinaryDir
+}
+
+dependencies {
+    // JPL is necessary for external API due to exposure
+    // of org.jpl7.Term and derivatives
+    // Uses Mochalog fork of JPL due to context module scoping
+    // bug
+    // Details here:
+    // https://github.com/mochalog/packages-jpl/commit/d17c27ef3abb09201b9a992d81272c3b948f6026
+    api group: 'com.github.ssardina', name: 'packages-jpl', version: '3d7b1b6'
+    // Compile project against Mochalog Prolog pack available
+    // in io.mochalog.bridge.prolog project
+    implementation project(path: ':io.mochalog.bridge.prolog', configuration: 'packs')
+
+    testImplementation group: 'junit', name: 'junit', version: '4.12'
+}
+
+task sourcesJar ( type: Jar, dependsOn: classes ) {
+    classifier 'sources'
+    from sourceSets.main.allJava
+}
+
+
+// Publish Java sources to subproject Maven repository
+publishing {
+    publications {
+        "${project.name}"(MavenPublication) {
+            from components.java
+            artifact sourcesJar
+        }
+    }
+}
+
+/**
+ * Get the filepath of the SWI-Prolog shared library directory
+ * @return Absolute filepath
+ * @throws GradleException SWI_HOME_DIR environment variable not set
+ */
+static getSwiPrologBinaryDir() throws GradleException {
+    def swiPrologHomeDir = System.getenv('SWI_HOME_DIR')
+    if (!swiPrologHomeDir) {
+        throw new GradleException('SWI_HOME_DIR system environment variable not ' +
+                'set. Should be set to root of SWI-Prolog platform installation.')
+    }
+
+    def os = OperatingSystem.current()
+    // Currently only supports 64 bit Linux
+    def librarySubDir = os.isWindows() ? "bin" : "lib/amd64"
+    return swiPrologHomeDir + "/" + librarySubDir
+}
