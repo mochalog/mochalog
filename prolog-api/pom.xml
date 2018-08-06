@@ -4,13 +4,14 @@
     <parent>
         <groupId>com.github.ssardina</groupId>
         <artifactId>mochalog</artifactId>
-        <version>0.2.5</version>
+        <version>0.3.0</version>
         <!--
       <relativePath>../../mochalog.git</relativePath>
       -->
     </parent>
     <groupId>com.github.ssardina.mochalog</groupId>
     <artifactId>io.mochalog.bridge.prolog</artifactId>
+    <version>${mochalog.version}</version>
     <packaging>jar</packaging>
 
     <build>
