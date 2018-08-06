@@ -34,7 +34,7 @@ import java.util.Map;
 public class JPLTest
 {
     /**
-     * Ensure jpl.dll and dependencies are able to be loaded
+     * Ensure jpl.dll or libjpl.so and dependencies are able to be loaded
      * by the JVM. All subsequent tests which rely on JPL functionality
      * will fail given this test fails.
      */
