@@ -10,39 +10,8 @@
       -->
     </parent>
     <groupId>com.github.ssardina.mochalog</groupId>
-    <artifactId>bridge-prolog</artifactId>
+    <artifactId>io.mochalog.bridge.prolog</artifactId>
     <packaging>jar</packaging>
-
-
-
-
-  <dependencies>
-      <!-- JPL is necessary for external API due to exposure
-      // However, we cannot still use the official SWI version of JPL (7.6.x) because of an issue with context scoping
-      // Thus, using an own fork of JPL that fixes that issue
-      // https://github.com/SWI-Prolog/packages-jpl/pull/10
-      // Presumbaly, JPL/SWI 7.7.x will have that fix done
-      -->
-      <dependency>
-        <groupId>com.github.ssardina</groupId>
-        <artifactId>packages-jpl</artifactId>
-        <version>3d7b1b6</version>
-      </dependency>
-
-
-    </dependencies>
-
-
-      <repositories>
-          <!-- JitPack used for remote installation of dependencies from Github and Bitbucket -->
-        <repository>
-            <id>jitpack.io</id>
-            <name>JitPack Repository</name>
-            <url>https://jitpack.io</url>
-        </repository>
-
-    </repositories>
-
 
     <build>
         <resources>
@@ -52,34 +21,7 @@
                     <include>**/*</include>
                 </includes>
             </resource>
-
         </resources>
-
-        <plugins>
-            <!-- Assemble into JAR -->
-            <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <addClasspath>true</addClasspath>
-                            <mainClass>${main.class}</mainClass>
-                        </manifest>
-                    </archive>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
-                </configuration>
-            </plugin>
-        </plugins>
     </build>
 
 

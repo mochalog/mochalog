@@ -11,7 +11,7 @@
   </parent>
 
     <groupId>com.github.ssardina.mochalog</groupId>
-  <artifactId>bridge-java</artifactId>
+    <artifactId>io.mochalog.bridge.java</artifactId>
   <!--<packaging>jar</packaging>-->
 
 
@@ -27,12 +27,16 @@
         <groupId>com.github.ssardina</groupId>
         <artifactId>packages-jpl</artifactId>
         <version>3d7b1b6</version>
+        <scope>compile</scope>
       </dependency>
 
       <dependency>
-          <groupId>io.mochalog</groupId>
-          <artifactId>mochalog-bridge-prolog-api</artifactId>
-          <version>0.2.5</version>
+          <groupId>com.github.ssardina.mochalog</groupId>
+          <artifactId>io.mochalog.bridge.prolog</artifactId>
+          <version>${mochalog.version}</version>
+          <!-- This should be working but somehow cannot find PackLoader in package io.mochalog.bridge.prolog.api
+          <scope>runtime</scope>
+          -->
       </dependency>
 
 
@@ -60,33 +64,6 @@
                         <propertyName>java.library.path</propertyName>
                         <buildDirectory>/usr/lib/swi-prolog/lib/amd64/</buildDirectory>
                     </systemPropertyVariables>
-                </configuration>
-            </plugin>
-
-
-
-
-            <!-- Assemble into JAR -->
-            <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <addClasspath>true</addClasspath>
-                            <mainClass>${main.class}</mainClass>
-                        </manifest>
-                    </archive>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
                 </configuration>
             </plugin>
         </plugins>
