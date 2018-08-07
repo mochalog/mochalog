@@ -2,11 +2,11 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.ssardina</groupId>
 	<artifactId>mochalog</artifactId>
-	<version>0.3.0</version>
+	<version>0.3.1</version>
     <packaging>pom</packaging>
 
     <properties>
-        <mochalog.version>0.3.0</mochalog.version>
+        <mochalog.version>0.3.1</mochalog.version>
         <compiler.level>1.8</compiler.level>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>

@@ -39,3 +39,4 @@ subprojects/mochalog-pl2j/pl2j.ide/src/test/xtext-gen/
 
 subprojects/mochalog-pl2j/pl2j.idea/src/main/xtext-gen/
 subprojects/mochalog-pl2j/pl2j.idea/src/test/xtext-gen/
+*.versionsBackup
