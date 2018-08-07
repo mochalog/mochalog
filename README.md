@@ -4,7 +4,7 @@
 
 **This is a FORK of the [original Mochalog](https://github.com/mochalog/mochalog) GitHub main repository.**
 
-The current version (> 0.3.0) has been simplified (code for ECLIPSE and IDEA removed) and migrated to Maven (instead of Gradel). 
+The current version (> 0.3.0) has been simplified significantly and migrated to Maven. 
 
 ## Overview
 
@@ -20,11 +20,19 @@ In some sense, Mochalog is a further abstraction of JPL. Looking to stand on its
 
 ### Use it as dependency in Maven
 
-To use Mochalog in your application, add this dependecy and repository to your `pom.xml` to get it automatically via JitPack and GitHub:
+To use Mochalog in your application, add this dependecy and repository to your `pom.xml` to get it automatically via JitPack and GitHub.
+
+#### Version 0.4.x
+
+This version has further simplified the framework by removing modules and having a single flat system (and JAR file `mochalog.jar`).
+
+#### Version 0.3.x
+
+This version has migrated Gradel to Maven and kept the main core, and dropped the ECLIPSE and IDEA plugins. However, it is still based on two modules and one `io.mochalog.all` aggregate module.
 
         <dependency>
             <groupId>com.github.ssardina.mochalog</groupId>
-            <artifactId>mochalog.all</artifactId>
+            <artifactId>io.mochalog.all</artifactId>
             <version>0.3.0</version>
         </dependency>
         
