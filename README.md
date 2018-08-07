@@ -22,9 +22,28 @@ In some sense, Mochalog is a further abstraction of JPL. Looking to stand on its
 
 To use Mochalog in your application, add this dependecy and repository to your `pom.xml` to get it automatically via JitPack and GitHub.
 
+To have access to [JitPack](https://jitpack.io/) service, add this repository:
+
+        <!-- JitPack used for remote installation of dependencies from Github and Bitbucket -->
+        <repository>
+            <id>jitpack.io</id>
+            <name>JitPack Repository</name>
+            <url>https://jitpack.io</url>
+        </repository>
+
+
+
 #### Version 0.4.x
 
 This version has further simplified the framework by removing modules and having a single flat system (and JAR file `mochalog.jar`).
+
+        <dependency>
+            <groupId>com.github.ssardina</groupId>
+            <artifactId>mochalog</artifactId>
+            <version>0.4.0</version>
+        </dependency>
+        
+               
 
 #### Version 0.3.x
 
@@ -37,15 +56,8 @@ This version has migrated Gradel to Maven and kept the main core, and dropped th
         </dependency>
         
         
-        <!-- JitPack used for remote installation of dependencies from Github and Bitbucket -->
-        <repository>
-            <id>jitpack.io</id>
-            <name>JitPack Repository</name>
-            <url>https://jitpack.io</url>
-        </repository>
         
-        
-        
+                
 ## Contact
 
 Sebastian Sardina - ssardina@gmail.com
