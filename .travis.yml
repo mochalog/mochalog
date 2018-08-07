@@ -15,3 +15,5 @@ before_install:
     - sudo thirdparty/swi-prolog/swipl-install.sh $SWIPL_VERSION
     # Ensure external shared libraries are capable of being dynamically loaded
     - export LD_PRELOAD="$SWI_HOME_DIR/lib/x86_64-linux/libswipl.so.$SWIPL_VERSION"
+    - export LD_LIBRARY_PATH="$SWI_HOME_DIR/lib/x86_64-linux/"
+    - export PATH=$PATH:$SWI_HOME_DIR/bin/x86_64-linux/

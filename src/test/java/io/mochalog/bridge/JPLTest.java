@@ -52,8 +52,7 @@ public class JPLTest
             String swiPrologHomeDir = System.getenv("SWI_HOME_DIR");
 
             // Check if SWI_HOME_DIR is set
-            String message = "jpl library or any one of its dependencies " +
-                "failed to be found.";
+            String message = "jpl library or any one of its dependencies failed to be found.";
             if (swiPrologHomeDir == null)
             {
                 fail(message + " SWI_HOME_DIR system environment variable not set.");

@@ -66,6 +66,7 @@ fi
 # Ensure correct source directory permissions
 chmod 755 ${swipl_srcs_dir}
 
+#swipl_lib_prefix="/usr/local/swi-$version"
 swipl_lib_prefix="/usr/local/"
 echo "Building SWI-Prolog and subpackages to $swipl_lib_prefix"
 # Configure and build base SWI-Prolog library

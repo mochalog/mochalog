@@ -1,6 +1,6 @@
  # Mochalog: A two-way bridge between Java and SWI-Prolog :coffee:
 
-[![Travis-CI](https://img.shields.io/travis/mochalog/mochalog.svg)](https://travis-ci.org/mochalog/mochalog/builds)
+[![Travis-CI](https://img.shields.io/travis/mochalog/mochalog.svg)](https://travis-ci.org/ssardina/mochalog/builds)
 
 **This is a FORK of the [original Mochalog](https://github.com/mochalog/mochalog) GitHub main repository.**
 

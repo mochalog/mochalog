@@ -13,7 +13,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
-    <name>Mochalog: Java - SWI Interface (aggregator)</name>
+    <name>Mochalog: Java - SWI Interface</name>
   	<description>A two-way bridge between Java and SWI-Prolog</description>
   	<url>https://github.com/ssardina/mochalog</url>
 
