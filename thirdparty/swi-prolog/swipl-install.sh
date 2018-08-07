@@ -91,17 +91,14 @@ echo "Installing libssl-dev (dependency of SWI-Prolog ssl package) ..."
 apt-get install libssl-dev -y -q
 
 # Packages to include in build
-included_packages="archive clib cpp chr clpqr http pldoc plunit jpl \
-sgml ssl utf8proc"
+included_packages="archive clib cpp chr clpqr http pldoc plunit jpl sgml ssl utf8proc"
 include_args=""
 for included_package in ${included_packages}; do
     include_args="$include_args --with-$included_package"
 done
 
 # Packages to exclude from build
-ignored_packages="odbc table xpce RDF semweb nlp tipc \
-zlib protobufs windows PDT libedit readline pengines \
-cql bdb"
+ignored_packages="odbc table xpce RDF semweb nlp tipc zlib protobufs windows PDT libedit readline pengines cql bdb"
 ignore_args=""
 for ignored_package in ${ignored_packages}; do
     ignore_args="$ignore_args --without-$ignored_package"
