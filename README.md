@@ -22,7 +22,7 @@ In some sense, Mochalog is a further abstraction of JPL. Looking to stand on its
 
 To use Mochalog in your application, add this dependecy and repository to your `pom.xml` to get it automatically via JitPack and GitHub.
 
-To have access to [JitPack](https://jitpack.io/) service, add this repository:
+To have access to [JitPack](https://jitpack.io/#ssardina/mochalog) service, add this repository:
 
         <!-- JitPack used for remote installation of dependencies from Github and Bitbucket -->
         <repository>
