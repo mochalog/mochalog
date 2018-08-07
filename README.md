@@ -20,7 +20,7 @@ To use Mochalog in your application, add this dependecy and repository to your `
         <dependency>
             <groupId>com.github.ssardina</groupId>
             <artifactId>mochalog</artifactId>
-            <version>${mochalog.version}</version>
+            <version>0.2.6</version>
         </dependency>
         
         
