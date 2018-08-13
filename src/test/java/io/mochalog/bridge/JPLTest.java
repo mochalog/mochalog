@@ -28,6 +28,7 @@ import java.util.Map;
 
 /**
  * Test suite for JPL (Java to Prolog direction).
+ * This does not uses Mochalog facilities
  * <p>
  * Ensures SWI-Prolog code can be invoked from JVM via JPL.
  */
@@ -79,8 +80,7 @@ public class JPLTest
         boolean loaded = consultKnowledgeBase(helloWorldPrologFilePath);
         assert(loaded);
 
-        // Fetch the Term object which gets bound to the specified
-        // variable
+        // Fetch the Term object which gets bound to the specifie variable
         Query query = new Query("get_hello_world(X)");
         Map<String, Term> binding = query.oneSolution();
 
@@ -100,4 +100,38 @@ public class JPLTest
         String queryString = "consult('" + filePath + "')";
         return Query.hasSolution(queryString);
     }
+
+
+
+    /**
+     * Check that basic string is correctly returned from
+     * SWI-Prolog via JPL query
+     */
+    @Test
+    public void bindingMappingQuery()
+    {
+        // hello_world.pl test resource
+        // Filepath relative to java-api directory
+        final String helloWorldPrologFilePath = "src/test/resources/prolog/hello_world.pl";
+
+        boolean loaded = consultKnowledgeBase(helloWorldPrologFilePath);
+        assert(loaded);
+
+        // Fetch the Term object which gets bound to the specified
+        // variable
+
+        Query query = new Query("person(X,Y,Z)");
+        Map<String, Term> binding = query.oneSolution();
+
+        Term resultX = binding.get("X");
+        Term resultY = binding.get("Y");
+        Term resultZ = binding.get("Z");
+        // Ensure first solution string (hello) was correctly fetched
+        // from Prolog file
+        assertEquals("john", resultX.toString());
+        assertEquals(20, resultY.intValue());
+        assertEquals("melbourne", resultZ.toString());
+    }
+
+
 }

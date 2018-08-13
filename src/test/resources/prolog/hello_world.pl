@@ -14,5 +14,31 @@
  * limitations under the License.
  */
 
+:- dynamic no_clause/1.
+
 get_hello_world(hello).
 get_hello_world(world).
+
+
+test(80).
+test(2).
+test(4).
+test(6).
+test(8).
+
+test_plus(N, R) :-
+	number(N),
+	test(N2), R is N2 + N.
+
+test_slow(X) :-
+	test(X),
+	sleep(0.5).
+
+test_forever(X) :- test(X).
+test_forever(X) :- test_forever(X).
+
+
+person(john, 20, melbourne).
+person(maria, 31, sydney).
+person(adam, 18, geelong).
+person(michelle, 14, lorne).
