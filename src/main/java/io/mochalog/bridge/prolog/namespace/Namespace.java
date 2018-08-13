@@ -18,6 +18,9 @@ package io.mochalog.bridge.prolog.namespace;
 
 import org.jpl7.Term;
 
+import java.util.Map;
+import java.util.Set;
+
 /**
  * Namespace which maps named variables to Prolog
  * term values. Provides the capacity to read
@@ -25,6 +28,13 @@ import org.jpl7.Term;
  */
 public interface Namespace
 {
+    /**
+     * Return mapping og name vars to their terms
+     * @return List of names in namespace
+     */
+    Map<String, Term> getBinding();
+
+
     /**
      * Get the value associated with the given
      * variable name
@@ -42,4 +52,10 @@ public interface Namespace
      * @return True if defined, false otherwise.
      */
     boolean has(String name);
+
+    /**
+     * Return all names defined
+     * @return List of names in namespace
+     */
+    Set<String> getNames();
 }

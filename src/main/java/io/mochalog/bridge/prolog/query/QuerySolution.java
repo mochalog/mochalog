@@ -22,6 +22,9 @@ import io.mochalog.bridge.prolog.namespace.Namespace;
 import org.jpl7.Term;
 
 import java.util.Objects;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Solution to individual goal successfully proved
@@ -53,6 +56,45 @@ public class QuerySolution
     public Term get(String name) throws NoSuchVariableException
     {
         return namespace.get(name);
+    }
+
+    /**
+     * Get a value to which a variable corresponding to the
+     * given name unified
+     * @param name Variable name
+     * @return Unified value
+     * @throws NoSuchVariableException Variable with given name
+     * is undefined
+     */
+    public Set<String> getVars()
+    {
+        return namespace.getNames();
+    }
+
+
+    /**
+     * Output the mapping of variables to their bindings, for a subset of variables
+     * @param outVars List of variables to return
+     * @return Map of unified values
+     * @throws NoSuchVariableException Variable with given name
+     * is undefined
+     */
+    public Map<String, Term> getMap(String[] outVars) throws NoSuchVariableException
+    {
+        HashMap<String, Term> bindings = new HashMap();
+        for (String outVar : outVars) {
+            bindings.put(outVar, namespace.get(outVar));
+        }
+        return bindings;
+    }
+
+    /**
+     * Output the mapping of variables to their bindings, for all variables
+     * @return Map of unified values
+     */
+    public Map<String, Term> getMap() throws NoSuchVariableException
+    {
+        return namespace.getBinding();
     }
 
     @Override

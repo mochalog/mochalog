@@ -23,6 +23,7 @@ import org.jpl7.Term;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * Namespace binding names to Prolog
@@ -51,6 +52,22 @@ public class ScopedNamespace implements AdaptableNamespace
         }
 
         return variable.value();
+    }
+
+    @Override
+    public Map<String, Term> getBinding() {
+
+        Map<String,Term> binding = new HashMap<String, Term>();
+        for (Map.Entry<String, Variable> e : this.definitions.entrySet()) {
+            binding.put(e.getKey(), e.getValue().value());
+        }
+        return binding;
+    }
+
+
+    @Override
+    public Set<String> getNames() {
+        return definitions.keySet();
     }
 
     /**

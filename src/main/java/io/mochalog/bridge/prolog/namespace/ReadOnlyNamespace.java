@@ -20,6 +20,7 @@ import org.jpl7.Term;
 
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * Namespace which is only capable of being read from.
@@ -40,6 +41,12 @@ public class ReadOnlyNamespace implements Namespace
         this.bindings = bindings;
     }
 
+
+    @Override
+    public Map<String, Term> getBinding() {
+        return this.bindings;
+    }
+
     @Override
     public Term get(String name) throws NoSuchVariableException
     {
@@ -52,6 +59,11 @@ public class ReadOnlyNamespace implements Namespace
         }
 
         return value;
+    }
+
+    @Override
+    public Set<String> getNames() {
+        return bindings.keySet();
     }
 
     @Override

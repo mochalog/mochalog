@@ -27,8 +27,7 @@ import io.mochalog.util.format.Formatter;
 import org.jpl7.Term;
 
 /**
- * Abstract implementation of an interface to the SWI-Prolog
- * interpreter.
+ * Abstract implementation of an interface to the SWI-Prolog interpreter.
  */
 public abstract class AbstractPrologContext implements PrologContext
 {
