@@ -16,45 +16,13 @@ In some sense, Mochalog is a further abstraction of JPL. Looking to stand on its
 * **Performance:** Calls between the two languages should be blazingly fast (as fast or **faster** than other existing Java-Prolog interfaces).
 
 
+Mochalog provides some high level API to consult, assert and retract, and a few query methods (just prove, one solution, all solutions, iterators). 
+
 ## How to use it
 
-### Use it as dependency in Maven
+Check the [Wiki](https://github.com/ssardina/mochalog/wiki) for general installation instructions.
 
-To use Mochalog in your application, add this dependecy and repository to your `pom.xml` to get it automatically via JitPack and GitHub.
-
-To have access to [JitPack](https://jitpack.io/#ssardina/mochalog) service, add this repository:
-
-        <!-- JitPack used for remote installation of dependencies from Github and Bitbucket -->
-        <repository>
-            <id>jitpack.io</id>
-            <name>JitPack Repository</name>
-            <url>https://jitpack.io</url>
-        </repository>
-
-
-
-#### Version 0.4.x
-
-This version has further simplified the framework by removing modules and having a single flat system (and JAR file `mochalog.jar`).
-
-        <dependency>
-            <groupId>com.github.ssardina</groupId>
-            <artifactId>mochalog</artifactId>
-            <version>0.4.0</version>
-        </dependency>
-        
-               
-
-#### Version 0.3.x
-
-This version has migrated Gradel to Maven and kept the main core, and dropped the ECLIPSE and IDEA plugins. However, it is still based on two modules and one `io.mochalog.all` aggregate module.
-
-        <dependency>
-            <groupId>com.github.ssardina.mochalog</groupId>
-            <artifactId>io.mochalog.all</artifactId>
-            <version>0.3.0</version>
-        </dependency>
-        
+For various examples how to use it, see the [Mochalog Unit Test Examples](src/test/java/io/mochalog/bridge/MochaTest.java) 
         
         
                 
