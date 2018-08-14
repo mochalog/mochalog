@@ -185,9 +185,14 @@ public class SequentialQuerySolutionCollector extends AbstractQuerySolutionColle
     {
         while (!allSolutionsFetched)
         {
-            fetchNextSolution();
+            try {
+                fetchNextSolution();    // just fetch it to put it in the cache
+            } catch (EndOfQueryException e) {
+                // ignore this exception as we do want to go to the end of solutions
+            }
         }
 
+        // Now collect the whole cache
         QuerySolution[] solutions = new QuerySolution[solutionCache.size()];
         solutionCache.toArray(solutions);
         return solutions;
@@ -218,7 +223,7 @@ public class SequentialQuerySolutionCollector extends AbstractQuerySolutionColle
         // are fetched
         detach();
 
-        throw new EndOfQueryException("No further query solutions remain.");
+        throw new EndOfQueryException("No further SWI query solutions remain.");
     }
 
     /**
