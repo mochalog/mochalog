@@ -1,0 +1,121 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.github.ssardina</groupId>
+	<artifactId>mochalog</artifactId>
+	<version>0.4.1</version>
+    <packaging>jar</packaging>
+
+    <properties>
+        <mochalog.version>0.4.0</mochalog.version>
+        <compiler.level>1.8</compiler.level>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
+
+    <name>Mochalog: Java - SWI Interface</name>
+  	<description>A two-way bridge between Java and SWI-Prolog</description>
+  	<url>https://github.com/ssardina/mochalog</url>
+
+    <licenses>
+	    <license>
+	      <name>GNU General Public License, Version 3.0</name>
+	      <url>https://www.gnu.org/licenses/gpl-3.0.en.html</url>
+	    </license>
+  	</licenses>
+  
+  	<developers>
+    	<developer>
+	      <name>Matt McNally and Sebastian Sardina</name>
+	      <email>ssardina@gmail.com</email>
+	      <organization>ssardina-research</organization>
+	      <organizationUrl>https://bitbucket.org/ssardina-research/</organizationUrl>
+	    </developer>
+  	</developers>
+
+
+
+
+    <dependencies>
+          <dependency>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+          <version>4.12</version>
+          <scope>test</scope>
+      </dependency>
+
+    <dependency>
+        <groupId>com.github.ssardina</groupId>
+        <artifactId>packages-jpl</artifactId>
+        <version>3d7b1b6</version>
+        <scope>compile</scope>
+    </dependency>
+
+
+    </dependencies>
+
+
+    <repositories>
+        <!-- JitPack used for remote installation of dependencies from Github and Bitbucket -->
+        <repository>
+            <id>jitpack.io</id>
+            <name>JitPack Repository</name>
+            <url>https://jitpack.io</url>
+        </repository>
+
+    </repositories>
+
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/prolog/</directory>
+                <includes>
+                    <include>**/*</include>
+                </includes>
+            </resource>
+        </resources>
+
+
+
+        <plugins>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.19.1</version>
+                <configuration>
+                    <systemPropertyVariables>
+                        <propertyName>java.library.path</propertyName>
+                        <!-- This is where all the .so files are, including libjpl.so -->
+                        <buildDirectory>/usr/lib/swi-prolog/lib/amd64/</buildDirectory>
+                    </systemPropertyVariables>
+                </configuration>
+            </plugin>
+
+
+            <!--  Attach sources -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+
+
+        </plugins>
+
+
+
+
+    </build>
+
+
+
+
+</project>
