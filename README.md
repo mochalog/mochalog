@@ -78,9 +78,11 @@ Mochalog can be configured automatically in your application as dependency via J
    </dependencies>
 ```
 
-### A Simple Example
+### A Simple Example of Mochalog in SARL
 
-Here is some example code of its use within a SARL agent system:
+Once again, a more complete set of examples in Java can be found in the [Mochalog Unit Test Examples](src/test/java/io/mochalog/bridge/MochaTest.java). It has tests showing how to consult/load a KB, assert and retract, update facts (with new arguments), prove a query, ask for one solution, for all solutions, or iterate through solutions. 
+
+Here is some very simple example code of its use within a [SARL](http://www.sarl.io/) agent system:
 
 ```java
 import io.mochalog.bridge.prolog.PrologContext
