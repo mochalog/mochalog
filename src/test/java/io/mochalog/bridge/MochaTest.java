@@ -54,7 +54,7 @@ public class MochaTest
      * solutions retrieved match expected values
      */
     private static String helloWorldTestFile = "src/test/resources/prolog/hello_world.pl";
-    private boolean DEBUG = true;
+    private boolean DEBUG = false;
 
     @Test
     public void basicMochaJavaToPrologQuery()
@@ -114,16 +114,18 @@ public class MochaTest
         // by SWI-Prolog interpreter
         assert(prolog.importFile(helloWorldTestFile));
 
-        // Solutions expected from get_hello_world query
-        final String[] expectedSolutions = { "hello", "world" };
+        // Query and solutions expected from get_hello_world query
+//        Query query = Query.format("get_hello_world(X)");
+//        final String[] expectedSolutions = { "hello", "world" };
 
-        // Perform all solution query
-        Query query = Query.format("get_hello_world(X)");
+        Query query = Query.format("test(X)");
+        final String[] expectedSolutions = { "80", "2", "4", "6", "8" };
+
         int solutionIndex = 0;
         QuerySolutionList solutionList = null;
         try {
             solutionList = prolog.askForAllSolutions(query);
-            System.out.println("Number of solutions found in all test: " + solutionList.size());
+            if (DEBUG) System.out.println("Number of solutions found in all test: " + solutionList.size());
         } catch (Exception e) {
             fail("Unexpected exception because there are solutions!");
             e.printStackTrace();
@@ -173,16 +175,14 @@ public class MochaTest
         final int[] expectedSolutions = { 80, 2, 4, 6, 8 };
 
         // Perform iterative solution query (without delay)
-        Query query = Query.format("tesssst(X)");
+        Query query = Query.format("test(X)");
         int solutionIndex = 0;
-        QuerySolutionIterator solutionList = new QuerySolutionIterator(query);
+        QuerySolutionIterator solutionList = new QuerySolutionIterator(prolog.ask(query));
 
-        System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
         while (solutionList.hasNext()) {
             QuerySolution solution = solutionList.next();
             assertEquals(expectedSolutions[solutionIndex], solution.get("X").intValue());
             solutionIndex++;
-            System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
         }
 
         if (DEBUG) System.out.println(String.format("################ TEST %s DONE!", methodName));
@@ -211,12 +211,12 @@ public class MochaTest
         // Perform iterative solution query (without delay)
         Query query = Query.format("test_slow(Y)");
         int solutionIndex = 0;
-        QuerySolutionIterator solutionList = new QuerySolutionIterator(query);
+        QuerySolutionIterator solutionList = new QuerySolutionIterator(prolog.ask(query));
 
         QuerySolution solution;
         while (solutionList.hasNext()) {
             solution = solutionList.next();
-            System.out.println("Value of X (delayed): " + solution.get("Y"));
+            if (DEBUG) System.out.println("Value of X (delayed): " + solution.get("Y"));
             assertEquals(expectedSolutions[solutionIndex], solution.get("Y").intValue());
             solutionIndex++;
         }
@@ -253,12 +253,12 @@ public class MochaTest
         // Perform iterative solution query (without delay)
         Query query = Query.format("test_forever(Y)");
         int solutionIndex = 0;
-        QuerySolutionIterator solutionList = new QuerySolutionIterator(query);
+        QuerySolutionIterator solutionList = new QuerySolutionIterator(prolog.ask(query));
 
         QuerySolution solution;
         while (solutionList.hasNext() && solutionIndex < noSolToTest) {
             solution = solutionList.next();
-            System.out.println("Value of X (forever): " + solution.get("Y"));
+            if (DEBUG) System.out.println("Value of X (forever): " + solution.get("Y"));
             solutionIndex++;
         }
 
@@ -379,7 +379,7 @@ public class MochaTest
         Map<String, Term> bindings = solution.getMap();
 
         for(String varName : bindings.keySet()) {
-            System.out.print(String.format("Value of variable %s is %s \n", varName, bindings.get(varName).toString()));
+            if (DEBUG) System.out.print(String.format("Value of variable %s is %s \n", varName, bindings.get(varName).toString()));
             assertEquals(bindings.get(varName), expectedSolutions.get(varName));
 
         }
