@@ -177,7 +177,8 @@ public class MochaTest
         // Perform iterative solution query (without delay)
         Query query = Query.format("test(X)");
         int solutionIndex = 0;
-        QuerySolutionIterator solutionList = new QuerySolutionIterator(prolog.ask(query));
+//        QuerySolutionIterator solutionList = new QuerySolutionIterator(prolog.ask(query));
+        QuerySolutionIterator solutionList = prolog.askIter(query);
 
         while (solutionList.hasNext()) {
             QuerySolution solution = solutionList.next();
@@ -211,7 +212,8 @@ public class MochaTest
         // Perform iterative solution query (without delay)
         Query query = Query.format("test_slow(Y)");
         int solutionIndex = 0;
-        QuerySolutionIterator solutionList = new QuerySolutionIterator(prolog.ask(query));
+//        QuerySolutionIterator solutionList = new QuerySolutionIterator(prolog.ask(query));
+        QuerySolutionIterator solutionList = prolog.askIter(query);
 
         QuerySolution solution;
         while (solutionList.hasNext()) {
@@ -254,6 +256,7 @@ public class MochaTest
         Query query = Query.format("test_forever(Y)");
         int solutionIndex = 0;
         QuerySolutionIterator solutionList = new QuerySolutionIterator(prolog.ask(query));
+//        QuerySolutionIterator solutionList = prolog.askIter(query);
 
         QuerySolution solution;
         while (solutionList.hasNext() && solutionIndex < noSolToTest) {

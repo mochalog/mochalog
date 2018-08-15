@@ -18,6 +18,7 @@ package io.mochalog.bridge.prolog;
 
 import io.mochalog.bridge.prolog.query.Query;
 import io.mochalog.bridge.prolog.query.QuerySolution;
+import io.mochalog.bridge.prolog.query.QuerySolutionIterator;
 import io.mochalog.bridge.prolog.query.QuerySolutionList;
 import io.mochalog.bridge.prolog.query.collectors.QuerySolutionCollector;
 
@@ -170,4 +171,23 @@ public interface PrologContext
      * @return Query solution collector for constructed query session
      */
     QuerySolutionCollector ask(Query query);
+
+
+    /**
+     * Open a new query session (unformatted query) in SWI-Prolog
+     * interpreter, from which query solutions can be streamed and
+     * manipulated one by one
+     * @param text Query text
+     * @param args Substitution arguments to apply to text
+     * @return Query solution collector for constructed query session
+     */
+    QuerySolutionIterator askIter(String text, Object... args);
+
+    /**
+     * Open a new query session in SWI-Prolog interpreter, from
+     * which query solutions can be streamed and manipulated one by one
+     * @param query Query to open
+     * @return Query solution collector for constructed query session
+     */
+    QuerySolutionIterator askIter(Query query);
 }

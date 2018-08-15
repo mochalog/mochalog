@@ -18,6 +18,7 @@ package io.mochalog.bridge.prolog;
 
 import io.mochalog.bridge.prolog.query.Query;
 import io.mochalog.bridge.prolog.query.QuerySolution;
+import io.mochalog.bridge.prolog.query.QuerySolutionIterator;
 import io.mochalog.bridge.prolog.query.QuerySolutionList;
 import io.mochalog.bridge.prolog.query.collectors.QuerySolutionCollector;
 
@@ -129,6 +130,19 @@ public abstract class AbstractPrologContext implements PrologContext
     {
         return ask(Query.format(text, args));
     }
+
+
+    @Override
+    public QuerySolutionIterator askIter(String text, Object... args)
+    {
+        return askIter(Query.format(text, args));
+    }
+    @Override
+    public QuerySolutionIterator askIter(Query query)
+    {
+        return new QuerySolutionIterator(ask(query));
+    }
+
 
     /**
      * Perform a SWI-Prolog meta-predicate on a given
