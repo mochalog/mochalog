@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-:- dynamic no_clause/1.
+:- dynamic no_clause/1, test/1, test_plus/2, test_forever/1, person/3.
 
 get_hello_world(hello).
 get_hello_world(world).

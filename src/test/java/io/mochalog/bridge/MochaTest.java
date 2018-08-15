@@ -59,6 +59,9 @@ public class MochaTest
     @Test
     public void basicMochaJavaToPrologQuery()
     {
+        String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
+        System.out.println("================= TEST: " + methodName);
+
         // hello_world.pl test resource
         // Filepath relative to java-api directory
         SandboxedPrologContext prolog = new SandboxedPrologContext("askForSolution");
@@ -91,6 +94,7 @@ public class MochaTest
         }
 
 
+        System.out.println(String.format("################ TEST %s DONE!", methodName));
     }
 
     /**
@@ -100,6 +104,9 @@ public class MochaTest
     @Test
     public void queryAllSolutionsTest() throws IOException
     {
+        String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
+        System.out.println("================= TEST: " + methodName);
+
         // hello_world.pl test resource
         // Filepath relative to java-bridge directory
         PrologContext prolog = new SandboxedPrologContext("all_solution_test");
@@ -140,6 +147,8 @@ public class MochaTest
                 fail();
             }
         }
+
+        System.out.println(String.format("################ TEST %s DONE!", methodName));
     }
 
 
@@ -150,6 +159,9 @@ public class MochaTest
     @Test
     public void queryIterativeTest() throws IOException
     {
+        String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
+        System.out.println("================= TEST: " + methodName);
+
         // hello_world.pl test resource
         // Filepath relative to java-bridge directory
         PrologContext prolog = new SandboxedPrologContext("iter_solution_test");
@@ -165,11 +177,15 @@ public class MochaTest
         int solutionIndex = 0;
         QuerySolutionIterator solutionList = new QuerySolutionIterator(query);
 
+        System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
         while (solutionList.hasNext()) {
             QuerySolution solution = solutionList.next();
             assertEquals(expectedSolutions[solutionIndex], solution.get("X").intValue());
             solutionIndex++;
+            System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
         }
+
+        System.out.println(String.format("################ TEST %s DONE!", methodName));
     }
 
     /**
@@ -179,6 +195,9 @@ public class MochaTest
     @Test
     public void queryIterativeTestWithDelay() throws IOException
     {
+        String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
+        System.out.println("================= TEST: " + methodName);
+
         // hello_world.pl test resource
         // Filepath relative to java-bridge directory
         PrologContext prolog = new SandboxedPrologContext("iter_solution_test");
@@ -206,6 +225,8 @@ public class MochaTest
             fail("There should have been a NoSuchElementException exception!");
         } catch (NoSuchElementException e) {
         }
+
+        System.out.println(String.format("################ TEST %s DONE!", methodName));
     }
 
 
@@ -217,6 +238,9 @@ public class MochaTest
     @Test
     public void queryIterativeTestForever() throws IOException
     {
+        String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
+        System.out.println("================= TEST: " + methodName);
+
         final int noSolToTest = 15;
 
         // hello_world.pl test resource
@@ -237,6 +261,8 @@ public class MochaTest
             System.out.println("Value of X (forever): " + solution.get("Y"));
             solutionIndex++;
         }
+
+        System.out.println(String.format("################ TEST %s DONE!", methodName));
     }
 
 
@@ -247,6 +273,9 @@ public class MochaTest
     @Test
     public void querySetterTest()
     {
+        String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
+        System.out.println("================= TEST: " + methodName);
+
         PrologContext prolog = new SandboxedPrologContext("query_setter_test");
 
         // student(:Name, :StudentId)
@@ -274,6 +303,8 @@ public class MochaTest
                 prolog.askForSolution("student(student_a, StudentId), school(student_a, School)");
         assertEquals(2, solution.get("StudentId").intValue());
         assertEquals("\'New Simulated School\'", solution.get("School").toString());
+
+        System.out.println(String.format("################ TEST %s DONE!", methodName));
     }
 
     /**
@@ -282,6 +313,9 @@ public class MochaTest
     @Test
     public void ensureSandboxedModules()
     {
+        String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
+        System.out.println("================= TEST: " + methodName);
+
         PrologContext firstModule = new SandboxedPrologContext("module_1");
         PrologContext secondModule = new SandboxedPrologContext("module_2");
 
@@ -305,6 +339,8 @@ public class MochaTest
         // Ensure data is not removed from both modules
         assert(firstModule.retract("shared_predicate"));
         assert(secondModule.prove("shared_predicate"));
+
+        System.out.println(String.format("################ TEST %s DONE!", methodName));
     }
 
 
@@ -315,6 +351,9 @@ public class MochaTest
     @Test
     public void bindingMappingQuery()
     {
+        String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
+        System.out.println("================= TEST: " + methodName);
+
         // Solutions expected from get_hello_world query
         Map<String, Term> expectedSolutions = new HashMap<String,Term>();
         expectedSolutions.put("X",textToTerm("john"));
@@ -344,6 +383,9 @@ public class MochaTest
             assertEquals(bindings.get(varName), expectedSolutions.get(varName));
 
         }
+
+
+        System.out.println(String.format("################ TEST %s DONE!", methodName));
     }
 
 
