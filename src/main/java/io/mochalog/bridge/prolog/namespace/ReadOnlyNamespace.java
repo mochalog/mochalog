@@ -43,7 +43,7 @@ public class ReadOnlyNamespace implements Namespace
 
 
     @Override
-    public Map<String, Term> getBinding() {
+    public Map<String, Term> getBindings() {
         return this.bindings;
     }
 

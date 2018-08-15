@@ -55,7 +55,7 @@ public class ScopedNamespace implements AdaptableNamespace
     }
 
     @Override
-    public Map<String, Term> getBinding() {
+    public Map<String, Term> getBindings() {
 
         Map<String,Term> binding = new HashMap<String, Term>();
         for (Map.Entry<String, Variable> e : this.definitions.entrySet()) {

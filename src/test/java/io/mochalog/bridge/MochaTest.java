@@ -379,7 +379,7 @@ public class MochaTest
         Query query = new Query("person(X,Y,Z)");
         QuerySolution solution = prolog.askForSolution(query);
 
-        Map<String, Term> bindings = solution.getMap();
+        Map<String, Term> bindings = solution.getBindings();
 
         for(String varName : bindings.keySet()) {
             if (DEBUG) System.out.print(String.format("Value of variable %s is %s \n", varName, bindings.get(varName).toString()));

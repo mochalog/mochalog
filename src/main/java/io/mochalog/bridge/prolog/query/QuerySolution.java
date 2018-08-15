@@ -92,9 +92,9 @@ public class QuerySolution
      * Output the mapping of variables to their bindings, for all variables
      * @return Map of unified values
      */
-    public Map<String, Term> getMap() throws NoSuchVariableException
+    public Map<String, Term> getBindings() throws NoSuchVariableException
     {
-        return namespace.getBinding();
+        return namespace.getBindings();
     }
 
     @Override

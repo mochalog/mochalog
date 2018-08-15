@@ -32,7 +32,7 @@ public interface Namespace
      * Return mapping og name vars to their terms
      * @return List of names in namespace
      */
-    Map<String, Term> getBinding();
+    Map<String, Term> getBindings();
 
 
     /**
