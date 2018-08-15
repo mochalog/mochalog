@@ -54,13 +54,13 @@ public class MochaTest
      * solutions retrieved match expected values
      */
     private static String helloWorldTestFile = "src/test/resources/prolog/hello_world.pl";
-
+    private boolean DEBUG = true;
 
     @Test
     public void basicMochaJavaToPrologQuery()
     {
         String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
-        System.out.println("================= TEST: " + methodName);
+        if (DEBUG) System.out.println("================= TEST: " + methodName);
 
         // hello_world.pl test resource
         // Filepath relative to java-api directory
@@ -94,7 +94,7 @@ public class MochaTest
         }
 
 
-        System.out.println(String.format("################ TEST %s DONE!", methodName));
+        if (DEBUG) System.out.println(String.format("################ TEST %s DONE!", methodName));
     }
 
     /**
@@ -105,7 +105,7 @@ public class MochaTest
     public void queryAllSolutionsTest() throws IOException
     {
         String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
-        System.out.println("================= TEST: " + methodName);
+        if (DEBUG) System.out.println("================= TEST: " + methodName);
 
         // hello_world.pl test resource
         // Filepath relative to java-bridge directory
@@ -148,7 +148,7 @@ public class MochaTest
             }
         }
 
-        System.out.println(String.format("################ TEST %s DONE!", methodName));
+        if (DEBUG) System.out.println(String.format("################ TEST %s DONE!", methodName));
     }
 
 
@@ -160,7 +160,7 @@ public class MochaTest
     public void queryIterativeTest() throws IOException
     {
         String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
-        System.out.println("================= TEST: " + methodName);
+        if (DEBUG) System.out.println("================= TEST: " + methodName);
 
         // hello_world.pl test resource
         // Filepath relative to java-bridge directory
@@ -173,7 +173,7 @@ public class MochaTest
         final int[] expectedSolutions = { 80, 2, 4, 6, 8 };
 
         // Perform iterative solution query (without delay)
-        Query query = Query.format("test(X)");
+        Query query = Query.format("tesssst(X)");
         int solutionIndex = 0;
         QuerySolutionIterator solutionList = new QuerySolutionIterator(query);
 
@@ -185,7 +185,7 @@ public class MochaTest
             System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
         }
 
-        System.out.println(String.format("################ TEST %s DONE!", methodName));
+        if (DEBUG) System.out.println(String.format("################ TEST %s DONE!", methodName));
     }
 
     /**
@@ -196,7 +196,7 @@ public class MochaTest
     public void queryIterativeTestWithDelay() throws IOException
     {
         String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
-        System.out.println("================= TEST: " + methodName);
+        if (DEBUG) System.out.println("================= TEST: " + methodName);
 
         // hello_world.pl test resource
         // Filepath relative to java-bridge directory
@@ -226,7 +226,7 @@ public class MochaTest
         } catch (NoSuchElementException e) {
         }
 
-        System.out.println(String.format("################ TEST %s DONE!", methodName));
+        if (DEBUG) System.out.println(String.format("################ TEST %s DONE!", methodName));
     }
 
 
@@ -239,7 +239,7 @@ public class MochaTest
     public void queryIterativeTestForever() throws IOException
     {
         String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
-        System.out.println("================= TEST: " + methodName);
+        if (DEBUG) System.out.println("================= TEST: " + methodName);
 
         final int noSolToTest = 15;
 
@@ -262,7 +262,7 @@ public class MochaTest
             solutionIndex++;
         }
 
-        System.out.println(String.format("################ TEST %s DONE!", methodName));
+        if (DEBUG) System.out.println(String.format("################ TEST %s DONE!", methodName));
     }
 
 
@@ -274,7 +274,7 @@ public class MochaTest
     public void querySetterTest()
     {
         String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
-        System.out.println("================= TEST: " + methodName);
+        if (DEBUG) System.out.println("================= TEST: " + methodName);
 
         PrologContext prolog = new SandboxedPrologContext("query_setter_test");
 
@@ -304,7 +304,7 @@ public class MochaTest
         assertEquals(2, solution.get("StudentId").intValue());
         assertEquals("\'New Simulated School\'", solution.get("School").toString());
 
-        System.out.println(String.format("################ TEST %s DONE!", methodName));
+        if (DEBUG) System.out.println(String.format("################ TEST %s DONE!", methodName));
     }
 
     /**
@@ -314,7 +314,7 @@ public class MochaTest
     public void ensureSandboxedModules()
     {
         String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
-        System.out.println("================= TEST: " + methodName);
+        if (DEBUG) System.out.println("================= TEST: " + methodName);
 
         PrologContext firstModule = new SandboxedPrologContext("module_1");
         PrologContext secondModule = new SandboxedPrologContext("module_2");
@@ -340,7 +340,7 @@ public class MochaTest
         assert(firstModule.retract("shared_predicate"));
         assert(secondModule.prove("shared_predicate"));
 
-        System.out.println(String.format("################ TEST %s DONE!", methodName));
+        if (DEBUG) System.out.println(String.format("################ TEST %s DONE!", methodName));
     }
 
 
@@ -352,7 +352,7 @@ public class MochaTest
     public void bindingMappingQuery()
     {
         String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
-        System.out.println("================= TEST: " + methodName);
+        if (DEBUG) System.out.println("================= TEST: " + methodName);
 
         // Solutions expected from get_hello_world query
         Map<String, Term> expectedSolutions = new HashMap<String,Term>();
@@ -385,7 +385,7 @@ public class MochaTest
         }
 
 
-        System.out.println(String.format("################ TEST %s DONE!", methodName));
+        if (DEBUG) System.out.println(String.format("################ TEST %s DONE!", methodName));
     }
 
 
