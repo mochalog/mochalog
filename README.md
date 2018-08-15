@@ -6,7 +6,7 @@
 
 The current version (> 0.3.0) has been simplified significantly and migrated to Maven. 
 
-Mochalog can be obtained automatically via Maven automatically from Github repository via JitPack: <https://jitpack.io/#mochalog/mochalog>. See below for more details for your POM.
+Mochalog can be obtained automatically via Maven automatically from Github repository via JitPack: <https://jitpack.io/#ssardina/mochalog>. See below for more details for your POM.
 
 
 ## Overview
