@@ -2,11 +2,11 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.ssardina</groupId>
 	<artifactId>mochalog</artifactId>
-	<version>0.4.1</version>
+	<version>${mochalog.version</version>
     <packaging>jar</packaging>
 
     <properties>
-        <mochalog.version>0.4.0</mochalog.version>
+        <mochalog.version>0.4.2</mochalog.version>
         <compiler.level>1.8</compiler.level>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -44,6 +44,14 @@
           <scope>test</scope>
       </dependency>
 
+
+    <!-- In-house JPL version is necessary to fix a small glitch with modules context scoping
+   // However, we still cannot use the official SWI version of JPL 7.6.x because still has the issue
+   // Has been fixed in 7.7.x, need to wait until it is released and we can rely on that
+   // For now we are using our own fork and patch JPL that fixes that issue
+   // ISSUE: https://github.com/SWI-Prolog/packages-jpl/issues/9
+   // FIXED: https://github.com/SWI-Prolog/packages-jpl/pull/10
+   -->
     <dependency>
         <groupId>com.github.ssardina</groupId>
         <artifactId>packages-jpl</artifactId>
