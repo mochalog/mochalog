@@ -87,6 +87,7 @@ cd packages
 # installed prior to package install
 # Libraries required are libarchive-dev and libssl-dev
 echo "Installing libarchive-dev (dependency of SWI-Prolog archive package) ..."
+apt-get update
 apt-get install libarchive-dev -y -q
 echo "Installing libssl-dev (dependency of SWI-Prolog ssl package) ..."
 apt-get install libssl-dev -y -q
