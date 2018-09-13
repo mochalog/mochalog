@@ -159,6 +159,7 @@ public abstract class AbstractPrologContext implements PrologContext
         Formatter formatter = new Query.Formatter();
         String formattedInner = formatter.format(inner, args);
         // Perform meta-predicate query on inner predicate
+//        return prove(String.format("@A(%s)",formattedInner), outer);
         return prove("@A(@A)", outer, formattedInner);
     }
 }

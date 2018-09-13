@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.mochalog.bridge;
+package io.sarl.extras;
 
 import org.jpl7.JPL;
 import org.jpl7.Query;
@@ -22,18 +22,22 @@ import org.jpl7.Term;
 
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.Map;
 
 /**
  * Test suite for JPL (Java to Prolog direction).
- * This does not uses Mochalog facilities
  * <p>
  * Ensures SWI-Prolog code can be invoked from JVM via JPL.
+ *
  */
 public class JPLTest
 {
+    final String testKBFilePath = "src/test/resources/prolog/testKB.pl";
+
+
     /**
      * Ensure jpl.dll or libjpl.so and dependencies are able to be loaded
      * by the JVM. All subsequent tests which rely on JPL functionality
@@ -45,7 +49,7 @@ public class JPLTest
         try
         {
             // Attempt to load JPL native library given
-            // specified java.library.path
+            // specified java.librry.path
             JPL.loadNativeLibrary();
         }
         catch (UnsatisfiedLinkError e)
@@ -53,7 +57,8 @@ public class JPLTest
             String swiPrologHomeDir = System.getenv("SWI_HOME_DIR");
 
             // Check if SWI_HOME_DIR is set
-            String message = "jpl library or any one of its dependencies failed to be found.";
+            String message = "jpl library or any one of its dependencies " +
+                    "failed to be found.";
             if (swiPrologHomeDir == null)
             {
                 fail(message + " SWI_HOME_DIR system environment variable not set.");
@@ -61,7 +66,7 @@ public class JPLTest
             else
             {
                 fail(message + " Ensure that the SWI_HOME_DIR/bin directory " +
-                    "has been added to the system path.");
+                        "has been added to the system path.");
             }
         }
     }
@@ -75,12 +80,12 @@ public class JPLTest
     {
         // hello_world.pl test resource
         // Filepath relative to java-api directory
-        final String helloWorldPrologFilePath = "src/test/resources/prolog/hello_world.pl";
 
-        boolean loaded = consultKnowledgeBase(helloWorldPrologFilePath);
+        boolean loaded = consultKnowledgeBase(testKBFilePath);
         assert(loaded);
 
-        // Fetch the Term object which gets bound to the specifie variable
+        // Fetch the Term object which gets bound to the specified
+        // variable
         Query query = new Query("get_hello_world(X)");
         Map<String, Term> binding = query.oneSolution();
 
@@ -90,6 +95,39 @@ public class JPLTest
         assertEquals("hello", result.toString());
     }
 
+
+    /**
+     * Check a query against a string
+     */
+    @Test
+    public void stringPrologQuery()
+    {
+        String queryText;
+        Query query;
+        boolean hasSolution;
+
+        // hello_world.pl test resource
+        // Filepath relative to java-api directory
+
+        boolean loaded = consultKnowledgeBase(testKBFilePath);
+        assertTrue("Test KB was not consulted successfully", loaded);
+
+        // Check for string
+        queryText = "data_string(atom0)";
+        hasSolution = Query.hasSolution(queryText);
+        assertTrue(String.format("No solution was found for query **%s**  !!!", queryText), hasSolution);;
+
+
+        // Check for string
+//        queryText = "data_string(\"string0\")";
+//        query = new Query(queryText);
+//
+//        hasSolution = query.hasSolution();
+//        assertTrue(String.format("No solution was found for query **%s**  !!!", queryText), hasSolution);;
+    }
+
+
+
     /**
      * Load the Prolog file at filepath into the SWI-Prolog interpreter
      * @param filePath Path of Prolog file
@@ -97,41 +135,7 @@ public class JPLTest
      */
     private boolean consultKnowledgeBase(String filePath)
     {
-        String queryString = "consult('" + filePath + "')";
+        String queryString = String.format("consult('%s')", filePath);
         return Query.hasSolution(queryString);
     }
-
-
-
-    /**
-     * Check that basic string is correctly returned from
-     * SWI-Prolog via JPL query
-     */
-    @Test
-    public void bindingMappingQuery()
-    {
-        // hello_world.pl test resource
-        // Filepath relative to java-api directory
-        final String helloWorldPrologFilePath = "src/test/resources/prolog/hello_world.pl";
-
-        boolean loaded = consultKnowledgeBase(helloWorldPrologFilePath);
-        assert(loaded);
-
-        // Fetch the Term object which gets bound to the specified
-        // variable
-
-        Query query = new Query("person(X,Y,Z)");
-        Map<String, Term> binding = query.oneSolution();
-
-        Term resultX = binding.get("X");
-        Term resultY = binding.get("Y");
-        Term resultZ = binding.get("Z");
-        // Ensure first solution string (hello) was correctly fetched
-        // from Prolog file
-        assertEquals("john", resultX.toString());
-        assertEquals(20, resultY.intValue());
-        assertEquals("melbourne", resultZ.toString());
-    }
-
-
 }

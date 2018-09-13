@@ -53,7 +53,7 @@ public class MochaTest
      * Performs a Mochalog queries and validates whether
      * solutions retrieved match expected values
      */
-    private static String helloWorldTestFile = "src/test/resources/prolog/hello_world.pl";
+    private static String testKBFilePath = "src/test/resources/prolog/testKB.pl";
     private boolean DEBUG = false;
 
     @Test
@@ -68,7 +68,7 @@ public class MochaTest
 
         boolean loaded = false;
         try {
-            loaded = prolog.importFile(helloWorldTestFile);
+            loaded = prolog.importFile(testKBFilePath);
         } catch (IOException e) {
             fail( "My method throw when I expected not to" );
             e.printStackTrace();
@@ -112,7 +112,7 @@ public class MochaTest
         PrologContext prolog = new SandboxedPrologContext("all_solution_test");
         // Ensure Prolog file was correctly loaded
         // by SWI-Prolog interpreter
-        assert(prolog.importFile(helloWorldTestFile));
+        assert(prolog.importFile(testKBFilePath));
 
         // Query and solutions expected from get_hello_world query
 //        Query query = Query.format("get_hello_world(X)");
@@ -169,7 +169,7 @@ public class MochaTest
         PrologContext prolog = new SandboxedPrologContext("iter_solution_test");
         // Ensure Prolog file was correctly loaded
         // by SWI-Prolog interpreter
-        assert(prolog.importFile(helloWorldTestFile));
+        assert(prolog.importFile(testKBFilePath));
 
         // Solutions expected from get_hello_world query
         final int[] expectedSolutions = { 80, 2, 4, 6, 8 };
@@ -204,7 +204,7 @@ public class MochaTest
         PrologContext prolog = new SandboxedPrologContext("iter_solution_test");
         // Ensure Prolog file was correctly loaded
         // by SWI-Prolog interpreter
-        assert(prolog.importFile(helloWorldTestFile));
+        assert(prolog.importFile(testKBFilePath));
 
         // Solutions expected from get_hello_world query
         final int[] expectedSolutions = { 80, 2, 4, 6, 8 };
@@ -250,7 +250,7 @@ public class MochaTest
         PrologContext prolog = new SandboxedPrologContext("iter_solution_test");
         // Ensure Prolog file was correctly loaded
         // by SWI-Prolog interpreter
-        assert(prolog.importFile(helloWorldTestFile));
+        assert(prolog.importFile(testKBFilePath));
 
         // Perform iterative solution query (without delay)
         Query query = Query.format("test_forever(Y)");
@@ -366,7 +366,7 @@ public class MochaTest
         SandboxedPrologContext prolog = new SandboxedPrologContext("askForSolution");
         boolean loaded = false;
         try {
-            loaded = prolog.importFile(helloWorldTestFile);
+            loaded = prolog.importFile(testKBFilePath);
         } catch (IOException e) {
             fail( "My method throw when I expected not to" );
             e.printStackTrace();

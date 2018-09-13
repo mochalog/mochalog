@@ -6,7 +6,7 @@
     <packaging>jar</packaging>
 
     <properties>
-        <mochalog.version>0.4.2</mochalog.version>
+        <mochalog.version>0.4.4</mochalog.version>
         <compiler.level>1.8</compiler.level>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>

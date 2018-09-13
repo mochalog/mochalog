@@ -57,13 +57,29 @@ public class Query
             // Prolog integer
             setRule("I", Formatter::formatInteger);
 
+            // Doc on regexp in Java:
+            // https://docs.oracle.com/javase/tutorial/essential/regex/index.html
+            // http://www.vogella.com/tutorials/JavaRegularExpressions/article.html
+            // http://www.ntu.edu.sg/home/ehchua/programming/howto/regexe.html
+
             // Basic regex pattern defining a Prolog compound
+            // reg expression naked: \w+\([^(]*\)
+            // A non-empty word \w+
+            //      followed by opening parentheis \(
+            //      followed by zero or more non opening parenthesis [^(]*
+            //      followed by closing parenthesis \)
             COMPOUND_PATTERN = Pattern.compile("\\w+\\([^(]*\\)");
 
-            // Basic regex capturing most Prolog term instances
+            // Basic regex capturing most Prolog BASIC term instances
             // (integers, floats, strings, atoms)
             // TODO: Not a robust grammar definition of a Prolog term
+            // regexp: \w+ | [0-9]+.[0-9] | "[^"]*"
+            //  a non empty word \w+ (including integers) OR
+            //  a number with decimals [0-9]+.[0-9]
+            //  a string (any text quoted): "[^"]*"
             final String TERM_DEFINITION = "\\w+|[0-9]+.[0-9]|\"[^\"]*\"";
+
+
             // Rule of the form <PREVIOUS_VALUE> <- <NEW_VALUE>
             // Allows Prolog term data (PREVIOUS_VALUE) to be replaced with NEW_VALUE within
             // a query
