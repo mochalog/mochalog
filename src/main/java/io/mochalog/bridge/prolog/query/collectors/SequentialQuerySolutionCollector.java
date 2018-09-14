@@ -16,8 +16,8 @@
 
 package io.mochalog.bridge.prolog.query.collectors;
 
-import io.mochalog.bridge.prolog.query.Query;
-import io.mochalog.bridge.prolog.query.QuerySolution;
+import io.mochalog.bridge.prolog.query.MQuery;
+import io.mochalog.bridge.prolog.query.MQuerySolution;
 import io.mochalog.bridge.prolog.query.exception.EndOfQueryException;
 import io.mochalog.bridge.prolog.query.exception.NoSuchSolutionException;
 
@@ -46,7 +46,7 @@ public class SequentialQuerySolutionCollector extends AbstractQuerySolutionColle
          * Constructor.
          * @param query Query to collect solutions from
          */
-        public Builder(Query query)
+        public Builder(MQuery query)
         {
             super(query);
         }
@@ -55,7 +55,7 @@ public class SequentialQuerySolutionCollector extends AbstractQuerySolutionColle
         public SequentialQuerySolutionCollector build()
         {
             // Change working module for query if necessary
-            String text = Query.runnableInModule(query, workingModule);
+            String text = MQuery.runnableInModule(query, workingModule);
             return new SequentialQuerySolutionCollector(text);
         }
     }
@@ -69,7 +69,7 @@ public class SequentialQuerySolutionCollector extends AbstractQuerySolutionColle
 
     // Solutions which have been retrieved from SWI-Prolog
     // interpreter
-    private List<QuerySolution> solutionCache;
+    private List<MQuerySolution> solutionCache;
     // Flag to indicate whether all query solutions have
     // been retrieved
     private boolean allSolutionsFetched;
@@ -124,21 +124,21 @@ public class SequentialQuerySolutionCollector extends AbstractQuerySolutionColle
     }
 
     @Override
-    public boolean hasSolution(QuerySolution solution)
+    public boolean hasSolution(MQuerySolution solution)
     {
         fetchAllSolutions();
         return solutionCache.contains(solution);
     }
 
     @Override
-    public boolean hasAllSolutions(Collection<QuerySolution> solutions)
+    public boolean hasAllSolutions(Collection<MQuerySolution> solutions)
     {
         fetchAllSolutions();
         return solutionCache.containsAll(solutions);
     }
 
     @Override
-    public QuerySolution fetchSolution(int index) throws NoSuchSolutionException
+    public MQuerySolution fetchSolution(int index) throws NoSuchSolutionException
     {
         if (isSolutionCached(index))
         {
@@ -168,20 +168,20 @@ public class SequentialQuerySolutionCollector extends AbstractQuerySolutionColle
     }
 
     @Override
-    public QuerySolution fetchFirstSolution() throws NoSuchSolutionException
+    public MQuerySolution fetchFirstSolution() throws NoSuchSolutionException
     {
         return fetchSolution(0);
     }
 
     @Override
-    public QuerySolution fetchLastSolution() throws NoSuchSolutionException
+    public MQuerySolution fetchLastSolution() throws NoSuchSolutionException
     {
-        QuerySolution[] allSolutions = fetchAllSolutions();
+        MQuerySolution[] allSolutions = fetchAllSolutions();
         return allSolutions[allSolutions.length - 1];
     }
 
     @Override
-    public QuerySolution[] fetchAllSolutions()
+    public MQuerySolution[] fetchAllSolutions()
     {
         while (!allSolutionsFetched)
         {
@@ -193,7 +193,7 @@ public class SequentialQuerySolutionCollector extends AbstractQuerySolutionColle
         }
 
         // Now collect the whole cache
-        QuerySolution[] solutions = new QuerySolution[solutionCache.size()];
+        MQuerySolution[] solutions = new MQuerySolution[solutionCache.size()];
         solutionCache.toArray(solutions);
         return solutions;
     }
@@ -202,7 +202,7 @@ public class SequentialQuerySolutionCollector extends AbstractQuerySolutionColle
      * Fetch the next solution in the interpreter stream.
      * @throws EndOfQueryException No further solutions remain
      */
-    private QuerySolution fetchNextSolution() throws EndOfQueryException
+    private MQuerySolution fetchNextSolution() throws EndOfQueryException
     {
         // Check if further solutions exist
         if (isAttached && !allSolutionsFetched && interpreterQuery.hasMoreSolutions())
@@ -211,7 +211,7 @@ public class SequentialQuerySolutionCollector extends AbstractQuerySolutionColle
             // namespace values
             Namespace namespace =
                     new ReadOnlyNamespace(interpreterQuery.nextSolution());
-            QuerySolution solution = new QuerySolution(namespace);
+            MQuerySolution solution = new MQuerySolution(namespace);
             solutionCache.add(solution);
 
             return solution;

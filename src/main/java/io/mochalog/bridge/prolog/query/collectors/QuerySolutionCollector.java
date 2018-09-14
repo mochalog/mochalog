@@ -16,7 +16,7 @@
 
 package io.mochalog.bridge.prolog.query.collectors;
 
-import io.mochalog.bridge.prolog.query.QuerySolution;
+import io.mochalog.bridge.prolog.query.MQuerySolution;
 import io.mochalog.bridge.prolog.query.exception.NoSuchSolutionException;
 
 import java.util.Collection;
@@ -57,7 +57,7 @@ public interface QuerySolutionCollector
      * @return True if the query has the specified solution,
      * false otherwise.
      */
-    boolean hasSolution(QuerySolution solution);
+    boolean hasSolution(MQuerySolution solution);
 
     /**
      * Check if all solutions in the given collection
@@ -67,7 +67,7 @@ public interface QuerySolutionCollector
      * @return True if collection is a subset, false
      * otherwise.
      */
-    boolean hasAllSolutions(Collection<QuerySolution> solutions);
+    boolean hasAllSolutions(Collection<MQuerySolution> solutions);
 
     /**
      * Fetch the solution at the specified index from
@@ -77,27 +77,27 @@ public interface QuerySolutionCollector
      * @throws NoSuchSolutionException No further solutions exist
      * in the query
      */
-    QuerySolution fetchSolution(int index) throws NoSuchSolutionException;
+    MQuerySolution fetchSolution(int index) throws NoSuchSolutionException;
 
     /**
      * Fetch the first solution to the query.
      * @return First solution
      * @throws NoSuchSolutionException Query has no solutions
      */
-    QuerySolution fetchFirstSolution() throws NoSuchSolutionException;
+    MQuerySolution fetchFirstSolution() throws NoSuchSolutionException;
 
     /**
      * Fetch the last solution to the query.
      * @return Last solution
      * @throws NoSuchSolutionException Query has no solutions
      */
-    QuerySolution fetchLastSolution() throws NoSuchSolutionException;
+    MQuerySolution fetchLastSolution() throws NoSuchSolutionException;
 
     /**
      * Fetch every solution available from the interpreter
      * @return Array of query solutions
      */
-    QuerySolution[] fetchAllSolutions();
+    MQuerySolution[] fetchAllSolutions();
 
     /**
      * Detach the collector from the interpreter

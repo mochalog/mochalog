@@ -28,7 +28,7 @@ import java.util.NoSuchElementException;
  * Iterator over an ordered collection of solutions to a
  * Prolog query
  */
-public class QuerySolutionIterator implements Iterator<QuerySolution>
+public class MQuerySolutionIterator implements Iterator<MQuerySolution>
 {
     // Index of currently viewed solution
     private int index;
@@ -39,7 +39,7 @@ public class QuerySolutionIterator implements Iterator<QuerySolution>
      * Constructor.
      * @param query Query to iterate over
      */
-    public QuerySolutionIterator(Query query)
+    public MQuerySolutionIterator(MQuery query)
     {
         this(
             new SequentialQuerySolutionCollector.Builder(query)
@@ -52,7 +52,7 @@ public class QuerySolutionIterator implements Iterator<QuerySolution>
      * @param query Query to iterate over
      * @param workingModule Module to operate query from
      */
-    public QuerySolutionIterator(Query query, Module workingModule)
+    public MQuerySolutionIterator(MQuery query, Module workingModule)
     {
         this(
             new SequentialQuerySolutionCollector.Builder(query)
@@ -65,7 +65,7 @@ public class QuerySolutionIterator implements Iterator<QuerySolution>
      * Constructor.
      * @param collector Existing solution collector
      */
-    public QuerySolutionIterator(QuerySolutionCollector collector)
+    public MQuerySolutionIterator(QuerySolutionCollector collector)
     {
         this.collector = collector;
         index = 0;
@@ -87,11 +87,11 @@ public class QuerySolutionIterator implements Iterator<QuerySolution>
      * @throws NoSuchElementException Given no further solutions exist
      */
     @Override
-    public QuerySolution next() throws NoSuchElementException
+    public MQuerySolution next() throws NoSuchElementException
     {
         try
         {
-            QuerySolution solution = collector.fetchSolution(index);
+            MQuerySolution solution = collector.fetchSolution(index);
             ++index;
             return solution;
         }

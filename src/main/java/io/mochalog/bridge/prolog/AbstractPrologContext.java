@@ -16,10 +16,10 @@
 
 package io.mochalog.bridge.prolog;
 
-import io.mochalog.bridge.prolog.query.Query;
-import io.mochalog.bridge.prolog.query.QuerySolution;
-import io.mochalog.bridge.prolog.query.QuerySolutionIterator;
-import io.mochalog.bridge.prolog.query.QuerySolutionList;
+import io.mochalog.bridge.prolog.query.MQuery;
+import io.mochalog.bridge.prolog.query.MQuerySolution;
+import io.mochalog.bridge.prolog.query.MQuerySolutionIterator;
+import io.mochalog.bridge.prolog.query.MQuerySolutionList;
 import io.mochalog.bridge.prolog.query.collectors.QuerySolutionCollector;
 
 import io.mochalog.bridge.prolog.query.exception.NoSuchSolutionException;
@@ -65,11 +65,11 @@ public abstract class AbstractPrologContext implements PrologContext
     @Override
     public boolean prove(String text, Object... args)
     {
-        return prove(Query.format(text, args));
+        return prove(MQuery.format(text, args));
     }
 
     @Override
-    public boolean prove(Query query)
+    public boolean prove(MQuery query)
     {
         QuerySolutionCollector collector = ask(query);
         boolean result = collector.hasSolutions();
@@ -79,14 +79,14 @@ public abstract class AbstractPrologContext implements PrologContext
     }
 
     @Override
-    public QuerySolution askForSolution(String text, Object... args)
+    public MQuerySolution askForSolution(String text, Object... args)
             throws NoSuchSolutionException
     {
-        return askForSolution(Query.format(text, args));
+        return askForSolution(MQuery.format(text, args));
     }
 
     @Override
-    public QuerySolution askForSolution(Query query)
+    public MQuerySolution askForSolution(MQuery query)
             throws NoSuchSolutionException
     {
         QuerySolutionCollector collector = ask(query);
@@ -103,7 +103,7 @@ public abstract class AbstractPrologContext implements PrologContext
     }
 
     @Override
-    public QuerySolution askForSolution(Query query, int index)
+    public MQuerySolution askForSolution(MQuery query, int index)
             throws NoSuchSolutionException
     {
         QuerySolutionCollector collector = ask(query);
@@ -120,27 +120,27 @@ public abstract class AbstractPrologContext implements PrologContext
     }
 
     @Override
-    public QuerySolutionList askForAllSolutions(String text, Object... args)
+    public MQuerySolutionList askForAllSolutions(String text, Object... args)
     {
-        return askForAllSolutions(Query.format(text, args));
+        return askForAllSolutions(MQuery.format(text, args));
     }
 
     @Override
     public QuerySolutionCollector ask(String text, Object... args)
     {
-        return ask(Query.format(text, args));
+        return ask(MQuery.format(text, args));
     }
 
 
     @Override
-    public QuerySolutionIterator askIter(String text, Object... args)
+    public MQuerySolutionIterator askIter(String text, Object... args)
     {
-        return askIter(Query.format(text, args));
+        return askIter(MQuery.format(text, args));
     }
     @Override
-    public QuerySolutionIterator askIter(Query query)
+    public MQuerySolutionIterator askIter(MQuery query)
     {
-        return new QuerySolutionIterator(ask(query));
+        return new MQuerySolutionIterator(ask(query));
     }
 
 
@@ -156,7 +156,7 @@ public abstract class AbstractPrologContext implements PrologContext
     {
         // Apply substitution arguments to inner predicate
         // before formatting meta-predicate
-        Formatter formatter = new Query.Formatter();
+        Formatter formatter = new MQuery.Formatter();
         String formattedInner = formatter.format(inner, args);
         // Perform meta-predicate query on inner predicate
 //        return prove(String.format("@A(%s)",formattedInner), outer);

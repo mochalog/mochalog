@@ -33,7 +33,7 @@ import java.util.ListIterator;
  * List itself is unmodifiable (QuerySolutionList is a <i>view</i>
  * of query solutions resulting from a query execution).
  */
-public class QuerySolutionList extends UnmodifiableList<QuerySolution>
+public class MQuerySolutionList extends UnmodifiableList<MQuerySolution>
 {
     // Interface for the accumulation of query solutions
     private QuerySolutionCollector collector;
@@ -42,7 +42,7 @@ public class QuerySolutionList extends UnmodifiableList<QuerySolution>
      * Constructor.
      * @param query Query to transform into solution list
      */
-    public QuerySolutionList(Query query)
+    public MQuerySolutionList(MQuery query)
     {
         this(
             new SequentialQuerySolutionCollector.Builder(query)
@@ -55,7 +55,7 @@ public class QuerySolutionList extends UnmodifiableList<QuerySolution>
      * @param query Query to transform into solution list
      * @param workingModule Module to operate query from
      */
-    public QuerySolutionList(Query query, Module workingModule)
+    public MQuerySolutionList(MQuery query, Module workingModule)
     {
         this(
             new SequentialQuerySolutionCollector.Builder(query)
@@ -68,7 +68,7 @@ public class QuerySolutionList extends UnmodifiableList<QuerySolution>
      * Constructor.
      * @param collector Existing solution collector
      */
-    public QuerySolutionList(QuerySolutionCollector collector)
+    public MQuerySolutionList(QuerySolutionCollector collector)
     {
         this.collector = collector;
     }
@@ -88,13 +88,13 @@ public class QuerySolutionList extends UnmodifiableList<QuerySolution>
     @Override
     public boolean contains(Object o)
     {
-        return o instanceof QuerySolution && collector.hasSolution((QuerySolution) o);
+        return o instanceof MQuerySolution && collector.hasSolution((MQuerySolution) o);
     }
 
     @Override
-    public Iterator<QuerySolution> iterator()
+    public Iterator<MQuerySolution> iterator()
     {
-        return new QuerySolutionIterator(collector);
+        return new MQuerySolutionIterator(collector);
     }
 
     @Override
@@ -130,7 +130,7 @@ public class QuerySolutionList extends UnmodifiableList<QuerySolution>
     }
 
     @Override
-    public QuerySolution get(int index)
+    public MQuerySolution get(int index)
     {
         try
         {
@@ -149,7 +149,7 @@ public class QuerySolutionList extends UnmodifiableList<QuerySolution>
      * @throws NoSuchSolutionException No solutions exist
      * in the list
      */
-    public QuerySolution getFirst() throws NoSuchSolutionException
+    public MQuerySolution getFirst() throws NoSuchSolutionException
     {
         return collector.fetchFirstSolution();
     }
@@ -161,7 +161,7 @@ public class QuerySolutionList extends UnmodifiableList<QuerySolution>
      * @throws NoSuchSolutionException No solutions exist
      * in the list
      */
-    public QuerySolution getLast() throws NoSuchSolutionException
+    public MQuerySolution getLast() throws NoSuchSolutionException
     {
         return collector.fetchLastSolution();
     }
@@ -181,21 +181,21 @@ public class QuerySolutionList extends UnmodifiableList<QuerySolution>
     }
 
     @Override
-    public ListIterator<QuerySolution> listIterator()
+    public ListIterator<MQuerySolution> listIterator()
     {
         // TODO: Not currently implemented
         return null;
     }
 
     @Override
-    public ListIterator<QuerySolution> listIterator(int index)
+    public ListIterator<MQuerySolution> listIterator(int index)
     {
         // TODO: Not currently implemented
         return null;
     }
 
     @Override
-    public List<QuerySolution> subList(int fromIndex, int toIndex)
+    public List<MQuerySolution> subList(int fromIndex, int toIndex)
     {
         // TODO: Not currently implemented
         return null;

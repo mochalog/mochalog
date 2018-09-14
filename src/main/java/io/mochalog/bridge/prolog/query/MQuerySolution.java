@@ -30,7 +30,7 @@ import java.util.Set;
  * Solution to individual goal successfully proved
  * by the SWI-Prolog engine (with variable unification)
  */
-public class QuerySolution
+public class MQuerySolution
 {
     // Solution-level namespace containing
     // variable unifications
@@ -40,7 +40,7 @@ public class QuerySolution
      * Constructor.
      * @param namespace Unification namespace
      */
-    public QuerySolution(Namespace namespace)
+    public MQuerySolution(Namespace namespace)
     {
         this.namespace = namespace;
     }
@@ -107,9 +107,9 @@ public class QuerySolution
         }
 
         // null/type validation
-        if (o != null && o instanceof QuerySolution)
+        if (o != null && o instanceof MQuerySolution)
         {
-            QuerySolution solution = (QuerySolution) o;
+            MQuerySolution solution = (MQuerySolution) o;
             // Field comparisons
             return Objects.equals(namespace, solution.namespace);
         }

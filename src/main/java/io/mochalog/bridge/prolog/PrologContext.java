@@ -16,16 +16,15 @@
 
 package io.mochalog.bridge.prolog;
 
-import io.mochalog.bridge.prolog.query.Query;
-import io.mochalog.bridge.prolog.query.QuerySolution;
-import io.mochalog.bridge.prolog.query.QuerySolutionIterator;
-import io.mochalog.bridge.prolog.query.QuerySolutionList;
+import io.mochalog.bridge.prolog.query.MQuery;
+import io.mochalog.bridge.prolog.query.MQuerySolution;
+import io.mochalog.bridge.prolog.query.MQuerySolutionIterator;
+import io.mochalog.bridge.prolog.query.MQuerySolutionList;
 import io.mochalog.bridge.prolog.query.collectors.QuerySolutionCollector;
 
 import io.mochalog.bridge.prolog.query.exception.NoSuchSolutionException;
 import org.jpl7.Term;
 
-import java.net.URL;
 import java.nio.file.Path;
 import java.io.IOException;
 
@@ -104,7 +103,7 @@ public interface PrologContext
      * @param query Query to prove
      * @return True if provable, false otherwise
      */
-    boolean prove(Query query);
+    boolean prove(MQuery query);
 
     /**
      * Ask for first solution to given unformatted query.
@@ -115,7 +114,7 @@ public interface PrologContext
      * @return Solution
      * @throws NoSuchSolutionException Query has no solutions
      */
-    QuerySolution askForSolution(String text, Object... args)
+    MQuerySolution askForSolution(String text, Object... args)
         throws NoSuchSolutionException;
 
     /**
@@ -126,7 +125,7 @@ public interface PrologContext
      * @return Solution
      * @throws NoSuchSolutionException Query has no solutions
      */
-    QuerySolution askForSolution(Query query)
+    MQuerySolution askForSolution(MQuery query)
         throws NoSuchSolutionException;
 
     /**
@@ -136,7 +135,7 @@ public interface PrologContext
      * @return Solution
      * @throws NoSuchSolutionException No solutions exist at the given index
      */
-    QuerySolution askForSolution(Query query, int index)
+    MQuerySolution askForSolution(MQuery query, int index)
         throws NoSuchSolutionException;
 
     /**
@@ -145,14 +144,14 @@ public interface PrologContext
      * @param args Substitution arguments to apply to text
      * @return Solution list
      */
-    QuerySolutionList askForAllSolutions(String text, Object... args);
+    MQuerySolutionList askForAllSolutions(String text, Object... args);
 
     /**
      * Ask for list view of all solutions to given query.
      * @param query Query to fetch solutions to
      * @return Solution list
      */
-    QuerySolutionList askForAllSolutions(Query query);
+    MQuerySolutionList askForAllSolutions(MQuery query);
 
     /**
      * Open a new query session (unformatted query) in SWI-Prolog
@@ -170,7 +169,7 @@ public interface PrologContext
      * @param query Query to open
      * @return Query solution collector for constructed query session
      */
-    QuerySolutionCollector ask(Query query);
+    QuerySolutionCollector ask(MQuery query);
 
 
     /**
@@ -181,7 +180,7 @@ public interface PrologContext
      * @param args Substitution arguments to apply to text
      * @return Query solution collector for constructed query session
      */
-    QuerySolutionIterator askIter(String text, Object... args);
+    MQuerySolutionIterator askIter(String text, Object... args);
 
     /**
      * Open a new query session in SWI-Prolog interpreter, from
@@ -189,5 +188,5 @@ public interface PrologContext
      * @param query Query to open
      * @return Query solution collector for constructed query session
      */
-    QuerySolutionIterator askIter(Query query);
+    MQuerySolutionIterator askIter(MQuery query);
 }

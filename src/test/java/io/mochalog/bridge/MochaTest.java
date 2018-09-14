@@ -24,10 +24,10 @@ package io.mochalog.bridge;
 import io.mochalog.bridge.prolog.PrologContext;
 import io.mochalog.bridge.prolog.SandboxedPrologContext;
 import io.mochalog.bridge.prolog.namespace.NoSuchVariableException;
-import io.mochalog.bridge.prolog.query.Query;
-import io.mochalog.bridge.prolog.query.QuerySolution;
-import io.mochalog.bridge.prolog.query.QuerySolutionIterator;
-import io.mochalog.bridge.prolog.query.QuerySolutionList;
+import io.mochalog.bridge.prolog.query.MQuery;
+import io.mochalog.bridge.prolog.query.MQuerySolution;
+import io.mochalog.bridge.prolog.query.MQuerySolutionIterator;
+import io.mochalog.bridge.prolog.query.MQuerySolutionList;
 import io.mochalog.bridge.prolog.query.exception.NoSuchSolutionException;
 import org.jpl7.Term;
 import org.junit.Test;
@@ -76,8 +76,8 @@ public class MochaTest
         assert(loaded);
 
         // Fetch the Term object which gets bound to the specific variable
-        Query query = new Query("get_hello_world(X)");
-        QuerySolution solution = prolog.askForSolution(query);
+        MQuery query = new MQuery("get_hello_world(X)");
+        MQuerySolution solution = prolog.askForSolution(query);
         Term valueX = solution.get("X");
         // Ensure first solution string (hello) was correctly fetched from Prolog file
         assertEquals("hello", valueX.toString());
@@ -118,11 +118,11 @@ public class MochaTest
 //        Query query = Query.format("get_hello_world(X)");
 //        final String[] expectedSolutions = { "hello", "world" };
 
-        Query query = Query.format("test(X)");
+        MQuery query = MQuery.format("test(X)");
         final String[] expectedSolutions = { "80", "2", "4", "6", "8" };
 
         int solutionIndex = 0;
-        QuerySolutionList solutionList = null;
+        MQuerySolutionList solutionList = null;
         try {
             solutionList = prolog.askForAllSolutions(query);
             if (DEBUG) System.out.println("Number of solutions found in all test: " + solutionList.size());
@@ -134,7 +134,7 @@ public class MochaTest
         // Ensure we have received the amount of solutions we expected
         assertEquals(expectedSolutions.length, solutionList.size());
 
-        for (QuerySolution solution : solutionList)
+        for (MQuerySolution solution : solutionList)
         {
             // Ensure we have not received more solutions than expected
             assert(solutionIndex < expectedSolutions.length);
@@ -175,13 +175,13 @@ public class MochaTest
         final int[] expectedSolutions = { 80, 2, 4, 6, 8 };
 
         // Perform iterative solution query (without delay)
-        Query query = Query.format("test(X)");
+        MQuery query = MQuery.format("test(X)");
         int solutionIndex = 0;
 //        QuerySolutionIterator solutionList = new QuerySolutionIterator(prolog.ask(query));
-        QuerySolutionIterator solutionList = prolog.askIter(query);
+        MQuerySolutionIterator solutionList = prolog.askIter(query);
 
         while (solutionList.hasNext()) {
-            QuerySolution solution = solutionList.next();
+            MQuerySolution solution = solutionList.next();
             assertEquals(expectedSolutions[solutionIndex], solution.get("X").intValue());
             solutionIndex++;
         }
@@ -210,12 +210,12 @@ public class MochaTest
         final int[] expectedSolutions = { 80, 2, 4, 6, 8 };
 
         // Perform iterative solution query (without delay)
-        Query query = Query.format("test_slow(Y)");
+        MQuery query = MQuery.format("test_slow(Y)");
         int solutionIndex = 0;
 //        QuerySolutionIterator solutionList = new QuerySolutionIterator(prolog.ask(query));
-        QuerySolutionIterator solutionList = prolog.askIter(query);
+        MQuerySolutionIterator solutionList = prolog.askIter(query);
 
-        QuerySolution solution;
+        MQuerySolution solution;
         while (solutionList.hasNext()) {
             solution = solutionList.next();
             if (DEBUG) System.out.println("Value of X (delayed): " + solution.get("Y"));
@@ -253,12 +253,12 @@ public class MochaTest
         assert(prolog.importFile(testKBFilePath));
 
         // Perform iterative solution query (without delay)
-        Query query = Query.format("test_forever(Y)");
+        MQuery query = MQuery.format("test_forever(Y)");
         int solutionIndex = 0;
-        QuerySolutionIterator solutionList = new QuerySolutionIterator(prolog.ask(query));
+        MQuerySolutionIterator solutionList = new MQuerySolutionIterator(prolog.ask(query));
 //        QuerySolutionIterator solutionList = prolog.askIter(query);
 
-        QuerySolution solution;
+        MQuerySolution solution;
         while (solutionList.hasNext() && solutionIndex < noSolToTest) {
             solution = solutionList.next();
             if (DEBUG) System.out.println("Value of X (forever): " + solution.get("Y"));
@@ -302,7 +302,7 @@ public class MochaTest
                 newSchoolName));
 
         // Check if values were correctly set/exchanged in the previous query
-        QuerySolution solution =
+        MQuerySolution solution =
                 prolog.askForSolution("student(student_a, StudentId), school(student_a, School)");
         assertEquals(2, solution.get("StudentId").intValue());
         assertEquals("\'New Simulated School\'", solution.get("School").toString());
@@ -376,8 +376,8 @@ public class MochaTest
         // Fetch the Term object which gets bound to the specified
         // variable
 
-        Query query = new Query("person(X,Y,Z)");
-        QuerySolution solution = prolog.askForSolution(query);
+        MQuery query = new MQuery("person(X,Y,Z)");
+        MQuerySolution solution = prolog.askForSolution(query);
 
         Map<String, Term> bindings = solution.getBindings();
 

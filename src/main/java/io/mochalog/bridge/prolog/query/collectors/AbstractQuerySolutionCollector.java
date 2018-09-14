@@ -17,7 +17,7 @@
 package io.mochalog.bridge.prolog.query.collectors;
 
 import io.mochalog.bridge.prolog.lang.Module;
-import io.mochalog.bridge.prolog.query.Query;
+import io.mochalog.bridge.prolog.query.MQuery;
 
 /**
  * Abstract implementation of a query solution
@@ -33,7 +33,7 @@ public abstract class AbstractQuerySolutionCollector implements QuerySolutionCol
     public static abstract class Builder<T extends AbstractQuerySolutionCollector>
     {
         // Query to collect solutions from
-        protected Query query;
+        protected MQuery query;
         // Working module to operate query from
         protected Module workingModule;
 
@@ -41,7 +41,7 @@ public abstract class AbstractQuerySolutionCollector implements QuerySolutionCol
          * Constructor.
          * @param query Query to collect solutions from
          */
-        public Builder(Query query)
+        public Builder(MQuery query)
         {
             this.query = query;
         }

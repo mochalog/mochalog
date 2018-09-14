@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
  * Represents query provided to the SWI-Prolog
  * interpreter, managing localised query namespace.
  */
-public class Query
+public class MQuery
 {
     /**
      * Formatter of Prolog query strings using substitution rules
@@ -166,7 +166,7 @@ public class Query
      * Constructor.
      * @param text Query string
      */
-    public Query(String text)
+    public MQuery(String text)
     {
         this.text = text;
     }
@@ -188,11 +188,11 @@ public class Query
      * @param args Query arguments
      * @return Query object
      */
-    public static Query format(String query, Object... args)
+    public static MQuery format(String query, Object... args)
     {
         Formatter formatter = new Formatter();
         String formattedQuery = formatter.format(query, args);
-        return new Query(formattedQuery);
+        return new MQuery(formattedQuery);
     }
 
     /**
@@ -202,7 +202,7 @@ public class Query
      * @param module Module to run query from
      * @return Transformed query string
      */
-    public static String runnableInModule(Query query, Module module)
+    public static String runnableInModule(MQuery query, Module module)
     {
         return module == null ?
             query.toString() :
@@ -219,9 +219,9 @@ public class Query
         }
 
         // null/type validation
-        if (o != null && o instanceof Query)
+        if (o != null && o instanceof MQuery)
         {
-            Query query = (Query) o;
+            MQuery query = (MQuery) o;
             // Field comparisons
             return Objects.equals(text, query.text);
         }
