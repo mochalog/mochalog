@@ -17,8 +17,8 @@
 package io.mochalog.bridge.prolog.query;
 
 import io.mochalog.bridge.prolog.lang.Module;
-import io.mochalog.bridge.prolog.query.collectors.QuerySolutionCollector;
-import io.mochalog.bridge.prolog.query.collectors.SequentialQuerySolutionCollector;
+import io.mochalog.bridge.prolog.query.collectors.MQuerySolutionCollector;
+import io.mochalog.bridge.prolog.query.collectors.SequentialMQuerySolutionCollector;
 import io.mochalog.bridge.prolog.query.exception.NoSuchSolutionException;
 
 import java.util.Iterator;
@@ -33,7 +33,7 @@ public class MQuerySolutionIterator implements Iterator<MQuerySolution>
     // Index of currently viewed solution
     private int index;
     // Interface for the accumulation of query solutions
-    private QuerySolutionCollector collector;
+    private MQuerySolutionCollector collector;
 
     /**
      * Constructor.
@@ -42,7 +42,7 @@ public class MQuerySolutionIterator implements Iterator<MQuerySolution>
     public MQuerySolutionIterator(MQuery query)
     {
         this(
-            new SequentialQuerySolutionCollector.Builder(query)
+            new SequentialMQuerySolutionCollector.Builder(query)
                 .build()
         );
     }
@@ -55,7 +55,7 @@ public class MQuerySolutionIterator implements Iterator<MQuerySolution>
     public MQuerySolutionIterator(MQuery query, Module workingModule)
     {
         this(
-            new SequentialQuerySolutionCollector.Builder(query)
+            new SequentialMQuerySolutionCollector.Builder(query)
                 .setWorkingModule(workingModule)
                 .build()
         );
@@ -65,7 +65,7 @@ public class MQuerySolutionIterator implements Iterator<MQuerySolution>
      * Constructor.
      * @param collector Existing solution collector
      */
-    public MQuerySolutionIterator(QuerySolutionCollector collector)
+    public MQuerySolutionIterator(MQuerySolutionCollector collector)
     {
         this.collector = collector;
         index = 0;

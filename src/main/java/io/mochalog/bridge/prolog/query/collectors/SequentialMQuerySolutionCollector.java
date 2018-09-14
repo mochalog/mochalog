@@ -33,14 +33,14 @@ import java.util.List;
  * the interpreter query and accumulates solutions consecutively
  * (as is the case when a query is executed from the SWI-Prolog CLI)
  */
-public class SequentialQuerySolutionCollector extends AbstractQuerySolutionCollector
+public class SequentialMQuerySolutionCollector extends AbstractMQuerySolutionCollector
 {
     /**
      * Facilitates the building of SequentialQuerySolutionCollector
      * instances
      */
     public static class Builder
-        extends AbstractQuerySolutionCollector.Builder<SequentialQuerySolutionCollector>
+        extends AbstractMQuerySolutionCollector.Builder<SequentialMQuerySolutionCollector>
     {
         /**
          * Constructor.
@@ -52,11 +52,11 @@ public class SequentialQuerySolutionCollector extends AbstractQuerySolutionColle
         }
 
         @Override
-        public SequentialQuerySolutionCollector build()
+        public SequentialMQuerySolutionCollector build()
         {
             // Change working module for query if necessary
             String text = MQuery.runnableInModule(query, workingModule);
-            return new SequentialQuerySolutionCollector(text);
+            return new SequentialMQuerySolutionCollector(text);
         }
     }
 
@@ -78,7 +78,7 @@ public class SequentialQuerySolutionCollector extends AbstractQuerySolutionColle
      * Private constructor.
      * @param text String format of query
      */
-    private SequentialQuerySolutionCollector(String text)
+    private SequentialMQuerySolutionCollector(String text)
     {
         // Set up solution cache
         solutionCache = new ArrayList<>();

@@ -22,8 +22,8 @@ import io.mochalog.bridge.prolog.lang.Module;
 import io.mochalog.bridge.prolog.query.MQuery;
 import io.mochalog.bridge.prolog.query.MQuerySolutionList;
 
-import io.mochalog.bridge.prolog.query.collectors.QuerySolutionCollector;
-import io.mochalog.bridge.prolog.query.collectors.SequentialQuerySolutionCollector;
+import io.mochalog.bridge.prolog.query.collectors.MQuerySolutionCollector;
+import io.mochalog.bridge.prolog.query.collectors.SequentialMQuerySolutionCollector;
 import io.mochalog.util.io.PathUtils;
 
 import java.io.IOError;
@@ -97,10 +97,10 @@ public class SandboxedPrologContext extends AbstractPrologContext
     }
 
     @Override
-    public QuerySolutionCollector ask(MQuery query)
+    public MQuerySolutionCollector ask(MQuery query)
     {
-        SequentialQuerySolutionCollector.Builder builder =
-            new SequentialQuerySolutionCollector.Builder(query);
+        SequentialMQuerySolutionCollector.Builder builder =
+            new SequentialMQuerySolutionCollector.Builder(query);
         builder.setWorkingModule(workingModule);
         return builder.build();
     }

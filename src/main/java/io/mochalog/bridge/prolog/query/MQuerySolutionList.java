@@ -17,8 +17,8 @@
 package io.mochalog.bridge.prolog.query;
 
 import io.mochalog.bridge.prolog.lang.Module;
-import io.mochalog.bridge.prolog.query.collectors.QuerySolutionCollector;
-import io.mochalog.bridge.prolog.query.collectors.SequentialQuerySolutionCollector;
+import io.mochalog.bridge.prolog.query.collectors.MQuerySolutionCollector;
+import io.mochalog.bridge.prolog.query.collectors.SequentialMQuerySolutionCollector;
 import io.mochalog.bridge.prolog.query.exception.NoSuchSolutionException;
 import io.mochalog.util.collections.UnmodifiableList;
 
@@ -36,7 +36,7 @@ import java.util.ListIterator;
 public class MQuerySolutionList extends UnmodifiableList<MQuerySolution>
 {
     // Interface for the accumulation of query solutions
-    private QuerySolutionCollector collector;
+    private MQuerySolutionCollector collector;
 
     /**
      * Constructor.
@@ -45,7 +45,7 @@ public class MQuerySolutionList extends UnmodifiableList<MQuerySolution>
     public MQuerySolutionList(MQuery query)
     {
         this(
-            new SequentialQuerySolutionCollector.Builder(query)
+            new SequentialMQuerySolutionCollector.Builder(query)
                     .build()
         );
     }
@@ -58,7 +58,7 @@ public class MQuerySolutionList extends UnmodifiableList<MQuerySolution>
     public MQuerySolutionList(MQuery query, Module workingModule)
     {
         this(
-            new SequentialQuerySolutionCollector.Builder(query)
+            new SequentialMQuerySolutionCollector.Builder(query)
                 .setWorkingModule(workingModule)
                 .build()
         );
@@ -68,7 +68,7 @@ public class MQuerySolutionList extends UnmodifiableList<MQuerySolution>
      * Constructor.
      * @param collector Existing solution collector
      */
-    public MQuerySolutionList(QuerySolutionCollector collector)
+    public MQuerySolutionList(MQuerySolutionCollector collector)
     {
         this.collector = collector;
     }

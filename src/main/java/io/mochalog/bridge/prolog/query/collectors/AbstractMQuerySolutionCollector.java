@@ -23,14 +23,14 @@ import io.mochalog.bridge.prolog.query.MQuery;
  * Abstract implementation of a query solution
  * collector, including builder definition.
  */
-public abstract class AbstractQuerySolutionCollector implements QuerySolutionCollector
+public abstract class AbstractMQuerySolutionCollector implements MQuerySolutionCollector
 {
     /**
      * Builder of subtypes of AbstractQuerySolutionCollector. Intended to be
      * extended and allow for builder heirarchy.
      * @param <T> Type of solution collector to build
      */
-    public static abstract class Builder<T extends AbstractQuerySolutionCollector>
+    public static abstract class Builder<T extends AbstractMQuerySolutionCollector>
     {
         // Query to collect solutions from
         protected MQuery query;

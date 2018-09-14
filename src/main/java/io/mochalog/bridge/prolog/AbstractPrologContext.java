@@ -20,7 +20,7 @@ import io.mochalog.bridge.prolog.query.MQuery;
 import io.mochalog.bridge.prolog.query.MQuerySolution;
 import io.mochalog.bridge.prolog.query.MQuerySolutionIterator;
 import io.mochalog.bridge.prolog.query.MQuerySolutionList;
-import io.mochalog.bridge.prolog.query.collectors.QuerySolutionCollector;
+import io.mochalog.bridge.prolog.query.collectors.MQuerySolutionCollector;
 
 import io.mochalog.bridge.prolog.query.exception.NoSuchSolutionException;
 import io.mochalog.util.format.Formatter;
@@ -71,7 +71,7 @@ public abstract class AbstractPrologContext implements PrologContext
     @Override
     public boolean prove(MQuery query)
     {
-        QuerySolutionCollector collector = ask(query);
+        MQuerySolutionCollector collector = ask(query);
         boolean result = collector.hasSolutions();
         // Ensure temporary collector closed
         collector.detach();
@@ -89,7 +89,7 @@ public abstract class AbstractPrologContext implements PrologContext
     public MQuerySolution askForSolution(MQuery query)
             throws NoSuchSolutionException
     {
-        QuerySolutionCollector collector = ask(query);
+        MQuerySolutionCollector collector = ask(query);
         try
         {
             return collector.fetchFirstSolution();
@@ -106,7 +106,7 @@ public abstract class AbstractPrologContext implements PrologContext
     public MQuerySolution askForSolution(MQuery query, int index)
             throws NoSuchSolutionException
     {
-        QuerySolutionCollector collector = ask(query);
+        MQuerySolutionCollector collector = ask(query);
         try
         {
             return collector.fetchSolution(index);
@@ -126,7 +126,7 @@ public abstract class AbstractPrologContext implements PrologContext
     }
 
     @Override
-    public QuerySolutionCollector ask(String text, Object... args)
+    public MQuerySolutionCollector ask(String text, Object... args)
     {
         return ask(MQuery.format(text, args));
     }

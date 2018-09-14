@@ -29,7 +29,7 @@ import java.util.Collection;
  * solutions to a query, as collector may be forcibly
  * killed before all solutions could be retrieved.
  */
-public interface QuerySolutionCollector
+public interface MQuerySolutionCollector
 {
     /**
      * Number of solutions to the given query

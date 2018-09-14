@@ -20,7 +20,7 @@ import io.mochalog.bridge.prolog.query.MQuery;
 import io.mochalog.bridge.prolog.query.MQuerySolution;
 import io.mochalog.bridge.prolog.query.MQuerySolutionIterator;
 import io.mochalog.bridge.prolog.query.MQuerySolutionList;
-import io.mochalog.bridge.prolog.query.collectors.QuerySolutionCollector;
+import io.mochalog.bridge.prolog.query.collectors.MQuerySolutionCollector;
 
 import io.mochalog.bridge.prolog.query.exception.NoSuchSolutionException;
 import org.jpl7.Term;
@@ -161,7 +161,7 @@ public interface PrologContext
      * @param args Substitution arguments to apply to text
      * @return Query solution collector for constructed query session
      */
-    QuerySolutionCollector ask(String text, Object... args);
+    MQuerySolutionCollector ask(String text, Object... args);
 
     /**
      * Open a new query session in SWI-Prolog interpreter,
@@ -169,7 +169,7 @@ public interface PrologContext
      * @param query Query to open
      * @return Query solution collector for constructed query session
      */
-    QuerySolutionCollector ask(MQuery query);
+    MQuerySolutionCollector ask(MQuery query);
 
 
     /**

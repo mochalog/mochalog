@@ -32,6 +32,7 @@ Below we describe how to set Mochalog up.
 	* This is package `swi-prolog-java` in Linux.
 	* In Windows, the Java-SWI interface it can be installed as part of the main install.
 	* Main Page for JPL: https://jpl7.org/ 
+	    * API for JPL: https://jpl7.org/doc/index.html
 
 Also, depending on the system being used:
 
@@ -72,7 +73,7 @@ Mochalog can be configured automatically in your application as dependency via J
         <dependency>
             <groupId>com.github.ssardina</groupId>
             <artifactId>mochalog</artifactId>
-            <version>0.4.1</version>
+            <version>0.5.0</version>
         </dependency>
         ...
    </dependencies>
@@ -82,12 +83,15 @@ Mochalog can be configured automatically in your application as dependency via J
 
 Once again, a more complete set of examples in Java can be found in the [Mochalog Unit Test Examples](src/test/java/io/mochalog/bridge/MochaTest.java). It has tests showing how to consult/load a KB, assert and retract, update facts (with new arguments), prove a query, ask for one solution, for all solutions, or iterate through solutions. 
 
+For some tests using [JPL](https://jpl7.org/) check [this test](https://github.com/ssardina/mochalog/blob/master/src/test/java/io/mochalog/bridge/JPLTest.java) and the [JPL Examples](https://github.com/SWI-Prolog/packages-jpl/tree/master/examples) 
+
+
 Here is some very simple example code of its use within a [SARL](http://www.sarl.io/) agent system:
 
 ```java
 import io.mochalog.bridge.prolog.PrologContext
 import io.mochalog.bridge.prolog.SandboxedPrologContext
-import io.mochalog.bridge.prolog.query.Query
+import io.mochalog.bridge.prolog.query.MQuery
 
 // Set-up Prolog knowledgebase
 var prolog_kb : PrologContext
@@ -96,11 +100,11 @@ prolog_kb = new SandboxedPrologContext(beliefSpace)
 prolog_kb.importFile("src/main/prolog/masssim_coordinator.pl") // newest version
 
 // Assert percepts in the KB
-prolog_kb.assertFirst("percepts(@A, @I, @S)", agentName, agents.get(agentName).step, percepts.toString)
+prolog_kb.assertFirst("percepts(@A, @I, @A)", agentName, agents.get(agentName).step, percepts.toString)
 
 // Querying one solution - Tell the KB to process last percept
 agents.keySet().forEach([ agentName : String |
-	prolog_kb.askForSolution(Query.format("process_last_percepts(@A)", agentName))
+	prolog_kb.askForSolution(MQuery.format("process_last_percepts(@A)", agentName))
 ])
 
 // Querying all solutions - Report percepts available in the KB
