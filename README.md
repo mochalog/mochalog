@@ -101,7 +101,7 @@ prolog_kb.assertFirst("percepts(@A, @I, @A)", agentName, agents.get(agentName).s
 
 // Querying one solution - Tell the KB to process last percept
 agents.keySet().forEach([ agentName : String |
-	prolog_kb.askForSolution(MQuery.format("process_last_percepts(@A)", agentName))
+	prolog_kb.askForSolution(MQuery.format("process_last_percepts(@S)", agentName))
 ])
 
 // Querying all solutions - Report percepts available in the KB
