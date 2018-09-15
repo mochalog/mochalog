@@ -17,8 +17,9 @@ In some sense, Mochalog is a further abstraction of JPL. Looking to stand on its
 
 * **API simplicity:** Reduce code complexity and learning curve. Increase maintainability. Use modern Java and Prolog software design practices. Prolog calls to Java should look like ***Java***, Java calls to Prolog should look like ***Prolog***.
 * **Performance:** Calls between the two languages should be blazingly fast (as fast or **faster** than other existing Java-Prolog interfaces).
+* **Sandboxing:** Ability to execute different SWI Prolog instances, each in isolation. This is realized via SWI [modules](http://www.swi-prolog.org/pldoc/man?section=modules).
 
-Mochalog provides some high level API to consult, assert and retract, and a few query methods (just prove, one solution, all solutions, iterators). 
+Mochalog provides some high level API to consult, assert and retract, and a few query methods (just prove, one solution, all solutions, iterators). It also provides a mechanism to manage different Prolog sandboxes, each with its own space.
 
 ## How to use it
 
