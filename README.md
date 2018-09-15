@@ -21,11 +21,6 @@ In some sense, Mochalog is a further abstraction of JPL. Looking to stand on its
 
 Mochalog provides some high level API to consult, assert and retract, and a few query methods (just prove, one solution, all solutions, iterators). It also provides a mechanism to manage different Prolog sandboxes, each with its own space.
 
-## How to use it
-
-For various examples how to use it, see the [Mochalog Unit Test Examples](src/test/java/io/mochalog/bridge/MochaTest.java). Different tests show how to consult/load a KB, assert and retract, update facts (with new arguments), prove a query, ask for one solution, for all solutions, or iterate through solutions. 
-
-Below we describe how to set Mochalog up.
 
 ## Prerequisites
 
@@ -55,7 +50,8 @@ Also, depending on the system being used:
 	* If using RUN AS configuration in ECLIPSE, remember to set up these two variables `LD_LIBRARY_PATH` and `LD_PRELOAD` too (and check "Append environment to native environment").
 
 
-## Dependency in POM file
+
+## How to use it: Add dependency in Maven POM file
 
 Mochalog can be configured automatically in your application as dependency via JitPack:
 
@@ -117,7 +113,7 @@ for (solution : prolog_kb.askForAllSolutions(query))
 }
 ```    
 
-## Information & Cavets
+## Information, Special Features, Cavets
 
 ### Goals via MQuery or String
 
