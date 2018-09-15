@@ -108,7 +108,7 @@ agents.keySet().forEach([ agentName : String |
 ])
 
 // Querying all solutions - Report percepts available in the KB
-val query = Query.format("percepts(Agent, Step, Percepts)")
+val query = MQuery.format("percepts(Agent, Step, Percepts)")
 for (solution : prolog_kb.askForAllSolutions(query))
 {
 	System.out.format("Information for agent %s on step %d\n", solution.get("Agent").toString(),  
@@ -117,6 +117,42 @@ for (solution : prolog_kb.askForAllSolutions(query))
 ```    
 
 ## Information & Cavets
+
+### Goals via MQuery or String
+
+All query methods of Mochalog can receive either an `MQuery` object (which basically falls back to a [JPL `Query` object](https://jpl7.org/doc/org/jpl7/Query.html)) or a String with possible formatting.
+
+This is an example of building an object `MQuery` first:
+
+```
+query = MQuery.format("fullName(@A, FullName)", "nick")
+solution = prolog_kb.askOnce(query)
+```
+
+and here is directly using the string:
+
+```
+solution = prolog_kb.askOnce("fullName(nick, FullName)")
+solution2 = prolog_kb.askOnce("fullName(@A, FullName)", nickName)
+```
+
+### @-Formatting Support
+
+In the end, one builds a goal query **string** that JPL executes into the SWI engine. So, an important aspect is the construction of such string in a covenient manner.
+
+One alternative is to build the query string as in standard Java, by conncatenation or via [`String.format`](https://dzone.com/articles/java-string-format-examples). For example:
+
+```
+result = prolog_kb.prove(String.format("percepts(%s, %d, %s)", "smithagent", 34, data)))
+```
+
+An alternative is to call the proving method directly with a string using the Mochalog placeholders @A (for atoms) and @I (integers):
+
+```
+result = prolog_kb.prove("percepts(@A, @I, @A)", "smithagent", 34, data)))
+```
+This last method will work only when the goal query involves only atoms and integers. If you need floats or compounds terms, you would use the `String.format` version. 
+
 
 ### Management of Strings
 
@@ -143,7 +179,7 @@ For example, if you have a predicate `full_name(Nickname, FullName)` where `Full
 	    ).
 
 
-
+**NOTE:** the @S in Mochalog actually acts like @A
 
         
                 
