@@ -26,7 +26,7 @@ For various examples how to use it, see the [Mochalog Unit Test Examples](src/te
 
 Below we describe how to set Mochalog up.
 
-### Prerequisites
+## Prerequisites
 
 * [SWI Prolog](http://www.swi-prolog.org/) (>7.4.x) with [JPL](http://www.swi-prolog.org/pldoc/doc_for?object=section(%27packages/jpl.html%27)) Bidirectional interface with Java:
 	* This is package `swi-prolog-java` in Linux.
@@ -79,7 +79,7 @@ Mochalog can be configured automatically in your application as dependency via J
    </dependencies>
 ```
 
-### A Simple Example of Mochalog in SARL
+## A Simple Example of Mochalog in SARL
 
 Once again, a more complete set of examples in Java can be found in the [Mochalog Unit Test Examples](src/test/java/io/mochalog/bridge/MochaTest.java). It has tests showing how to consult/load a KB, assert and retract, update facts (with new arguments), prove a query, ask for one solution, for all solutions, or iterate through solutions. 
 
@@ -114,7 +114,37 @@ for (solution : prolog_kb.askForAllSolutions(query))
 	System.out.format("Information for agent %s on step %d\n", solution.get("Agent").toString(),  
                    solution.get("Step").intValue)
 }
-```        
+```    
+
+## Information & Cavets
+
+### Management of Strings
+
+From Paul Singleton's great explanation in SWI Forum (see [post](http://www.swi-prolog.org/forum?place=msg%2Fswi-prolog%2Ff8tWomPpSyM%2FiAlKViiTCAAJ)): 
+
+JPL only really supports the classic term model (i.e., variable, atom, integer, float, compound), but has half-baked support for SWI Prolog's string type extension.
+
+Strings and text atoms (and also reserved symbols) are all brought into Java as org.jpl7.Atom instances, but with an indication of their origin: see `Atom.atomType()`.
+
+From Java into Prolog you can't currently create a string :-( but this may just require a hack to `Atom.put()`
+
+Also, void using `Atom.toString()` the string value, use `Atom.name()` instead.
+
+_Summary:_ avoid strings in JPL-accessed Prolog code, perhaps by wrapping string-exposing predicates.
+For example, if you have a predicate `full_name(Nickname, FullName)` where `FullName` are meant to be strings, use this interface to it, where the second argument is seen as an atom:
+
+	full_name_v2(Nickname, Fullname1) :-
+	    (   atom(Fullname1)
+	    ->  atom_string(Fullname1, Fullname2),
+		full_name(Nickname, Fullname2)
+	    ;   var(Fullname1)
+	    ->  full_name(Nickname, Fullname2),
+		atom_string(Fullname1, Fullname2)
+	    ).
+
+
+
+
         
                 
 ## Contact
