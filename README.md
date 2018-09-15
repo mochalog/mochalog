@@ -142,11 +142,49 @@ One alternative is to build the query string as in standard Java, by conncatenat
 	result = prolog_kb.prove(String.format("percepts(%s, %d, %s)", "smithagent", 34, data)))
 	
 
-An alternative is to call the proving method directly with a string using the Mochalog placeholders @A (for atoms) and @I (integers):
+An alternative is to call the proving method directly with a string using the Mochalog placeholders @A (for atomic), @I (for integers) and @S (for strings):
 
 	result = prolog_kb.prove("percepts(@A, @I, @A)", "smithagent", 34, data)))
 
-This last method will work only when the goal query involves only atoms and integers. If you need floats or compounds terms, you would use the `String.format` version. 
+
+The understanding of the three placeholders is as follows:
+
+* **@I**: interpret the argument as an **integer**. If a float, keep interger part.
+    * `prolog.assertFirst("data(integer, @I)", 48.234))` will yield `data(integer, 48)`
+* **@A**: interpret the argument as **atomic**. This is used to construct atoms, numbers (integers and floats), compound terms, variables, and lists. Most of the time the data is a Java String. The string has to be a proper legal atom. For example, "Father(X,Y)" or "hello world" are not proper atoms and will give error (use @S).
+    * `prolog.assertFirst("data(integer, @A)", 48.45)`
+    * `prolog.assertFirst("data(atom, @A)", "helloWorld")`
+    * `prolog.assertFirst("data(compound, @A)", "father(mary,john)"))`
+    * `prolog.assertFirst("data(variable, @A)", "X")`
+    * `prolog.assertFirst("data(list, @A)", "[1212, pete, father(mary, john), X, 34]")`
+        * this will yield clause `data(list, [1212, pete, father(mary, john), _, 34])`
+* **@S**: interpret the argument as a full **atom**, whatever it is. Basically it is like adding `..`.
+    * `prolog.assertFirst("data(atom_simple, @A)", "helloWorld")`
+    * `prolog.assertFirst("data(atom_complex, @S)", "here comes the sun")`
+        * would not work with @A because there are spaces. 
+    * `prolog.assertFirst("data(atom_complex, @S)", "Father(John,Maria)")`
+        * would not work with @A because Father is a variable and cannot be followed by parenthesis.
+    * `prolog.assertFirst("data(atom_complex, @S)", 2312)`
+        * this will yield clause `data(atom__complex, '2312')`
+
+
+When using `String.format` one has to be careful in building the string that would be use in Prolog. For example, 
+
+    `prolog.assertFirst(String.format("data(atom_complex, %s)", "here comes the sun"))`
+
+would be wrong, as it will try to assert `data(atom_complex, here comes the sun)` whose second argument is wrongly formatted. Instead, write:
+
+    `prolog.assertFirst(String.format("data(atom_complex, '%s')", "here comes the sun"))`
+    
+This is where the placeholder @S comes handy... :-)
+
+
+
+
+
+
+
+
 
 ### Fact Update Support
 
@@ -188,8 +226,6 @@ For example, if you have a predicate `full_name(Nickname, FullName)` where `Full
 		atom_string(Fullname1, Fullname2)
 	    ).
 
-
-**NOTE:** the @S in Mochalog actually acts like @A
 
         
                 

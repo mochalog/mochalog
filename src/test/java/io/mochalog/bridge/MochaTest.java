@@ -290,6 +290,7 @@ public class MochaTest
         assert(prolog.assertFirst("school(student_a, @S)", schoolName));
         assert(prolog.assertFirst("school(student_b, @S)", schoolName));
 
+
         // Attempt to change the school of the student with ID 0 to 'New Simulated School'
         // and change their given student ID to 2
         // Equivalent to:
@@ -309,6 +310,47 @@ public class MochaTest
 
         if (DEBUG) System.out.println(String.format("################ TEST %s DONE!", methodName));
     }
+
+
+    /**
+     * Test the formatter to make sure data is manipulated correctly
+     */
+    @Test
+    public void queryFormatter() {
+        String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
+        if (DEBUG) System.out.println("================= TEST: " + methodName);
+
+        PrologContext prolog = new SandboxedPrologContext("query_formatter");
+
+        System.out.println("================= START OF DUMP FOR data/2 =================");
+        // data(:DataType, :Data)
+        assert(prolog.assertFirst("data(integer, 23)"));
+        assert(prolog.assertFirst("data(integer, @I)", 48.45));
+        assert(prolog.assertFirst("data(float, 23.231)"));
+        assert(prolog.assertFirst("data(float, @A)", 48.213));
+
+        assert(prolog.assertFirst("data(atom_simple, @A)", "helloWorld"));
+        assert(prolog.assertFirst("data(atom_complex, @S)", "here comes the sun"));
+        assert(prolog.assertFirst("data(atom_complex, @S)", 2312));
+
+
+        assert(prolog.assertFirst("data(compound, father(mary,john))"));
+        assert(prolog.assertFirst("data(compound, @A)", "father(mary,john)"));
+
+        assert(prolog.assertFirst("data(variable, @A)", "Variable"));
+
+        assert(prolog.assertFirst("data(list, [1212, pete, father(mary, john), A, 34])"));
+        assert(prolog.assertFirst("data(list, [])"));
+        assert(prolog.assertFirst("data(list, @A)", "[1212, pete, father(mary, john), X, 34]"));
+        assert(prolog.assertFirst("data(list, @S)", "[1212, pete, father(mary, john), X, 34]"));
+
+        prolog.prove("listing");
+        System.out.println("============================ END OF DUMP FOR data/2 =================");
+
+        if (DEBUG) System.out.println(String.format("################ TEST %s DONE!", methodName));
+    }
+
+
 
     /**
      * Ensure all data is completely sandboxed through modules.
