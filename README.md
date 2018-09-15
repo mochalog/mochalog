@@ -13,11 +13,11 @@ Mochalog can be obtained automatically via Maven automatically from Github repos
 
 Mochalog is a rich bidirectional interface between the Java Runtime and the SWI-Prolog interpreter inspired and built on top of [JPL](http://jpl7.org/). 
 
-In some sense, Mochalog is a further abstraction of JPL. Looking to stand on its own two feet, however, Mochalog is focused on achieving two core design objectives:
+In some sense, Mochalog is a further abstraction of JPL. Looking to stand on its own two feet, however, Mochalog is focused on achieving three core design objectives:
 
 * **API simplicity:** Reduce code complexity and learning curve. Increase maintainability. Use modern Java and Prolog software design practices. Prolog calls to Java should look like ***Java***, Java calls to Prolog should look like ***Prolog***.
 * **Performance:** Calls between the two languages should be blazingly fast (as fast or **faster** than other existing Java-Prolog interfaces).
-* **Sandboxing:** Ability to execute different SWI Prolog instances, each in isolation. This is realized via SWI [modules](http://www.swi-prolog.org/pldoc/man?section=modules).
+* **Sandboxing:** Ability to execute different SWI Prolog instances, each in isolation. This is realized via SWI [modules](http://www.swi-prolog.org/pldoc/man?section=modules). This is useful for example in mult-agent applications, where each agent is meant to have its own knowledgebase.
 
 Mochalog provides some high level API to consult, assert and retract, and a few query methods (just prove, one solution, all solutions, iterators). It also provides a mechanism to manage different Prolog sandboxes, each with its own space.
 
