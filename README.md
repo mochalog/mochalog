@@ -143,16 +143,29 @@ In the end, one builds a goal query **string** that JPL executes into the SWI en
 
 One alternative is to build the query string as in standard Java, by conncatenation or via [`String.format`](https://dzone.com/articles/java-string-format-examples). For example:
 
-```
-result = prolog_kb.prove(String.format("percepts(%s, %d, %s)", "smithagent", 34, data)))
-```
+	result = prolog_kb.prove(String.format("percepts(%s, %d, %s)", "smithagent", 34, data)))
+	
 
 An alternative is to call the proving method directly with a string using the Mochalog placeholders @A (for atoms) and @I (integers):
 
-```
-result = prolog_kb.prove("percepts(@A, @I, @A)", "smithagent", 34, data)))
-```
+	result = prolog_kb.prove("percepts(@A, @I, @A)", "smithagent", 34, data)))
+
 This last method will work only when the goal query involves only atoms and integers. If you need floats or compounds terms, you would use the `String.format` version. 
+
+### Fact Update Support
+
+When SWI is used as a kowledge base it is very common to just update the content of some facts. For example, suppose we want to update the phone of a person, stored in a `person_info(firstName, lastName, passportNo, phoneNo, country)` fact. 
+
+The standard Prolog way is to retract the existing clause, and assert the new updated fact.
+
+We can compactly do this using the `<-` notation provided by Mochalog:
+
+	query = "get_new_phone(firstName, lastName, newPhone), 
+		 person_info(firstName, lastName, _, OldPhone <- newPhone, _),
+		 write("Phone number removed: "), write(OldPhone)" 
+
+This will replace all the person's `person_info/5` facts (for all passports and countries!) with the new phone number `newPhone`.
+
 
 
 ### Management of Strings
