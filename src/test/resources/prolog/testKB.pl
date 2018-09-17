@@ -28,7 +28,7 @@ person(michelle, 14, lorne).
 current_job(0, 3, up).
 current_job(1, 5, down).
 
-
+% Contains various types of data types
 data(27).
 data(2.3333).
 data(tea).
@@ -41,5 +41,40 @@ data([peter, mother(maria), 34, [1,2,3,4]]).
 data(_Variable).
 
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+% TEST FOR STRINGS
+%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% JPL will not see this string, as strings are converted into atoms
 data_string("string0").
-data_string(atom0).
+
+
+% Instead do this wrapper:
+data_string_wrapper(X) :-
+    (   atom(X)
+    ->  atom_string(X, XString),
+        data_string(XString)
+    ;   var(X)
+    ->  full_name(XString),
+        atom_string(X, XString)
+    ).
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+% TEST FOR JREF
+%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%% Check what can you do from Prolog to call Java: http://www.swi-prolog.org/pldoc/man?section=jpl
+print_integer(JRef, X) :-
+%    jpl_get(JRef, intValue, X),         % this if it is accessing a field
+    jpl_call(JRef, intValue, [], X),    % X should be the int value of object Integer JRef
+    jpl_ref_to_type(JRef, T),           % T should be class([java,lang],[Integer])
+    jpl_type_to_classname(T, ClassName),    % ClassName should be java.lang.Integer
+    format(string(Text), "The integer value of JAVA object (~s) is ~d", [ClassName, X]),
+    writeln(Text).
+
+
+
+
