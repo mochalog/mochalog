@@ -133,7 +133,7 @@ solution = prolog_kb.askOnce("fullName(nick, FullName)")
 solution2 = prolog_kb.askOnce("fullName(@A, FullName)", nickName)
 ```
 
-### @-Formatting Support
+### @-Formatting Support & Data Types
 
 In the end, one builds a goal query **string** that JPL executes into the SWI engine. So, an important aspect is the construction of such string in a covenient manner.
 
@@ -179,6 +179,7 @@ would be wrong, as it will try to assert `data(atom_complex, here comes the sun)
 This is where the placeholder @S comes handy... :-)
 
 
+To inspect how Java data types and values are mapped to Prolog, check [this link](https://jpl7.org/PrologApiOverview.jsp#representation_of_Java_values...) in JPL doc. 
 
 
 
