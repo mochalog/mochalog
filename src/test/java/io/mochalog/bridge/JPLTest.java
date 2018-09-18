@@ -70,8 +70,7 @@ public class JPLTest
     }
 
     /**
-     * Check that basic string is correctly returned from
-     * SWI-Prolog via JPL query
+     * Check that basic string is correctly returned from SWI-Prolog via JPL query
      */
     @Test
     public void basicJavaToPrologQuery()
@@ -95,7 +94,7 @@ public class JPLTest
 
 
     /**
-     * Check a query against a string
+     * Check a query against a string: avoid using strings with JPL, they are converted to text atoms
      */
     @Test
     public void stringPrologQuery()
@@ -125,9 +124,33 @@ public class JPLTest
     }
 
 
+    /**
+     * Uses placeholders ? to inject terms
+     */
+    @Test
+    public void QueryWithPlaceholders()
+    {
+        String queryText;
+        Query query;
+        boolean hasSolution;
+
+
+        String queryString = String.format("consult('%s')", testKBFilePath);
+        Query.hasSolution(queryString);
+
+
+
+        Query q = new Query("person(john, ?, ?)", new Term[] {new Variable("N"), new Atom("melbourne")});
+        int n = q.oneSolution().get("N").intValue();
+        System.out.println("The integer value of JAVA object obj_integer returned from Prolog was " + n);
+
+
+    }
+
+
 
     /**
-     * Check a query against a string
+     * Query that passes a Java object to Prolog, Prolog access the object and returns a value
      */
     @Test
     public void JRefQuery()

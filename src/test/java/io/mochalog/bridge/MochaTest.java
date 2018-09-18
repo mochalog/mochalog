@@ -97,6 +97,11 @@ public class MochaTest
         if (DEBUG) System.out.println(String.format("################ TEST %s DONE!", methodName));
     }
 
+
+
+
+
+
     /**
      * Check for a query that gets all solutions at once
      * @throws IOException
@@ -432,6 +437,42 @@ public class MochaTest
 
         if (DEBUG) System.out.println(String.format("################ TEST %s DONE!", methodName));
     }
+
+
+
+//    @Test
+//    public void jRefTesting()
+//    {
+//        String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
+//        if (DEBUG) System.out.println("================= TEST: " + methodName);
+//
+//        SandboxedPrologContext prolog = new SandboxedPrologContext("jRefTesting");
+//        boolean loaded = false;
+//        try {
+//            loaded = prolog.importFile(testKBFilePath);
+//        } catch (IOException e) {
+//            fail( "My method throw when I expected not to" );
+//            e.printStackTrace();
+//        }
+//        assert(loaded);
+//
+//        // Fetch the Term object which gets bound to the specified
+//        // variable
+//        Integer obj_integer = new Integer(232);
+////        Query q = new Query("print_integer", new Term[] {new JRef(obj_integer), new Variable(("N"))});
+//
+//        MQuery query = new MQuery("print_integer(@A, N)", obj_integer);
+//        MQuerySolution solution = prolog.askForSolution(query);
+//
+//        Map<String, Term> bindings = solution.getBindings();
+//        int n = bindings.get("N").intValue();
+//        System.out.println("The integer value of JAVA object obj_integer returned from Prolog was " + n);
+//
+//        assertEquals(n, 232);
+//
+//
+//        if (DEBUG) System.out.println(String.format("################ TEST %s DONE!", methodName));
+//    }
 
 
 }

@@ -34,7 +34,7 @@ data(2.3333).
 data(tea).
 data("this is a native string").
 data('this is quoted string').
-data(mother(john,father(peter,mark),23.222)).
+data(mother(age(john,add(32,1)),father(peter,mark),23.222)).
 data([]).
 data([1,2,3,4]).
 data([peter, mother(maria), 34, [1,2,3,4]]).

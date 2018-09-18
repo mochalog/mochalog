@@ -35,7 +35,7 @@ will be documented alongside their respective copyright headers in
 https://github.com/mochalog/mochalog/tree/master/thirdparty/swi-prolog/COPYRIGHT).
 
 SWI-Prolog and its subpackages (including JPL) are licensed under the 
-Simplified BSD License. A copy of the full text of this license can be 
+Simplified BSD License. A copy of the full queryText of this license can be
 found at 'thirdparty/swi-prolog/LICENSE' (available on Github at
 https://github.com/mochalog/mochalog/tree/master/thirdparty/swi-prolog/LICENSE).
 
@@ -48,7 +48,7 @@ No global copyright or source-by-source copyright headers appear to be included
 within the JUnit project.
 
 JUnit is licensed under the Eclipse Public License, Version 1.0.
-A copy of the full text of this license can be found at
+A copy of the full queryText of this license can be found at
 'thirdparty/junit/LICENSE-junit.txt' (available on Github at
 https://github.com/mochalog/mochalog/tree/master/thirdparty/junit/LICENSE-junit.txt).
 
@@ -64,7 +64,7 @@ respective copyright headers in 'thirdparty/xtext/COPYRIGHT' (available on Githu
 https://github.com/mochalog/mochalog/tree/master/thirdparty/xtext/COPYRIGHT).
 
 Eclipse Xtext  is licensed under the Eclipse Public License, Version 1.0.
-A copy of the full text of this license can be found at
+A copy of the full queryText of this license can be found at
 'thirdparty/xtext/LICENSE' (available on Github at
 https://github.com/mochalog/mochalog/tree/master/thirdparty/xtext/LICENSE).
 
@@ -77,6 +77,6 @@ No global copyright or source-by-source copyright headers appear to be included
 within the xtext-gradle-plugin project.
 
 xtext-gradle-plugin is licensed under the Eclipse Public
-License, Version 1.0. A copy of the full text of this license can
+License, Version 1.0. A copy of the full queryText of this license can
 be found at 'thirdparty/xtext-gradle-plugin/LICENSE' (available on Github at
 https://github.com/mochalog/mochalog/tree/master/thirdparty/xtext-gradle-plugin/LICENSE).

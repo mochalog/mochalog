@@ -68,6 +68,12 @@ public abstract class AbstractPrologContext implements PrologContext
         return prove(MQuery.format(text, args));
     }
 
+    /**
+     * Prove the query once for the first solution, no bindings, just true/false
+     *
+     * @param query Query to prove
+     * @return if query was proved true
+     */
     @Override
     public boolean prove(MQuery query)
     {
@@ -78,6 +84,14 @@ public abstract class AbstractPrologContext implements PrologContext
         return result;
     }
 
+    /**
+     * Get the results for the first solution only, input with format to replace
+     *
+     * @param text Query text to fetch solution of
+     * @param args Substitution arguments to apply to text
+     * @return one solution binding, the first one
+     * @throws NoSuchSolutionException
+     */
     @Override
     public MQuerySolution askForSolution(String text, Object... args)
             throws NoSuchSolutionException
@@ -85,6 +99,13 @@ public abstract class AbstractPrologContext implements PrologContext
         return askForSolution(MQuery.format(text, args));
     }
 
+    /**
+     * Get the results for the first solution only
+     *
+     * @param query Query to fetch solution of
+     * @return one solution binding, the first one
+     * @throws NoSuchSolutionException
+     */
     @Override
     public MQuerySolution askForSolution(MQuery query)
             throws NoSuchSolutionException

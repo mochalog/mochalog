@@ -53,7 +53,7 @@ swipl_srcs_dir="$swipl_src_root/unpacked-srcs"
 # Extract downloaded tarball
 # Sourced and modified from http://askubuntu.com/a/25348
 # by user djeikyb - Licensed under MIT License
-# (full text copy of license at 'thirdparty/snippets/MIT_LICENSE'
+# (full queryText copy of license at 'thirdparty/snippets/MIT_LICENSE'
 tar -xzf ${swipl_archive_path} -C ${swipl_src_root}
 tar_rc=$?
 # Rename to unpacked-srcs

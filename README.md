@@ -209,7 +209,7 @@ From Paul Singleton's great explanation in SWI Forum (see [post](http://www.swi-
 
 JPL only really supports the classic term model (i.e., variable, atom, integer, float, compound), but has half-baked support for SWI Prolog's string type extension.
 
-Strings and text atoms (and also reserved symbols) are all brought into Java as org.jpl7.Atom instances, but with an indication of their origin: see `Atom.atomType()`.
+Strings and queryText atoms (and also reserved symbols) are all brought into Java as org.jpl7.Atom instances, but with an indication of their origin: see `Atom.atomType()`.
 
 From Java into Prolog you can't currently create a string :-( but this may just require a hack to `Atom.put()`
 
