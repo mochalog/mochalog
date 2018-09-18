@@ -19,9 +19,7 @@ package io.mochalog.bridge.prolog.query;
 import io.mochalog.bridge.prolog.lang.Module;
 
 import io.mochalog.util.format.AbstractFormatter;
-import org.jpl7.Query;
-import org.jpl7.Term;
-import org.jpl7.Util;
+import org.jpl7.*;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -239,11 +237,21 @@ public class MQuery
      * @param args Query arguments
      * @return MQuery object
      */
-    public static MQuery format(String query, Term... args)
+    public static MQuery jpl_format(String query, Term... args)
     {
-        query = new Query(query, args);
-        return new MQuery(query, args);
+        return new MQuery(Query1(query, args));
     }
+
+    // Taken verbatim from JPL Query.java as it is a private there! :-(
+    private static Term Query1(String text, Term[] args) {
+        Term t = Util.textToTerm(text);
+        if (t instanceof Atom) {
+            return new Compound(text, args);
+        } else {
+            return t.putParams(args);
+        }
+    }
+
 
 
     /**
