@@ -18,6 +18,7 @@ package io.sarl.extras;
 
 import org.jpl7.*;
 
+import org.jpl7.fli.module_t;
 import org.junit.Test;
 
 import java.lang.Integer;
@@ -35,6 +36,26 @@ public class JPLTest
 {
     final String testKBFilePath = "src/test/resources/prolog/testKB.pl";
 
+    private boolean DEBUG = false;
+
+
+    private void print_start_debug(String methodName) {
+        if (DEBUG)
+            System.out.println(String.format("\n=========================== TEST: %s ===========================", methodName));
+    }
+
+    /**
+     * Load the Prolog file at filepath into the SWI-Prolog interpreter
+     * @param filePath Path of Prolog file
+     * @return Success status
+     */
+    private boolean consultKnowledgeBase(String filePath)
+    {
+        String queryString = String.format("consult('%s')", filePath);
+        return Query.hasSolution(queryString);
+    }
+
+
 
     /**
      * Ensure jpl.dll or libjpl.so and dependencies are able to be loaded
@@ -44,6 +65,9 @@ public class JPLTest
     @Test
     public void isJPLNativeBinaryLoadable()
     {
+        print_start_debug(new Object(){}.getClass().getEnclosingMethod().getName());
+
+
         try
         {
             // Attempt to load JPL native library given
@@ -75,6 +99,9 @@ public class JPLTest
     @Test
     public void basicJavaToPrologQuery()
     {
+        print_start_debug(new Object(){}.getClass().getEnclosingMethod().getName());
+
+
         // hello_world.pl test resource
         // Filepath relative to java-api directory
 
@@ -99,6 +126,9 @@ public class JPLTest
     @Test
     public void stringPrologQuery()
     {
+        print_start_debug(new Object(){}.getClass().getEnclosingMethod().getName());
+
+
         String queryText;
         Query query;
         boolean hasSolution;
@@ -130,6 +160,9 @@ public class JPLTest
     @Test
     public void QueryWithPlaceholders()
     {
+        print_start_debug(new Object(){}.getClass().getEnclosingMethod().getName());
+
+
         String queryText;
         Query query;
         boolean hasSolution;
@@ -143,9 +176,8 @@ public class JPLTest
         Query q = new Query("person(john, ?, ?)", new Term[] {new Variable("N"), new Atom("melbourne")});
         int n = q.oneSolution().get("N").intValue();
         System.out.println("The integer value of JAVA object obj_integer returned from Prolog was " + n);
-
-
     }
+
 
 
 
@@ -155,6 +187,9 @@ public class JPLTest
     @Test
     public void JRefQuery()
     {
+        print_start_debug(new Object(){}.getClass().getEnclosingMethod().getName());
+
+
         String queryText;
         Query query;
         boolean hasSolution;
@@ -186,14 +221,40 @@ public class JPLTest
     }
 
 
+
     /**
-     * Load the Prolog file at filepath into the SWI-Prolog interpreter
-     * @param filePath Path of Prolog file
-     * @return Success status
+     * Uses placeholders ? to inject terms
      */
-    private boolean consultKnowledgeBase(String filePath)
+    @Test
+    public void QueryinModules()
     {
-        String queryString = String.format("consult('%s')", filePath);
-        return Query.hasSolution(queryString);
+        print_start_debug(new Object(){}.getClass().getEnclosingMethod().getName());
+
+
+        String queryText;
+        Query query;
+        boolean hasSolution;
+        Map<String, Term> solution;
+        String x;
+
+        module_t module1 = new module_t();
+        module_t module2 = new module_t();
+
+
+//        String queryString = String.format("consult('%s')", testKBFilePath);
+        Query.hasSolution("assert(tea:my_data(module1))");
+        Query.hasSolution("assert(my_data(module2))");
+
+
+        Query q = new Query("my_data(?)", new Term[] {new Variable("X")});
+        solution = q.oneSolution();
+        if (solution != null) {
+            x = solution.get("X").toString();
+            System.out.println("Value of X: " + x);
+        }
+
+
     }
+
+
 }

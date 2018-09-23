@@ -74,7 +74,9 @@ public class MQuery
 
             // Basic regex capturing most Prolog BASIC term instances
             // (integers, floats, strings, atoms)
-            // TODO: Not a robust grammar definition of a Prolog term
+            // TODO: Not a robust grammar definition of a Prolog term: it misses neasted terms badly, see MochaTest2
+            //          can it actually be done with a regular expresion given that it is context-free?!?!?!
+            //
             // regexp: \w+ | [0-9]+.[0-9] | "[^"]*"
             //  a non empty word \w+ (including integers) OR
             //  a number with decimals [0-9]+.[0-9]
@@ -103,14 +105,17 @@ public class MQuery
             StringBuilder setterCompounds = new StringBuilder();
 
 
-            System.out.println("==========================================");
-            System.out.println(str);
-            System.out.println();
+//            System.out.println("==========================================");
+//            System.out.println(str);
+//            System.out.println();
+
             // Find instances of compounds in the query string
             while (compoundMatcher.find())
             {
                 String compound = compoundMatcher.group();
-                System.out.println(compound);
+
+
+//                System.out.println(compound);
 
 
                 // Run a regex query over the query compound, looking

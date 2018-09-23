@@ -2,11 +2,10 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.ssardina</groupId>
 	<artifactId>mochalog</artifactId>
-	<version>${mochalog.version}</version>
+	<version>0.5.1</version>
     <packaging>jar</packaging>
 
     <properties>
-        <mochalog.version>0.5.0</mochalog.version>
         <compiler.level>1.8</compiler.level>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -53,9 +52,9 @@
    // FIXED: https://github.com/SWI-Prolog/packages-jpl/pull/10
    -->
     <dependency>
-        <groupId>com.github.ssardina</groupId>
+        <groupId>com.github.ssardina-research</groupId>
         <artifactId>packages-jpl</artifactId>
-        <version>3d7b1b6</version>
+        <version>408d59b</version>
         <scope>compile</scope>
     </dependency>
 

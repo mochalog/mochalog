@@ -56,11 +56,16 @@ public class MochaTest
     private static String testKBFilePath = "src/test/resources/prolog/testKB.pl";
     private boolean DEBUG = false;
 
+
+    private void print_start_debug(String methodName) {
+        if (DEBUG)
+            System.out.println(String.format("\n=========================== TEST: %s ===========================", methodName));
+    }
+
     @Test
     public void basicMochaJavaToPrologQuery()
     {
-        String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
-        if (DEBUG) System.out.println("================= TEST: " + methodName);
+        print_start_debug(new Object(){}.getClass().getEnclosingMethod().getName());
 
         // hello_world.pl test resource
         // Filepath relative to java-api directory
@@ -94,7 +99,6 @@ public class MochaTest
         }
 
 
-        if (DEBUG) System.out.println(String.format("################ TEST %s DONE!", methodName));
     }
 
 
@@ -109,8 +113,7 @@ public class MochaTest
     @Test
     public void queryAllSolutionsTest() throws IOException
     {
-        String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
-        if (DEBUG) System.out.println("================= TEST: " + methodName);
+        print_start_debug(new Object(){}.getClass().getEnclosingMethod().getName());
 
         // hello_world.pl test resource
         // Filepath relative to java-bridge directory
@@ -155,7 +158,6 @@ public class MochaTest
             }
         }
 
-        if (DEBUG) System.out.println(String.format("################ TEST %s DONE!", methodName));
     }
 
 
@@ -166,8 +168,7 @@ public class MochaTest
     @Test
     public void queryIterativeTest() throws IOException
     {
-        String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
-        if (DEBUG) System.out.println("================= TEST: " + methodName);
+        print_start_debug(new Object(){}.getClass().getEnclosingMethod().getName());
 
         // hello_world.pl test resource
         // Filepath relative to java-bridge directory
@@ -191,7 +192,6 @@ public class MochaTest
             solutionIndex++;
         }
 
-        if (DEBUG) System.out.println(String.format("################ TEST %s DONE!", methodName));
     }
 
     /**
@@ -201,8 +201,7 @@ public class MochaTest
     @Test
     public void queryIterativeTestWithDelay() throws IOException
     {
-        String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
-        if (DEBUG) System.out.println("================= TEST: " + methodName);
+        print_start_debug(new Object(){}.getClass().getEnclosingMethod().getName());
 
         // hello_world.pl test resource
         // Filepath relative to java-bridge directory
@@ -233,7 +232,7 @@ public class MochaTest
         } catch (NoSuchElementException e) {
         }
 
-        if (DEBUG) System.out.println(String.format("################ TEST %s DONE!", methodName));
+        print_start_debug(new Object(){}.getClass().getEnclosingMethod().getName());
     }
 
 
@@ -245,8 +244,7 @@ public class MochaTest
     @Test
     public void queryIterativeTestForever() throws IOException
     {
-        String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
-        if (DEBUG) System.out.println("================= TEST: " + methodName);
+        print_start_debug(new Object(){}.getClass().getEnclosingMethod().getName());
 
         final int noSolToTest = 15;
 
@@ -270,7 +268,6 @@ public class MochaTest
             solutionIndex++;
         }
 
-        if (DEBUG) System.out.println(String.format("################ TEST %s DONE!", methodName));
     }
 
 
@@ -281,8 +278,7 @@ public class MochaTest
     @Test
     public void querySetterTest()
     {
-        String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
-        if (DEBUG) System.out.println("================= TEST: " + methodName);
+        print_start_debug(new Object(){}.getClass().getEnclosingMethod().getName());
 
         PrologContext prolog = new SandboxedPrologContext("query_setter_test");
 
@@ -303,17 +299,27 @@ public class MochaTest
         //  assert(student(Student,2)),
         //  retract(school(Student, CurrentSchool)),
         //  assert(school(Student, newSchoolName)
-        String newSchoolName = "New Simulated School";
+        String newSchoolName = "New simulated school";
         assert(prolog.prove("student(Student, 0 <- 2), school(Student, CurrentSchool <- @S)",
                 newSchoolName));
-
-        // Check if values were correctly set/exchanged in the previous query
+//
+//        // Check if values were correctly set/exchanged in the previous query
         MQuerySolution solution =
                 prolog.askForSolution("student(student_a, StudentId), school(student_a, School)");
         assertEquals(2, solution.get("StudentId").intValue());
-        assertEquals("\'New Simulated School\'", solution.get("School").toString());
 
-        if (DEBUG) System.out.println(String.format("################ TEST %s DONE!", methodName));
+        System.out.println("--------------------- START OF LISTING ---------------------");
+        prolog.prove("listing");
+        System.out.println("--------------------- END OF LISTING ---------------------");
+
+
+        // .name() works but .toString() that is meant to quote the string gives stack overflow
+        System.out.println("The value of School variable as String is: " + solution.get("School").name());
+//        System.out.println("The value of School variable as String is: " + solution.get("School").toString);
+
+
+        assertEquals(newSchoolName, solution.get("School").name());
+
     }
 
 
@@ -322,12 +328,12 @@ public class MochaTest
      */
     @Test
     public void queryFormatter() {
-        String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
-        if (DEBUG) System.out.println("================= TEST: " + methodName);
+        print_start_debug(new Object(){}.getClass().getEnclosingMethod().getName());
+
 
         PrologContext prolog = new SandboxedPrologContext("query_formatter");
 
-        System.out.println("================= START OF DUMP FOR data/2 =================");
+        System.out.println("--------------------- START OF DUMP FOR data/2 ---------------------");
         // data(:DataType, :Data)
         assert(prolog.assertFirst("data(integer, 23)"));
         assert(prolog.assertFirst("data(integer, @I)", 48.45));
@@ -350,9 +356,7 @@ public class MochaTest
         assert(prolog.assertFirst("data(list, @S)", "[1212, pete, father(mary, john), X, 34]"));
 
         prolog.prove("listing");
-        System.out.println("============================ END OF DUMP FOR data/2 =================");
-
-        if (DEBUG) System.out.println(String.format("################ TEST %s DONE!", methodName));
+        System.out.println("--------------------- END OF DUMP FOR data/2 ---------------------");
     }
 
 
@@ -363,8 +367,7 @@ public class MochaTest
     @Test
     public void ensureSandboxedModules()
     {
-        String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
-        if (DEBUG) System.out.println("================= TEST: " + methodName);
+        print_start_debug(new Object(){}.getClass().getEnclosingMethod().getName());
 
         PrologContext firstModule = new SandboxedPrologContext("module_1");
         PrologContext secondModule = new SandboxedPrologContext("module_2");
@@ -389,8 +392,6 @@ public class MochaTest
         // Ensure data is not removed from both modules
         assert(firstModule.retract("shared_predicate"));
         assert(secondModule.prove("shared_predicate"));
-
-        if (DEBUG) System.out.println(String.format("################ TEST %s DONE!", methodName));
     }
 
 
@@ -401,8 +402,7 @@ public class MochaTest
     @Test
     public void bindingMappingQuery()
     {
-        String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
-        if (DEBUG) System.out.println("================= TEST: " + methodName);
+        print_start_debug(new Object(){}.getClass().getEnclosingMethod().getName());
 
         // Solutions expected from get_hello_world query
         Map<String, Term> expectedSolutions = new HashMap<String,Term>();
@@ -433,46 +433,36 @@ public class MochaTest
             assertEquals(bindings.get(varName), expectedSolutions.get(varName));
 
         }
-
-
-        if (DEBUG) System.out.println(String.format("################ TEST %s DONE!", methodName));
     }
 
 
 
-//    @Test
-//    public void jRefTesting()
-//    {
-//        String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
-//        if (DEBUG) System.out.println("================= TEST: " + methodName);
-//
-//        SandboxedPrologContext prolog = new SandboxedPrologContext("jRefTesting");
-//        boolean loaded = false;
-//        try {
-//            loaded = prolog.importFile(testKBFilePath);
-//        } catch (IOException e) {
-//            fail( "My method throw when I expected not to" );
-//            e.printStackTrace();
-//        }
-//        assert(loaded);
-//
-//        // Fetch the Term object which gets bound to the specified
-//        // variable
-//        Integer obj_integer = new Integer(232);
-////        Query q = new Query("print_integer", new Term[] {new JRef(obj_integer), new Variable(("N"))});
-//
-//        MQuery query = new MQuery("print_integer(@A, N)", obj_integer);
-//        MQuerySolution solution = prolog.askForSolution(query);
-//
-//        Map<String, Term> bindings = solution.getBindings();
-//        int n = bindings.get("N").intValue();
-//        System.out.println("The integer value of JAVA object obj_integer returned from Prolog was " + n);
-//
-//        assertEquals(n, 232);
-//
-//
-//        if (DEBUG) System.out.println(String.format("################ TEST %s DONE!", methodName));
-//    }
+    @Test
+    public void compoundMochaJavaToPrologQuery() {
+        print_start_debug(new Object(){}.getClass().getEnclosingMethod().getName());
+
+        // hello_world.pl test resource
+        // Filepath relative to java-api directory
+        SandboxedPrologContext prolog = new SandboxedPrologContext("askForSolution_compound");
+
+        boolean loaded = false;
+        try {
+            loaded = prolog.importFile(testKBFilePath);
+        } catch (IOException e) {
+            fail("My method throw when I expected not to");
+            e.printStackTrace();
+        }
+        assert (loaded);
+
+        // WORKS
+        // But the term parsing is missing mother(age(@A,add(@I,1)) and father gets all the way to X!
+        MQuery query = MQuery.format("data(mother(age(@A,add(@I,1)),father(peter,@A),X))","john",32,"mark");
+        MQuerySolution solution = prolog.askForSolution(query);
+        Term valueX = solution.get("X");
+        assertEquals(23.222, valueX.floatValue(), 0.05);    // Check correctness
+    }
+
+
 
 
 }
