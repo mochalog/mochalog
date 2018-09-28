@@ -7,28 +7,13 @@ jdk:
 env:
     global:
         # Set SWI-Prolog environment variables
-        - SWIPL_VERSION="7.4.1"
+        - SWIPL_VERSION="7.6.4"
         - SWI_HOME_DIR="/usr/local/lib/swipl-$SWIPL_VERSION"
-        # Set Intellij IDEA environment variables
-        - IDEA_VERSION="171.4249.39"
 
 before_install:
     # Ensure SWI-Prolog is downloaded/built on to the build server
     - sudo thirdparty/swi-prolog/swipl-install.sh $SWIPL_VERSION
     # Ensure external shared libraries are capable of being dynamically loaded
-    - export LD_PRELOAD="$SWI_HOME_DIR/lib/x86_64-linux/libswipl.so.$SWIPL_VERSION"
-
-# To prevent cache being uploaded after each build due to Gradle
-# must perform the following
-# Documented here:
-# https://docs.travis-ci.com/user/languages/java/#Projects-Using-Gradle)
-before_cache:
-    - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
-    - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
-cache:
-    directories:
-        # Cache Gradle dependency directories
-        - $HOME/.gradle/caches/
-        - $HOME/.gradle/wrapper/
-        # Cache downloaded Intellij IDEA SDK
-        - $HOME/.gradle/ideaSDK/$IDEA_VERSION
+    - export LD_PRELOAD=$SWI_HOME_DIR/lib/x86_64-linux/libswipl.so.$SWIPL_VERSION:${LD_PRELOAD}
+    - export LD_LIBRARY_PATH=$SWI_HOME_DIR/lib/x86_64-linux/:${LD_LIBRARY_PATH}
+    - export PATH=$SWI_HOME_DIR/bin/x86_64-linux/:${PATH}

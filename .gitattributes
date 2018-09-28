@@ -1,31 +1,31 @@
 # Used for normalisation of line endings
 # as per https://help.github.com/articles/dealing-with-line-endings/
 
-# Set default behaviour for text files
-# Normalises text files on checkin to repository
-* text=auto
+# Set default behaviour for queryText files
+# Normalises queryText files on checkin to repository
+* queryText=auto
 
-# Define specific text files to normalise to native
+# Define specific queryText files to normalise to native
 # line ending format on repository checkout
 
 # Source files
-*.java          text
-*.groovy        text
-*.pl            text
-*.xtext         text
-*.mwe2          text
+*.java          queryText
+*.groovy        queryText
+*.pl            queryText
+*.xtext         queryText
+*.mwe2          queryText
 
 # Build scripts
-*.gradle        text
-*.sh            text
+*.gradle        queryText
+*.sh            queryText
 # Batch files must have Windows line endings
-*.bat           text eol=crlf
-*.yml           text
+*.bat           queryText eol=crlf
+*.yml           queryText
 
 # Info files
-*.properties    text
-*.md            text
-*.txt           text
+*.properties    queryText
+*.md            queryText
+*.txt           queryText
 
 # Define binary files for which line ending
 # normalisation should not apply to

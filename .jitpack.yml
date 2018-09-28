@@ -7,14 +7,3 @@
 jdk:
     - oraclejdk8
 
-env:
-    # Set Intellij IDEA environment variables
-    IDEA_VERSION: "171.4249.39"
-
-install:
-    # Disable tests for Mochalog Jitpack builds
-    # Build environments testing Mochalog must have SWI-Prolog
-    # installed and configured (build times would be much larger
-    # if we rely on swipl_install.sh)
-    # As tests are not required for publishing, they can be disabled
-    ./gradlew clean publishToMavenLocal -x test

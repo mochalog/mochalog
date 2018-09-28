@@ -53,7 +53,7 @@ swipl_srcs_dir="$swipl_src_root/unpacked-srcs"
 # Extract downloaded tarball
 # Sourced and modified from http://askubuntu.com/a/25348
 # by user djeikyb - Licensed under MIT License
-# (full text copy of license at 'thirdparty/snippets/MIT_LICENSE'
+# (full queryText copy of license at 'thirdparty/snippets/MIT_LICENSE'
 tar -xzf ${swipl_archive_path} -C ${swipl_src_root}
 tar_rc=$?
 # Rename to unpacked-srcs
@@ -66,6 +66,7 @@ fi
 # Ensure correct source directory permissions
 chmod 755 ${swipl_srcs_dir}
 
+#swipl_lib_prefix="/usr/local/swi"
 swipl_lib_prefix="/usr/local/"
 echo "Building SWI-Prolog and subpackages to $swipl_lib_prefix"
 # Configure and build base SWI-Prolog library
@@ -86,22 +87,20 @@ cd packages
 # installed prior to package install
 # Libraries required are libarchive-dev and libssl-dev
 echo "Installing libarchive-dev (dependency of SWI-Prolog archive package) ..."
+apt-get update
 apt-get install libarchive-dev -y -q
 echo "Installing libssl-dev (dependency of SWI-Prolog ssl package) ..."
 apt-get install libssl-dev -y -q
 
 # Packages to include in build
-included_packages="archive clib cpp chr clpqr http pldoc plunit jpl \
-sgml ssl utf8proc"
+included_packages="archive clib cpp chr clpqr http pldoc plunit jpl sgml ssl utf8proc"
 include_args=""
 for included_package in ${included_packages}; do
     include_args="$include_args --with-$included_package"
 done
 
 # Packages to exclude from build
-ignored_packages="odbc table xpce RDF semweb nlp tipc \
-zlib protobufs windows PDT libedit readline pengines \
-cql bdb"
+ignored_packages="odbc table xpce RDF semweb nlp tipc zlib protobufs windows PDT libedit readline pengines cql bdb"
 ignore_args=""
 for ignored_package in ${ignored_packages}; do
     ignore_args="$ignore_args --without-$ignored_package"
